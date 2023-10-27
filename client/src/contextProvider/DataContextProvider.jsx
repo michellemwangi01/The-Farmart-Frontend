@@ -3,10 +3,11 @@ import React, { createContext, useState } from "react";
 const dataContext = createContext();
 
 const DataContextProvider = ({ children }) => {
-  const [testState, setTestState] = useState("mamamia");
+  const [groupMembers, setGroupMembers] = useState(["Donell"]);
+
   const data = {
-    testState,
-    setTestState,
+    groupMembers,
+    setGroupMembers,
   };
   return <dataContext.Provider value={data}>{children}</dataContext.Provider>;
 };
