@@ -39,6 +39,8 @@ function Checkout() {
         .then((responseData) => {
           if (responseData.ok) {
             console.log(responseData);
+          } else {
+            console.log("No data for you hun:(");
           }
         });
 
