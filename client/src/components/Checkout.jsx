@@ -1,11 +1,21 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useState, useEffect, useContext } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { dataContext } from "../contextProvider/DataContextProvider";
 
 function Checkout() {
+  // -------------------CREATE STATE VARIABLES
   const [totalAmountDue, setTotalAmountDue] = useState(0);
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [paymentConfirmationDetails, setPaymentConfirmationDetails] =
+    useState("");
+  const [transactionInitiated, setTransactionInitiated] = useState(false);
 
+  // -------------------CALL AND USE DATA CONTEXT
+  const { hostedRoutePrefix, localRoutePrefix } = useContext(dataContext);
+
+  // -------------------TOAST NOIFICATIONS
   const toastPaymentSuccessfullyInitiated = (message, type) => {
     toast(message, type);
   };
@@ -13,9 +23,30 @@ function Checkout() {
   const toastEmptyDetails = (message, type) =>
     toast(message, { autoClose: 5000, type });
 
+  // -------------------GENERATE RANDOM TRANSACTION ACCOUNT
+  function generateRandomString(length) {
+    const characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let randomString = "";
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      randomString += characters.charAt(randomIndex);
+    }
+    return randomString;
+  }
+
+  // Create a unique account number with a prefix and random identifier
+  function generateUniqueAccountNumber(prefix, length) {
+    const randomString = generateRandomString(length);
+    return prefix + randomString;
+  }
+
+  // -------------------DEFINE PAY HANDLER
   const pay = () => {
     setTotalAmountDue(1);
     setPhoneNumber("0700562291");
+    const prefix = "FAR";
+    const transactionID = generateUniqueAccountNumber(prefix, 6);
     console.log(totalAmountDue, phoneNumber);
     if (totalAmountDue === 0 || phoneNumber === "") {
       toastEmptyDetails(
@@ -24,11 +55,11 @@ function Checkout() {
       );
     } else {
       console.log(
-        `amount=${totalAmountDue}&msisdn=${phoneNumber}&account_no=2`
+        `amount=${totalAmountDue}&msisdn=${phoneNumber}&account_no=${transactionID}`
       );
       const url = "https://tinypesa.com/api/v1/express/initialize";
       fetch(url, {
-        body: `amount=${totalAmountDue}&msisdn=${phoneNumber}&account_no=2`,
+        body: `amount=${totalAmountDue}&msisdn=${phoneNumber}&account_no=${transactionID}`,
         headers: {
           Apikey: "TnfBPxXIGWe",
           "Content-Type": "application/x-www-form-urlencoded",
@@ -38,55 +69,24 @@ function Checkout() {
         .then((response) => response.json())
         .then((responseData) => {
           if (responseData.ok) {
-            console.log(responseData);
-          } else {
-            console.log("No data for you hun:(");
+            console.log("SUCCESSFUL");
           }
+          console.log("Pay request sent");
+          toastPaymentSuccessfullyInitiated(
+            "Process initiated, please check your phone to complete payment.",
+            "success"
+          );
+          setTransactionInitiated(true);
         });
-
-      console.log("Pay request sent");
-      toastPaymentSuccessfullyInitiated(
-        "Process initiated, please check your phone to complete payment.",
-        "success"
-      );
     }
   };
 
   return (
     <div>
-      <button onClick={pay}>Pay</button>
+      <button onClick={pay}>Click to Pay</button>
+      <p>Payment confirmation details: {paymentConfirmationDetails}</p>
     </div>
   );
 }
 
 export default Checkout;
-
-// TinyPesa in JS
-// function pay() {
-//   if (totalAmountDue == 0 || phoneNumber == "") {
-//     handleWarningClick(
-//       "Please fill out all details correctly before initiating payment."
-//     );
-//   } else {
-//     console.log(`amount=${totalAmountDue}&msisdn=${phoneNumber}&account_no=2`);
-//     var url = "https://tinypesa.com/api/v1/express/initialize";
-//     fetch(url, {
-//       body: `amount=${totalAmountDue}&msisdn=${phoneNumber}&account_no=2`,
-//       headers: {
-//         Apikey: "TnfBPxXIGWe",
-//         "Content-Type": "application/x-www-form-urlencoded",
-//       },
-//       method: "POST",
-//     })
-//       .then((res) => res.json())
-//       .then((respose) => {
-//         if (respose.ok) {
-//           console.log("SUCCESSFUL");
-//         }
-//       });
-//     console.log("Pay request sent");
-//     handleSucessClick(
-//       "Process initiated, please check your phone to complete payment."
-//     );
-//   }
-// }
