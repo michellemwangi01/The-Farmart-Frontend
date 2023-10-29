@@ -4,7 +4,8 @@ import Home from "./Home";
 import Products from "./Products";
 import Vendor from "./Vendor";
 import AboutUs from "./Aboutus";
-// import Error404 from "./Error404";
+import Error404 from "./Error404";
+import Checkout from "./Checkout";
 
 const RouterComponent = () => {
   return (
@@ -14,7 +15,8 @@ const RouterComponent = () => {
         <Route path="/products" element={<Products />} />
         <Route path="/vendor" element={<Vendor />} />
         <Route path="/aboutus" element={<AboutUs />} />
-        {/* <Route path="*" element={<Error404 />} /> */}
+        <Route path="*" element={<Error404 />} />
+        <Route path="/checkout" element={<Checkout />} />
       </Routes>
     </div>
   );

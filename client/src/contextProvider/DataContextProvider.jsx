@@ -9,7 +9,7 @@ const DataContextProvider = ({ children }) => {
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:5555/farmart/categories")
+      .get("http://127.0.0.1:5555/categories/categories")
       .then((res) => {
         setCategories(res.data);
         setLoadingCategories(false);
