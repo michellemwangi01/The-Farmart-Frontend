@@ -1,19 +1,29 @@
 import axios from "axios";
 import React, { useState, useEffect, useContext } from "react";
+import "/node_modules/flag-icons/css/flag-icons.min.css";
+import { FaRegTrashAlt } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { dataContext } from "../contextProvider/DataContextProvider";
+import { useForm } from "react-hook-form";
 
 function Checkout() {
-  // -------------------CALL AND USE DATA CONTEXT
-  const { hostedRoutePrefix, localRoutePrefix } = useContext(dataContext);
-
-  // -------------------CREATE STATE VARIABLES
+  // ------------------- DEFINE STATE VARIABLES
+  const [orderItems, setOrderItems] = useState([]);
   const [totalAmountDue, setTotalAmountDue] = useState(0);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [paymentConfirmationDetails, setPaymentConfirmationDetails] =
     useState("");
   const [transactionInitiated, setTransactionInitiated] = useState(false);
+
+  // ------------------- CALL AND USE DATA CONTEXT
+  const { hostedRoutePrefix, localRoutePrefix, products, Kenya_counties } =
+    useContext(dataContext);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   // -------------------TOAST NOIFICATIONS
   const toastPaymentSuccessfullyInitiated = (message, type) => {
@@ -21,7 +31,53 @@ function Checkout() {
   };
 
   const toastEmptyDetails = (message, type) =>
-    toast(message, { autoClose: 5000, type });
+    toast(message, { autoClose: 3000, type });
+
+  const toastSuccessfulRemoveFromOrder = (message, type) =>
+    toast(message, { autoClose: 3000, type });
+
+  // ------------------- DUMMY DATA
+  useEffect(() => {
+    const samplecartproducts = products.filter((product) =>
+      product.category.name.toLowerCase().includes("fish")
+    );
+    setOrderItems(samplecartproducts);
+  }, []);
+
+  // ------------------- HANDLE REMOVE FROM ORDER TEMPLATE
+  const deleteFromOrder = (id) => {
+    const finalOrderItems = orderItems.filter((item) => item.id !== id);
+    toastSuccessfulRemoveFromOrder(
+      "Item successfully removed from order!",
+      "success"
+    );
+    setOrderItems(finalOrderItems);
+  };
+
+  // ------------------- ORDER ITEMS SUMMARY TEMPLATE
+  const cartItemsList = orderItems.map((cartItem) => (
+    <div class="flex flex-col rounded-lg bg-gray-100 sm:flex-row">
+      <img
+        class="m-2 h-24 w-28 rounded-md border object-cover object-center"
+        src={`${cartItem.image}`}
+        alt=""
+      />
+      <div class="flex w-full flex-col px-4 py-4">
+        <span class="font-semibold">{cartItem.name}</span>
+        <span class="float-right text-gray-400">
+          {cartItem.vendor.business_name}
+        </span>
+        <p>Quantity: 4 batches</p>
+        <p class="text-lg font-bold">${cartItem.price.toFixed(2)}</p>
+        <p
+          onClick={() => deleteFromOrder(cartItem.id)}
+          className="flex items-center justify-end text-red-600 font-light"
+        >
+          <FaRegTrashAlt className="text-red-400" />
+        </p>
+      </div>
+    </div>
+  ));
 
   // -------------------GENERATE RANDOM TRANSACTION ACCOUNT
   function generateRandomString(length) {
@@ -79,6 +135,11 @@ function Checkout() {
           setTransactionInitiated(true);
         });
     }
+  };
+
+  //
+  const handleSubmitOrderDetails = (data) => {
+    console.log(data);
   };
 
   return (
@@ -164,47 +225,27 @@ function Checkout() {
           </div>
         </div>
       </div>
-      <div class="grid sm:px-10 lg:grid-cols-2 lg:px-20 xl:px-32">
-        <div class="px-4 pt-8">
-          <p class="text-xl font-medium">Order Summary</p>
-          <p class="text-gray-400">
-            Check your items. And select a suitable shipping method.
-          </p>
-          <div class="mt-8 space-y-3 rounded-lg border bg-white px-2 py-4 sm:px-6">
-            <div class="flex flex-col rounded-lg bg-white sm:flex-row">
-              <img
-                class="m-2 h-24 w-28 rounded-md border object-cover object-center"
-                src="https://images.unsplash.com/flagged/photo-1556637640-2c80d3201be8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8c25lYWtlcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
-                alt=""
-              />
-              <div class="flex w-full flex-col px-4 py-4">
-                <span class="font-semibold">
-                  Nike Air Max Pro 8888 - Super Light
-                </span>
-                <span class="float-right text-gray-400">42EU - 8.5US</span>
-                <p class="text-lg font-bold">$138.99</p>
-              </div>
+      <form
+        onSubmit={handleSubmit(handleSubmitOrderDetails)}
+        class="mt-5 grid gap-6"
+      >
+        <div class="grid sm:px-10 lg:grid-cols-2 lg:px-20 xl:px-32">
+          <div class="px-4 pt-8">
+            <p class="text-xl font-medium">Order Summary</p>
+            <p class="text-gray-400">
+              Check your items. And select a suitable shipping method.
+            </p>
+            <div class="mt-8 space-y-3 rounded-lg border bg-white px-2 py-4 sm:px-6">
+              {/* ----------------------CART ITEMS */}
+              {cartItemsList}
+              {/* ----------------------CART ITEMS */}
             </div>
-            <div class="flex flex-col rounded-lg bg-white sm:flex-row">
-              <img
-                class="m-2 h-24 w-28 rounded-md border object-cover object-center"
-                src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8c25lYWtlcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
-                alt=""
-              />
-              <div class="flex w-full flex-col px-4 py-4">
-                <span class="font-semibold">
-                  Nike Air Max Pro 8888 - Super Light
-                </span>
-                <span class="float-right text-gray-400">42EU - 8.5US</span>
-                <p class="mt-auto text-lg font-bold">$238.99</p>
-              </div>
-            </div>
-          </div>
 
-          <p class="mt-8 text-lg font-medium">Shipping Methods</p>
-          <form class="mt-5 grid gap-6">
+            <p class="mt-8 text-lg font-medium">Shipping Methods</p>
+
             <div class="relative">
               <input
+                {...register("DoorStepDelivery")}
                 class="peer hidden"
                 id="radio_1"
                 type="radio"
@@ -231,6 +272,7 @@ function Checkout() {
             </div>
             <div class="relative">
               <input
+                {...register("Pickup")}
                 class="peer hidden"
                 id="radio_2"
                 type="radio"
@@ -255,171 +297,194 @@ function Checkout() {
                 </div>
               </label>
             </div>
-          </form>
-        </div>
-        <div class="mt-10 bg-gray-50 px-4 pt-8 lg:mt-0">
-          <p class="text-xl font-medium">Payment Details</p>
-          <p class="text-gray-400">
-            Complete your order by providing your payment details.
-          </p>
-          <div class="">
-            <label for="email" class="mt-4 mb-2 block text-sm font-medium">
-              Email
-            </label>
-            <div class="relative">
-              <input
-                type="text"
-                id="email"
-                name="email"
-                class="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
-                placeholder="your.email@gmail.com"
-              />
-              <div class="pointer-events-none absolute inset-y-0 left-0 inline-flex items-center px-3">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-4 w-4 text-gray-400"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  stroke-width="2"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"
-                  />
-                </svg>
-              </div>
-            </div>
-            <label
-              for="card-holder"
-              class="mt-4 mb-2 block text-sm font-medium"
-            >
-              Card Holder
-            </label>
-            <div class="relative">
-              <input
-                type="text"
-                id="card-holder"
-                name="card-holder"
-                class="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm uppercase shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
-                placeholder="Your full name here"
-              />
-              <div class="pointer-events-none absolute inset-y-0 left-0 inline-flex items-center px-3">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-4 w-4 text-gray-400"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  stroke-width="2"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm1.294 6.336a6.721 6.721 0 01-3.17.789 6.721 6.721 0 01-3.168-.789 3.376 3.376 0 016.338 0z"
-                  />
-                </svg>
-              </div>
-            </div>
-            <label for="card-no" class="mt-4 mb-2 block text-sm font-medium">
-              Card Details
-            </label>
-            <div class="flex">
-              <div class="relative w-7/12 flex-shrink-0">
+          </div>
+          <div class="mt-10 bg-gray-50 px-4 pt-8 lg:mt-28">
+            <p class="text-xl font-medium">Payment Details</p>
+            <p class="text-gray-400">
+              Complete your order by providing your payment details.
+            </p>
+            <div class="">
+              <label for="email" class="mt-4 mb-2 block text-sm font-medium">
+                Email Confirmation
+              </label>
+              <div class="relative">
                 <input
+                  {...register("email", {
+                    required: "Enter a valid email",
+                    pattern: {
+                      value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+                    },
+                  })}
                   type="text"
-                  id="card-no"
-                  name="card-no"
-                  class="w-full rounded-md border border-gray-200 px-2 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
-                  placeholder="xxxx-xxxx-xxxx-xxxx"
+                  id="email"
+                  class="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+                  placeholder="your.email@gmail.com"
                 />
                 <div class="pointer-events-none absolute inset-y-0 left-0 inline-flex items-center px-3">
                   <svg
-                    class="h-4 w-4 text-gray-400"
                     xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                    viewBox="0 0 16 16"
+                    class="h-4 w-4 text-gray-400"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="2"
                   >
-                    <path d="M11 5.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1z" />
-                    <path d="M2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H2zm13 2v5H1V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zm-1 9H2a1 1 0 0 1-1-1v-1h14v1a1 1 0 0 1-1 1z" />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"
+                    />
                   </svg>
                 </div>
               </div>
-              <input
-                type="text"
-                name="credit-expiry"
-                class="w-full rounded-md border border-gray-200 px-2 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
-                placeholder="MM/YY"
-              />
-              <input
-                type="text"
-                name="credit-cvc"
-                class="w-1/6 flex-shrink-0 rounded-md border border-gray-200 px-2 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
-                placeholder="CVC"
-              />
-            </div>
-            <label
-              for="billing-address"
-              class="mt-4 mb-2 block text-sm font-medium"
-            >
-              Billing Address
-            </label>
-            <div class="flex flex-col sm:flex-row">
-              <div class="relative flex-shrink-0 sm:w-7/12">
+              <p className="text-xs text-red-700">{errors.email?.message}</p>
+              <label
+                for="card-holder"
+                class="mt-4 mb-2 block text-sm font-medium"
+              >
+                Full Name
+              </label>
+              <div class="relative">
                 <input
+                  {...register("FullName", {
+                    required: "Full name must be a minimum of 8 characters",
+                    minLength: {
+                      value: 8,
+                    },
+                  })}
                   type="text"
-                  id="billing-address"
-                  name="billing-address"
-                  class="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
-                  placeholder="Street Address"
+                  id="card-holder"
+                  class="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm uppercase shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+                  placeholder="Your full name here"
                 />
                 <div class="pointer-events-none absolute inset-y-0 left-0 inline-flex items-center px-3">
-                  <img
-                    class="h-4 w-4 object-contain"
-                    src="https://flagpack.xyz/_nuxt/4c829b6c0131de7162790d2f897a90fd.svg"
-                    alt=""
-                  />
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-4 w-4 text-gray-400"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm1.294 6.336a6.721 6.721 0 01-3.17.789 6.721 6.721 0 01-3.168-.789 3.376 3.376 0 016.338 0z"
+                    />
+                  </svg>
                 </div>
               </div>
-              <select
-                type="text"
-                name="billing-state"
-                class="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
-              >
-                <option value="State">State</option>
-              </select>
-              <input
-                type="text"
-                name="billing-zip"
-                class="flex-shrink-0 rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none sm:w-1/6 focus:z-10 focus:border-blue-500 focus:ring-blue-500"
-                placeholder="ZIP"
-              />
-            </div>
+              <p className="text-xs text-red-700">{errors.FullName?.message}</p>
 
-            {/* <!-- Total --> */}
-            <div class="mt-6 border-t border-b py-2">
-              <div class="flex items-center justify-between">
-                <p class="text-sm font-medium text-gray-900">Subtotal</p>
-                <p class="font-semibold text-gray-900">$399.00</p>
+              <label for="card-no" class="mt-4 mb-2 block text-sm font-medium">
+                Phone Number
+              </label>
+              <div class="flex">
+                <div class="relative w-7/12 flex-shrink-0">
+                  <input
+                    {...register("PhoneNumber", {
+                      required: "Must be a minimum of 10 digits",
+
+                      minLength: {
+                        value: /^[0-9]{10}$/,
+                      },
+                    })}
+                    type="text"
+                    id="card-no"
+                    class="w-full rounded-md border border-gray-200 px-2 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+                    placeholder="xxxx-xxx-xxx"
+                  />
+                  <div class="pointer-events-none absolute inset-y-0 left-0 inline-flex items-center px-3">
+                    <svg
+                      class="h-4 w-4 text-gray-400"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      viewBox="0 0 16 16"
+                    >
+                      <path d="M11 5.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1z" />
+                      <path d="M2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H2zm13 2v5H1V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zm-1 9H2a1 1 0 0 1-1-1v-1h14v1a1 1 0 0 1-1 1z" />
+                    </svg>
+                  </div>
+                </div>
               </div>
-              <div class="flex items-center justify-between">
-                <p class="text-sm font-medium text-gray-900">Shipping</p>
-                <p class="font-semibold text-gray-900">$8.00</p>
+              <p className="text-xs text-red-700">
+                {errors.PhoneNumber?.message}
+              </p>
+              <label
+                for="billing-address"
+                class="mt-4 mb-2 block text-sm font-medium"
+              >
+                Shipping Address
+              </label>
+              <div class="flex flex-col sm:flex-row">
+                <div class="relative flex-shrink-0 sm:w-7/12">
+                  <input
+                    {...register("ShippingAddress", {
+                      required: "Shipping address is required",
+
+                      minLength: {
+                        value: /^[0-9]{10}$/,
+                      },
+                    })}
+                    type="text"
+                    id="billing-address"
+                    class="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+                    placeholder="Exact Delivery Address"
+                  />
+                  <div class="pointer-events-none absolute inset-y-0 left-0 inline-flex items-center px-3">
+                    <span class="fi fi-ke fis"></span>
+                  </div>
+                </div>
+                <select
+                  {...register("county", {
+                    required: "County is required",
+
+                    minLength: {
+                      value: 4,
+                      message: "Must be Selected",
+                    },
+                  })}
+                  type="text"
+                  name="billing-state"
+                  class="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+                >
+                  {Kenya_counties.map((county) => (
+                    <option key={county} value={county}>
+                      {county}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <p className="text-xs text-red-700">
+                {errors.ShippingAddress?.message}
+              </p>
+              {/* <!-- Total --> */}
+              <div class="mt-6 border-t border-b py-2">
+                <div class="flex items-center justify-between">
+                  <p class="text-sm font-medium text-gray-900">Subtotal</p>
+                  <p class="font-semibold text-gray-900">$399.00</p>
+                </div>
+                <div class="flex items-center justify-between">
+                  <p class="text-sm font-medium text-gray-900">Shipping</p>
+                  <p class="font-semibold text-gray-900">$8.00</p>
+                </div>
+              </div>
+              <div class="mt-6 flex items-center justify-between">
+                <p class="text-sm font-medium text-gray-900">Total</p>
+                <p class="text-2xl font-semibold text-gray-900">$408.00</p>
               </div>
             </div>
-            <div class="mt-6 flex items-center justify-between">
-              <p class="text-sm font-medium text-gray-900">Total</p>
-              <p class="text-2xl font-semibold text-gray-900">$408.00</p>
-            </div>
+            <button
+              type="submit"
+              class="mt-4 mb-8 w-full rounded-md bg-gray-900 px-6 py-3 font-medium text-white"
+            >
+              Place Order
+            </button>
           </div>
-          <button class="mt-4 mb-8 w-full rounded-md bg-gray-900 px-6 py-3 font-medium text-white">
-            Place Order
-          </button>
         </div>
-      </div>
+      </form>
     </div>
   );
 }

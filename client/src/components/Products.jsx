@@ -18,8 +18,8 @@ const Products = () => {
 
   // ---------------- THE GUI
   return (
-    <div className="flex justify-center align-center min-w-full mt-6 ">
-      <div className="flex grow-0 flex-2 ml-6">
+    <div className="flex flex-wrap justify-center align-center min-w-full mt-6 ">
+      <div className="flex grow-0 flex-2 ml-6 mb-4">
         <ProductsSearchFilter setEmptyProductsAlert={setEmptyProductsAlert} />
       </div>
       <div className="flex grow flex-4 flex-col italic ">

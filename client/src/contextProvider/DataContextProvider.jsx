@@ -13,6 +13,55 @@ const DataContextProvider = ({ children }) => {
     useState("All Products");
   const localRoutePrefix = "http://127.0.0.1:5555";
   const hostedRoutePrefix = "https://the-farmart-api-flask.onrender.com";
+  const Kenya_counties = [
+    "Mombasa",
+    "Kwale",
+    "Kilifi",
+    "Tana River",
+    "Lamu",
+    "Taita/Taveta",
+    "Garissa",
+    "Wajir",
+    "Mandera",
+    "Marsabit",
+    "Isiolo",
+    "Meru",
+    "Tharaka-Nithi",
+    "Embu",
+    "Kitui",
+    "Machakos",
+    "Makueni",
+    "Nyandarua",
+    "Nyeri",
+    "Kirinyaga",
+    "Murang'a",
+    "Kiambu",
+    "Turkana",
+    "West Pokot",
+    "Samburu",
+    "Trans Nzoia",
+    "Uasin Gishu",
+    "Elgeyo/Marakwet",
+    "Nandi",
+    "Baringo",
+    "Laikipia",
+    "Nakuru",
+    "Narok",
+    "Kajiado",
+    "Kericho",
+    "Bomet",
+    "Kakamega",
+    "Vihiga",
+    "Bungoma",
+    "Busia",
+    "Siaya",
+    "Kisumu",
+    "Homa Bay",
+    "Migori",
+    "Kisii",
+    "Nyamira",
+    "Nairobi City",
+  ];
 
   // ---------------- FETCHING CATEGORIES
   useEffect(() => {
@@ -52,6 +101,7 @@ const DataContextProvider = ({ children }) => {
     setProducts,
     productsTitleDisplay,
     setProductsTitleDisplay,
+    Kenya_counties,
   };
 
   return <dataContext.Provider value={data}>{children}</dataContext.Provider>;
