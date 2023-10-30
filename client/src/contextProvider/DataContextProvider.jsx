@@ -9,6 +9,8 @@ const DataContextProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
   const [originalProductList, setOriginalProductList] = useState([]);
   const [loadingCategories, setLoadingCategories] = useState(true);
+  const [productsTitleDisplay, setProductsTitleDisplay] =
+    useState("All Products");
   const localRoutePrefix = "http://127.0.0.1:5555";
   const hostedRoutePrefix = "https://the-farmart-api-flask.onrender.com";
 
@@ -48,6 +50,8 @@ const DataContextProvider = ({ children }) => {
     products,
     originalProductList,
     setProducts,
+    productsTitleDisplay,
+    setProductsTitleDisplay,
   };
 
   return <dataContext.Provider value={data}>{children}</dataContext.Provider>;

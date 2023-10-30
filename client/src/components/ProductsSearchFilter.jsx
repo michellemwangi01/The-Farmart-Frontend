@@ -4,11 +4,15 @@ import { useForm } from "react-hook-form";
 
 const ProductsSearchFilter = ({}) => {
   // ---------------- DEFINE STATE VARIABLES
-  const [searchValue, setSearchValue] = useState("");
 
   // ---------------- CREATE HOOK OBJECTS
-  const { categories, setProducts, products, originalProductList } =
-    useContext(dataContext);
+  const {
+    categories,
+    setProducts,
+    products,
+    originalProductList,
+    setProductsTitleDisplay,
+  } = useContext(dataContext);
 
   // ---------------- REACT FORM HOOOK
   const {
@@ -32,25 +36,18 @@ const ProductsSearchFilter = ({}) => {
         product.category.name.toLowerCase().includes(searchValueLowerCase)
       );
     });
-
-    console.log(searchedProducts.length);
     setProducts(searchedProducts);
+    setProductsTitleDisplay(`Products with keyword '${data.searchValue}'`);
   };
 
   // ---------------- FILTER BY CATEGORY HANDLER
-  const filterByProductsHandler = (id = 0) => {
-    if (id == 0) {
-      setProducts(originalProductList);
-    } else {
-      const filteredProductsByCategory = originalProductList.filter(
-        (product) => {
-          return product.category_id === id;
-        }
-      );
+  const filterByProductsHandler = (id = 0, category_name) => {
+    const filteredProductsByCategory = originalProductList.filter((product) => {
+      return product.category_id === id;
+    });
 
-      console.log(filteredProductsByCategory.length);
-      setProducts(filteredProductsByCategory);
-    }
+    setProductsTitleDisplay(`Products in ${category_name} category`);
+    setProducts(filteredProductsByCategory);
   };
 
   // ---------------- DISPLAY CATEGORY BUTTONS
@@ -67,6 +64,12 @@ const ProductsSearchFilter = ({}) => {
     </button>
   ));
 
+  // ---------------- RESET PRODUCTS FILTER
+  const resetProducts = () => {
+    setProducts(originalProductList);
+  };
+
+  // ---------------- THE GUI
   return (
     <div>
       <form
@@ -137,6 +140,7 @@ const ProductsSearchFilter = ({}) => {
           <button
             type="button"
             class="py-2.5 px-5 mr-2 mb-2 text-base  bg-green-600 font-base focus:outline-none border bg-gray-100 hover:bg-green-600 hover:text-white focus:z-10 focus:ring-2 focus:ring-green-600"
+            onClick={resetProducts}
           >
             All Products
           </button>
