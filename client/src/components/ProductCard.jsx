@@ -2,7 +2,6 @@ import React from "react";
 import "../styles/ProductCard.css";
 
 const ProductCard = ({ product }) => {
-  console.log(product);
   return (
     <article>
       <div class="article-wrapper">
@@ -28,7 +27,10 @@ const ProductCard = ({ product }) => {
           </div>
           <p id="cardDetails"></p>
           <div className="flex mt-1 mb-1 justify-start content-center ">
-            <p className="bg-green-600 p-1 rounded-lg text-white "> Category</p>
+            <p className="bg-gray-500 p-1 rounded-lg text-sm text-white ">
+              {" "}
+              Category
+            </p>
             <p className="mx-2 mt-1" id="cardDetails">
               {product.category.name}
             </p>

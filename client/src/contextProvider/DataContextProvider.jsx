@@ -4,15 +4,13 @@ import axios from "axios";
 const dataContext = createContext();
 
 const DataContextProvider = ({ children }) => {
-  const [categories, setCategories] = useState([]); //create your state variable
+  // -------------------- CREATE STATE VARIABLES
+  const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
+  const [originalProductList, setOriginalProductList] = useState([]);
   const [loadingCategories, setLoadingCategories] = useState(true);
-  const [localRoutePrefix, setLocalRoutePrefix] = useState(
-    "http://127.0.0.1:5555"
-  );
-  const [hostedRoutePrefix, setHostedRoutePrefix] = useState(
-    "https://the-farmart-api-flask.onrender.com"
-  );
+  const localRoutePrefix = "http://127.0.0.1:5555";
+  const hostedRoutePrefix = "https://the-farmart-api-flask.onrender.com";
 
   // ---------------- FETCHING CATEGORIES
   useEffect(() => {
@@ -34,6 +32,7 @@ const DataContextProvider = ({ children }) => {
       .get(`${localRoutePrefix}/products/products`)
       .then((res) => {
         setProducts(res.data);
+        setOriginalProductList(res.data);
       })
       .catch((error) => {
         console.error("Error fetching categories:", error);
@@ -47,8 +46,10 @@ const DataContextProvider = ({ children }) => {
     hostedRoutePrefix,
     localRoutePrefix,
     products,
+    originalProductList,
     setProducts,
   };
+
   return <dataContext.Provider value={data}>{children}</dataContext.Provider>;
 };
 
