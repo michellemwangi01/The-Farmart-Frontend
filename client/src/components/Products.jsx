@@ -1,15 +1,18 @@
 import React, { useContext } from "react";
 import { dataContext } from "../contextProvider/DataContextProvider";
+import "../styles/ProductCard.css";
+import ProductCard from "./ProductCard";
 
 const Products = () => {
-  const { groupMembers, setGroupMembers } = useContext(dataContext);
-  console.log(groupMembers);
+  const { products } = useContext(dataContext);
+  console.log(products);
+
+  const productsList = products.map((product) => {
+    return <ProductCard key={product.id} product={product} />;
+  });
   return (
     <div>
-      <button onClick={() => setGroupMembers(["Donell", "Shadrack", "Enock"])}>
-        Update
-      </button>
-      {groupMembers}
+      <section class="articles">{productsList}</section>
     </div>
   );
 };

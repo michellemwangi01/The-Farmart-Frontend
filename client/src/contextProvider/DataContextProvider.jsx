@@ -5,6 +5,7 @@ const dataContext = createContext();
 
 const DataContextProvider = ({ children }) => {
   const [categories, setCategories] = useState([]); //create your state variable
+  const [products, setProducts] = useState([]);
   const [loadingCategories, setLoadingCategories] = useState(true);
   const [localRoutePrefix, setLocalRoutePrefix] = useState(
     "http://127.0.0.1:5555"
@@ -13,6 +14,7 @@ const DataContextProvider = ({ children }) => {
     "https://the-farmart-api-flask.onrender.com"
   );
 
+  // ---------------- FETCHING CATEGORIES
   useEffect(() => {
     axios
       .get(`${hostedRoutePrefix}/categories/categories`)
@@ -26,11 +28,26 @@ const DataContextProvider = ({ children }) => {
       });
   }, []);
 
+  // ---------------- FETCHING PRODUCTS
+  useEffect(() => {
+    axios
+      .get(`${localRoutePrefix}/products/products`)
+      .then((res) => {
+        setProducts(res.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching categories:", error);
+      });
+  }, []);
+
+  // ---------------- POPULATE THE DATA CONTEXT
   const data = {
-    categories, //add it to the list of data items to be passed to all components
+    categories,
     setCategories,
     hostedRoutePrefix,
     localRoutePrefix,
+    products,
+    setProducts,
   };
   return <dataContext.Provider value={data}>{children}</dataContext.Provider>;
 };
