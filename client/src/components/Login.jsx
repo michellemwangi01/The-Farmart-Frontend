@@ -34,7 +34,7 @@ const Login = () => {
               </h1>
               <h1 className="mt-8 text-white text-xl mg-auto text-center font-serif italic">
                 Not yet a farmart user?{" "}
-                <span className="text-green-400">Register now.</span>
+                <span className="text-green-400">Signup now.</span>
               </h1>
             </div>
             <div class="w-full md:w-1/2 bg-white py-10 px-5 md:px-10 bg-white-200 ">

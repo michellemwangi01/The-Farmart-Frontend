@@ -39,7 +39,7 @@ const Signup = () => {
             </div>
             <div class="w-full md:w-1/2 bg-white py-10 px-5 md:px-10 bg-white-200 ">
               <div class="text-center mb-10">
-                <h1 class="font-bold text-3xl text-gray-900">REGISTER</h1>
+                <h1 class="font-bold text-3xl text-gray-900">SIGN UP</h1>
                 <p>Enter your information to register</p>
               </div>
               <div>
@@ -112,7 +112,7 @@ const Signup = () => {
                 <div class="flex -mx-3">
                   <div class="w-full px-3 mb-5">
                     <button class="block w-full max-w-xs mx-auto bg-green-500 hover:bg-green-700 focus:bg-indigo-700 text-white rounded-lg px-3 py-3 font-semibold">
-                      REGISTER NOW
+                      SIGN UP NOW
                     </button>
                   </div>
                 </div>
@@ -126,10 +126,3 @@ const Signup = () => {
 };
 
 export default Signup;
-
-{
-  /* <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.4.2/zxcvbn.js"></script>
-
-<style>@import url('https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/5.3.45/css/materialdesignicons.min.css')</style> */
-}
