@@ -1,7 +1,14 @@
 import React, { useContext, useState, useEffect } from "react";
 import { NavLink, Outlet } from "react-router-dom";
+import { dataContext } from "../contextProvider/DataContextProvider";
 
 const NavBar = () => {
+  const handleLogout = () => {
+    console.log(currentUser);
+  };
+
+  // -------------------------------------------- IMPORT CONTEXT DATA --------------------------------------------
+  const { currentUser } = useContext(dataContext);
   return (
     <div>
       <nav
@@ -27,6 +34,7 @@ const NavBar = () => {
               VENDOR
             </NavLink>
           </li>
+          <button onClick={handleLogout}>Logout</button>
         </ul>
       </nav>
       <main>

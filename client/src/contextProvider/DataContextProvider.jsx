@@ -102,7 +102,6 @@ const DataContextProvider = ({ children }) => {
         console.error("Error fetching cart items:", error);
       });
   }, []);
-  console.log(currentUserCartItems);
   // ---------------- POPULATE THE DATA CONTEXT
   const data = {
     categories,

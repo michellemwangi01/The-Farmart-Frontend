@@ -136,7 +136,7 @@ const ProductsSearchFilter = ({}) => {
       </form>
       <p className="text-xs text-red-700">{errors.searchValue?.message}</p>
       <div>
-        <div className="flex flex-col flex-wrap">
+        <div className="flex flex-wrap xl:flex-col justify-center">
           <button
             type="button"
             class="py-2.5 px-5 mr-2 mb-2 text-base  bg-green-600 font-base focus:outline-none border bg-gray-100 hover:bg-green-600 hover:text-white focus:z-10 focus:ring-2 focus:ring-green-600"
