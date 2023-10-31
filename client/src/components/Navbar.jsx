@@ -5,8 +5,8 @@ const NavBar = () => {
   return (
     <div>
       <nav
-        className="navBarComponent"
-        style={{ display: "flex", margin: "auto" }}
+        className="navBarComponent text-lg font-bold"
+        style={{ display: "flex", margin: "auto", color: "white" ,font: "bold"}}
       >
         <ul
           id="navLinksContainer"
