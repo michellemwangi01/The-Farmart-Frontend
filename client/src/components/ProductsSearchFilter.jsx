@@ -56,7 +56,7 @@ const ProductsSearchFilter = ({}) => {
       key={category.id}
       onClick={() => filterByProductsHandler(category.id, category.name)}
       type="button"
-      className="py-2.5 px-5 mr-2 mb-2 text-base  font-base focus:outline-none border bg-gray-100 hover:bg-green-600 hover:text-white focus:z-10 focus:ring-2 focus:ring-green-600 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-green-700
+      className="py-2.5 px-5 mr-2 mb-2 text-base font-base focus:outline-none border bg-gray-300 text-black hover:bg-green-600 hover:text-white focus:z-10 focus:ring-2 focus:ring-green-600 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-green-700
       light:text-gray-400 dark:border-green-700 dark:hover:text-white
       dark:hover:bg-green-700"
     >
@@ -74,7 +74,7 @@ const ProductsSearchFilter = ({}) => {
     <div>
       <form
         onSubmit={handleSubmit(submitSearchInput)}
-        class="flex items-center lg:mb-4 lg:mt-8"
+        class="flex items-center lg:mb-2 lg:mt-8"
       >
         <label for="simple-search" class="sr-only">
           Search

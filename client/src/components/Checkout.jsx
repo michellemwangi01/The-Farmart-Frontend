@@ -218,7 +218,7 @@ function Checkout() {
                 >
                   2
                 </a>
-                <span class="font-semibold text-gray-900">Shipping</span>
+                <span class="font-semibold text-gray-900">Order</span>
               </li>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
