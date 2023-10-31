@@ -74,7 +74,7 @@ const ProductsSearchFilter = ({}) => {
     <div>
       <form
         onSubmit={handleSubmit(submitSearchInput)}
-        class="flex items-center"
+        class="flex items-center lg:mb-4 lg:mt-8"
       >
         <label for="simple-search" class="sr-only">
           Search

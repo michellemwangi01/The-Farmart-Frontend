@@ -7,6 +7,7 @@ const DataContextProvider = ({ children }) => {
   // -------------------- CREATE STATE VARIABLES
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
+  const [currentUserCartItems, setCurrentUserCartItems] = useState([]);
   const [originalProductList, setOriginalProductList] = useState([]);
   const [loadingCategories, setLoadingCategories] = useState(true);
   const [productsTitleDisplay, setProductsTitleDisplay] =
@@ -90,6 +91,18 @@ const DataContextProvider = ({ children }) => {
       });
   }, []);
 
+  // ---------------- FETCHING CARTITEMS
+  useEffect(() => {
+    axios
+      .get(`${localRoutePrefix}/cartitems/cart_items/39`)
+      .then((res) => {
+        setCurrentUserCartItems(res.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching cart items:", error);
+      });
+  }, []);
+  console.log(currentUserCartItems);
   // ---------------- POPULATE THE DATA CONTEXT
   const data = {
     categories,
@@ -102,6 +115,8 @@ const DataContextProvider = ({ children }) => {
     productsTitleDisplay,
     setProductsTitleDisplay,
     Kenya_counties,
+    currentUserCartItems,
+    setCurrentUserCartItems,
   };
 
   return <dataContext.Provider value={data}>{children}</dataContext.Provider>;
