@@ -159,21 +159,13 @@ function Checkout() {
   return (
     <div>
       <div>
-        {/* Your existing code here... */}
-        {/* <button onClick={openPopup}>Place Order</button> */}
-
-        {/* Add the OrderPopup component */}
         <Payment
-          // setPhoneNumber={setPhoneNumber}
-          // orderTotalAmount={orderTotalAmount}
           isOpen={isPopupOpen}
           onClose={closePopup}
           transactionID={transactionID}
           setPhoneNumber={setPhoneNumber}
           phoneNumber={phoneNumber}
           orderTotalAmount={orderTotalAmount}
-          // onPlaceOrder={pay}
-          // phoneNumber={phoneNumber}
         />
       </div>
       <div class="flex flex-col items-center border-b bg-white py-4 sm:flex-row sm:px-10 lg:px-20 xl:px-32">
@@ -327,7 +319,7 @@ function Checkout() {
               </label>
             </div>
           </div>
-          <div class="mt-10 bg-gray-50 px-4 pt-8 lg:mt-28">
+          <div class="mt-10 bg-gray-50 px-4 pt-8 lg:mt-18">
             <p class="text-xl font-medium">Payment Details</p>
             <p class="text-gray-400">
               Complete your order by providing your payment details.
@@ -524,7 +516,7 @@ function Checkout() {
             </div>
             <button
               type="submit"
-              class="mt-4 mb-8 w-full rounded-md bg-gray-900 px-6 py-3 font-medium text-white"
+              class="mt-4 bg-blue-600  mb-8 w-full rounded-md bg-gray-900 px-6 py-3 font-medium text-white"
             >
               Place Order
             </button>
