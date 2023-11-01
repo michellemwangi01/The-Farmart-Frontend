@@ -17,9 +17,17 @@ const Login = () => {
 
   // -------------------------------------------- CREATE STATE & CONTEXT VARIABLES --------------------------------------------
   const [errorMessages, setErrorMessages] = useState("");
-  const { hostedRoutePrefix, localRoutePrefix } = useContext(dataContext);
+  const {
+    hostedRoutePrefix,
+    localRoutePrefix,
+    setCurrentUser,
+    currentUser,
+    setCurrentUserName,
+    currentUserName,
+    jwToken,
+    setJWToken,
+  } = useContext(dataContext);
   const navigate = useNavigate();
-
   // -------------------------------------------- USE FORM HOOK  --------------------------------------------
   const { register, reset, handleSubmit } = useForm();
 
@@ -29,16 +37,21 @@ const Login = () => {
       .post(`${localRoutePrefix}/authorization/login`, data)
       .then((res) => {
         console.log(res.data);
+        localStorage.setItem("jwToken", res.data.access_token);
+        setJWToken(res.data.access_token);
+        setCurrentUser(res.data.user_id);
+        setCurrentUserName(res.data.firstname);
         navigate("/products");
+        console.log("CURRENT USER ID", res.data.user_id);
+        console.log("CURRENT USER NAME", res.data.firstname);
       })
       .catch((error) => {
-        console.log(error.response.data);
+        console.log(error);
         setErrorMessages(error.response.data.message);
       });
     reset();
     setErrorMessages("");
   };
-
   return (
     <div
       style={{

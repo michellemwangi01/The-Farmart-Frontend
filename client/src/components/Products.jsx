@@ -7,7 +7,9 @@ import ProductsSearchFilter from "./ProductsSearchFilter";
 const Products = () => {
   // -------------------------------------------- DEFINE STATE  & CONTEXT VARIABLES --------------------------------------------
 
-  const { products, productsTitleDisplay } = useContext(dataContext);
+  const { products, productsTitleDisplay, currentUser, currentUserName } =
+    useContext(dataContext);
+
   const [emptyProductsAlert, setEmptyProductsAlert] = useState(
     "Sorry, There are no products for this category at the moment."
   );
@@ -17,7 +19,6 @@ const Products = () => {
   const productsList = products.map((product) => {
     return <ProductCard key={product.id} product={product} />;
   });
-
   // -------------------------------------------- THE INTERFACE --------------------------------------------
 
   return (

@@ -16,6 +16,7 @@ function Checkout() {
   const [orderTotalAmount, setOrderTotalAmount] = useState(0);
 
   // ------------------- CALL AND USE DATA CONTEXT
+
   const {
     hostedRoutePrefix,
     localRoutePrefix,
@@ -23,6 +24,7 @@ function Checkout() {
     currentUserCartItems,
     setCurrentUserCartItems,
     Kenya_counties,
+    currentUser,
   } = useContext(dataContext);
   const {
     register,
@@ -31,6 +33,7 @@ function Checkout() {
   } = useForm();
 
   // -------------------TOAST NOIFICATIONS
+
   const orderSuccessfullyPlaced = (message, type) => {
     toast(message, { autoClose: 3000, type });
   };
@@ -39,6 +42,7 @@ function Checkout() {
     toast(message, { autoClose: 3000, type });
 
   // ------------------- HANDLE REMOVE FROM ORDER TEMPLATE
+
   const deleteFromOrder = (id) => {
     const updatedCartItems = currentUserCartItems.filter(
       (cartItem) => cartItem.id != id
@@ -58,6 +62,7 @@ function Checkout() {
   };
 
   // ------------------- CALCULATE TOTAL ORDER AMOUNT
+
   useEffect(() => {
     const totalAmount = currentUserCartItems.reduce(
       (total, cartItem) => total + cartItem.product.price,
@@ -67,6 +72,7 @@ function Checkout() {
   }, [currentUserCartItems]);
 
   // ------------------- ORDER ITEMS SUMMARY TEMPLATE
+
   const cartItemsList = currentUserCartItems.map((cartItem) => (
     <div class="flex flex-col rounded-lg bg-gray-100 sm:flex-row">
       <img
@@ -95,8 +101,10 @@ function Checkout() {
       </div>
     </div>
   ));
+  console.log(currentUserCartItems);
 
   // -------------------GENERATE RANDOM TRANSACTION ACCOUNT
+
   function generateRandomString(length) {
     const characters =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -115,6 +123,7 @@ function Checkout() {
   }
 
   // ------------------- HANDLE ORDER SUBMIT
+
   const handleSubmitOrderDetails = (data) => {
     setPopupOpen(true);
     setPhoneNumber(data.phone_number);
@@ -127,7 +136,7 @@ function Checkout() {
     const orderData = {
       ...data,
       payment_uid: transactionID,
-      user_id: 10,
+      user_id: currentUser,
       product_id: 5,
       vendor_id: 6,
       quantity: 4,

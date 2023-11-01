@@ -7,7 +7,11 @@ const DataContextProvider = ({ children }) => {
   // -------------------- CREATE STATE VARIABLES
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
+  const [jwToken, setJWToken] = useState("");
+  const [currentUser, setCurrentUser] = useState(0);
+  const [currentUserName, setCurrentUserName] = useState("");
   const [currentUserCartItems, setCurrentUserCartItems] = useState([]);
+  const [currentUserOrderHistory, setCurrentUserOrderHistory] = useState([]);
   const [originalProductList, setOriginalProductList] = useState([]);
   const [loadingCategories, setLoadingCategories] = useState(true);
   const [productsTitleDisplay, setProductsTitleDisplay] =
@@ -64,11 +68,13 @@ const DataContextProvider = ({ children }) => {
     "Nairobi City",
   ];
 
-  // ---------------- FETCHING CATEGORIES
+  // ---------------- FETCHING ALL CATEGORIES
+
   useEffect(() => {
     axios
       .get(`${hostedRoutePrefix}/categories/categories`)
       .then((res) => {
+        console.log("CATEGORIES", res.data);
         setCategories(res.data);
         setLoadingCategories(false);
       })
@@ -78,7 +84,8 @@ const DataContextProvider = ({ children }) => {
       });
   }, []);
 
-  // ---------------- FETCHING PRODUCTS
+  // ---------------- FETCHING ALL PRODUCTS
+
   useEffect(() => {
     axios
       .get(`${localRoutePrefix}/products/products`)
@@ -91,18 +98,62 @@ const DataContextProvider = ({ children }) => {
       });
   }, []);
 
-  // ---------------- FETCHING CARTITEMS
+  // ---------------- FETCHING USER CARTITEMS
+
   useEffect(() => {
     axios
-      .get(`${localRoutePrefix}/cartitems/cart_items/39`)
+      .get(`${localRoutePrefix}/cartitems/user_cart_items`, {
+        headers: {
+          Authorization: `Bearer ${jwToken}`,
+        },
+      })
       .then((res) => {
         setCurrentUserCartItems(res.data);
+        console.log("CART ITEMS", res.data);
       })
       .catch((error) => {
         console.error("Error fetching cart items:", error);
       });
-  }, []);
+  }, [currentUser]);
+
+  // ---------------- FETCHING USER ORDER HISTORY
+
+  useEffect(() => {
+    axios
+      .get(`${localRoutePrefix}/orders/user_orders`, {
+        headers: {
+          Authorization: `Bearer ${jwToken}`,
+        },
+      })
+      .then((res) => {
+        setCurrentUserOrderHistory(res.data);
+        console.log("ORDER HISTORY", res.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching order history:", error);
+      });
+  }, [currentUser]);
+
+  // ---------------- FETCHING USER VENDOR PRODUCT
+
+  useEffect(() => {
+    axios
+      .get(`${localRoutePrefix}/products/vendor_products`, {
+        headers: {
+          Authorization: `Bearer ${jwToken}`,
+        },
+      })
+      .then((res) => {
+        setCurrentUserOrderHistory(res.data);
+        console.log("VENDOR PRODUCTS", res.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching vendor products:", error);
+      });
+  }, [currentUser]);
+
   // ---------------- POPULATE THE DATA CONTEXT
+
   const data = {
     categories,
     setCategories,
@@ -116,6 +167,12 @@ const DataContextProvider = ({ children }) => {
     Kenya_counties,
     currentUserCartItems,
     setCurrentUserCartItems,
+    currentUser,
+    setCurrentUser,
+    currentUserName,
+    setCurrentUserName,
+    jwToken,
+    setJWToken,
   };
 
   return <dataContext.Provider value={data}>{children}</dataContext.Provider>;
