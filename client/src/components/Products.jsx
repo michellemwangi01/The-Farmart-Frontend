@@ -4,20 +4,52 @@ import "../styles/ProductCard.css";
 import ProductCard from "./ProductCard";
 import ProductsSearchFilter from "./ProductsSearchFilter";
 import ProductDetails from "./ProductDetails";
+import axios from "axios";
 
 const Products = () => {
   // -------------------------------------------- DEFINE STATE  & CONTEXT VARIABLES --------------------------------------------
   const [isPopupVisible, setIsPopupVisible] = useState(false);
-  const { products, productsTitleDisplay, currentUser, currentUserName } =
-    useContext(dataContext);
+  const [selectedProductID, setSelectedProductID] = useState(0);
+  const [currentProductDetails, setCurrentProductDetails] = useState({});
+
+  const {
+    products,
+    productsTitleDisplay,
+    currentUser,
+    currentUserName,
+    localRoutePrefix,
+    hostedRoutePrefix,
+  } = useContext(dataContext);
 
   const [emptyProductsAlert, setEmptyProductsAlert] = useState(
     "Sorry, There are no products for this category at the moment."
   );
 
-  const togglePopup = () => {
-    setIsPopupVisible(!isPopupVisible);
+  // -------------------------------------------- FECTH SELECTED PRODUCT DETAILS  --------------------------------------------
+
+  const togglePopup = (id) => {
+    setSelectedProductID(id);
   };
+
+  // -------------------------------------------- HANDLE PRODUCT DETAILS DISPLAY --------------------------------------------
+
+  useEffect(() => {
+    if (selectedProductID) {
+      axios
+        .get(`${localRoutePrefix}/products/products/${selectedProductID}`)
+        .then((res) => {
+          setCurrentProductDetails(res.data);
+          setIsPopupVisible(true);
+          console.log("SELECTED PRODUCT DETAILS", res.data);
+        })
+        .catch((error) => {
+          console.error(error);
+          setIsPopupVisible(false);
+        });
+    } else {
+      setIsPopupVisible(false);
+    }
+  }, [selectedProductID]);
 
   useEffect(() => {
     setIsPopupVisible(false);
@@ -36,12 +68,17 @@ const Products = () => {
       />
     );
   });
-  console.log(isPopupVisible);
   // -------------------------------------------- THE INTERFACE --------------------------------------------
 
   return (
     <div className="flex flex-wrap sm:flex-no-wrap justify-center align-center min-w-full mt-6 ">
-      {isPopupVisible && <ProductDetails togglePopup={togglePopup} />}
+      {isPopupVisible && (
+        <ProductDetails
+          currentProductDetails={currentProductDetails}
+          selectedProductID={selectedProductID}
+          togglePopup={togglePopup}
+        />
+      )}
 
       <div className="flex grow-1 sm:flex-grow-0 flex-2 ml-6 mb-4 ">
         <ProductsSearchFilter setEmptyProductsAlert={setEmptyProductsAlert} />

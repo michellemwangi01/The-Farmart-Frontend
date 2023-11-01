@@ -67,7 +67,9 @@ const DataContextProvider = ({ children }) => {
     "Nyamira",
     "Nairobi City",
   ];
-
+  function capitalizeFirstLetter(sentence) {
+    return sentence.charAt(0).toUpperCase() + sentence.slice(1);
+  }
   // ---------------- FETCHING ALL CATEGORIES
 
   useEffect(() => {
@@ -134,7 +136,7 @@ const DataContextProvider = ({ children }) => {
       });
   }, [currentUser]);
 
-  // ---------------- FETCHING USER VENDOR PRODUCT
+  // ---------------- FETCHING  VENDOR PRODUCT
 
   useEffect(() => {
     axios
@@ -173,6 +175,7 @@ const DataContextProvider = ({ children }) => {
     setCurrentUserName,
     jwToken,
     setJWToken,
+    capitalizeFirstLetter,
   };
 
   return <dataContext.Provider value={data}>{children}</dataContext.Provider>;

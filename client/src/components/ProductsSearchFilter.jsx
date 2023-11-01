@@ -56,9 +56,13 @@ const ProductsSearchFilter = ({}) => {
       key={category.id}
       onClick={() => filterByProductsHandler(category.id, category.name)}
       type="button"
-      className="py-2.5 px-5 mr-2 mb-2 text-base font-base focus:outline-none border bg-gray-100 text-black hover:bg-green-600 hover:text-white focus:z-10 focus:ring-2 focus:ring-green-500 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-green-700 dark:focus:ring-2 
-      light:text-gray-400 dark:border-green-700 dark:hover:text-white 
-      dark:hover:bg-green-700"
+      className="
+  py-2.5 px-5 mr-2 mb-2 text-base font-base focus:outline-none 
+  border bg-gray-800 text-white hover:bg-green-700 hover:text-white 
+  focus:z-10 focus:ring-2 focus:ring-green-700 focus:ring-4 focus:ring-gray-200 
+  dark:focus:ring-green-700 dark:focus:ring-2 
+  light:text-gray-400 dark:border-green-700 dark:hover:text-white 
+  dark:hover:bg-green-700 focus:bg-white focus:text-green-800"
     >
       {category.name}
     </button>
@@ -114,7 +118,7 @@ const ProductsSearchFilter = ({}) => {
 
         <button
           type="submit"
-          class="p-2.5 mt-0 mb-0 ml-2 text-sm font-medium text-white light:bg-green-700 rounded-lg border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-600 dark:focus:ring-green-800"
+          class="p-2.5 mt-0 mb-0 ml-2 text-sm font-medium text-white bg-green-800 rounded-lg border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-600 dark:focus:ring-green-800"
         >
           <svg
             class="w-5 h-5"
@@ -139,7 +143,7 @@ const ProductsSearchFilter = ({}) => {
         <div className="flex flex-wrap xl:flex-col justify-center">
           <button
             type="button"
-            class="py-2.5 px-5 mr-2 mb-2 text-base  bg-green-600 font-base focus:outline-none border bg-gray-100 hover:bg-green-600 hover:text-white focus:z-10 focus:ring-2 focus:ring-green-600"
+            class="py-2.5 px-5 mr-2 mb-2 text-base  bg-green-800 font-base focus:outline-none border bg-gray-100 hover:bg-green-800 hover:text-white focus:z-10 focus:ring-2 focus:ring-green-800"
             onClick={resetProducts}
           >
             All Products

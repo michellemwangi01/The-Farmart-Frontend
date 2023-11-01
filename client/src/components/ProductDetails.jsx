@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { FaRegWindowClose } from "react-icons/fa";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { MdShoppingCartCheckout } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { Rating } from "@material-tailwind/react";
+import { dataContext } from "../contextProvider/DataContextProvider";
 
 import "../styles/ProductDetails.css";
 
-const ProductDetails = ({ togglePopup }) => {
+const ProductDetails = ({ togglePopup, currentProductDetails }) => {
+  console.log(currentProductDetails);
   // -------------------------------------------- STATE VARIABLES  --------------------------------------------
 
   const [show, setShow] = useState(false);
@@ -15,31 +18,30 @@ const ProductDetails = ({ togglePopup }) => {
   const [addToCartBtnText, setAddToCartBtnText] = useState("");
 
   // -------------------------------------------- USE HOOKS  --------------------------------------------
-  const navigate = useNavigate();
-  const addToCart = () => {
-    setIsAddedToCart(true);
-  };
 
+  const navigate = useNavigate();
+  const { capitalizeFirstLetter } = useContext(dataContext);
   // -------------------------------------------- STORING BUTTONS IN VARIABLES  --------------------------------------------
 
   const addToCartHandler = () => {
     setIsAddedToCart(true);
   };
+
   const addToCartBtn = (
     <button
       onClick={addToCartHandler}
       className="
-      focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800
+      focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-800
       text-base
       flex
       items-center
       justify-center
       leading-none
       text-white
-      bg-gray-800
+      bg-blue-900
       w-full
       py-4
-      hover:bg-gray-700
+      hover:bg-blue-700
     "
     >
       <AiOutlineShoppingCart className="mr-2" />
@@ -62,10 +64,10 @@ const ProductDetails = ({ togglePopup }) => {
       justify-center
       leading-none
       text-white
-      bg-gray-800
+      bg-blue-900
       w-full
       py-4
-      hover:bg-gray-700
+      hover:bg-blue-700
     "
     >
       <MdShoppingCartCheckout className="mr-2" />
@@ -77,80 +79,61 @@ const ProductDetails = ({ togglePopup }) => {
 
   return (
     <div>
-      <div className="background-content"></div>
+      <div className="background-content "></div>
       <div className="popup active">
-        <div className="popup-content w-2/3 h-5/6 overflow-scroll">
-          <div className="flex justify-end">
-            <p onClick={togglePopup} className="text-black-500">
+        <div className="popup-content w-2/3 h-5/6 overflow-scroll ">
+          <h1 className="text-center text-2xl font-serif"> Product Details</h1>
+          <div className="flex justify-end items-center  ">
+            <p onClick={togglePopup} className="text-black-500 fixed">
               <FaRegWindowClose />{" "}
             </p>
           </div>
-          <div className="md:flex items-start justify-center py-12 2xl:px-20 md:px-6 px-4">
-            <div className="xl:w-2/6 lg:w-2/5 w-80 md:block hidden">
-              <img
-                className="w-full"
-                alt="img of a girl posing"
-                src="https://i.ibb.co/QMdWfzX/component-image-one.png"
-              />
-              <img
-                className="mt-6 w-full"
-                alt="img of a girl posing"
-                src="https://i.ibb.co/qxkRXSq/component-image-two.png"
-              />
-            </div>
-            <div className="md:hidden">
-              <img
-                className="w-full"
-                alt="img of a girl posing"
-                src="https://i.ibb.co/QMdWfzX/component-image-one.png"
-              />
-              <div className="flex items-center justify-between mt-3 space-x-4 md:space-x-0">
+
+          <div className="md:flex items-start justify-center  py-8 2xl:px-20 md:px-2 px-2 sm:w-full ">
+            <div
+              className="xl:w-3/6 lg:w-2/5 w-80 "
+              style={{ height: "40rem" }}
+            >
+              <div className="w-full h-1/2 overflow-hidden mb-4">
+                {" "}
                 <img
-                  alt="img-tag-one"
-                  className="md:w-48 md:h-48 w-full"
-                  src="https://i.ibb.co/cYDrVGh/Rectangle-245.png"
+                  className="w-full h-full object-cover object-center"
+                  alt="product images"
+                  src={currentProductDetails.category.image}
                 />
+              </div>
+              <div className="w-full h-1/2 overflow-hidden">
+                {" "}
                 <img
-                  alt="img-tag-one"
-                  className="md:w-48 md:h-48 w-full"
-                  src="https://i.ibb.co/f17NXrW/Rectangle-244.png"
-                />
-                <img
-                  alt="img-tag-one"
-                  className="md:w-48 md:h-48 w-full"
-                  src="https://i.ibb.co/cYDrVGh/Rectangle-245.png"
-                />
-                <img
-                  alt="img-tag-one"
-                  className="md:w-48 md:h-48 w-full"
-                  src="https://i.ibb.co/f17NXrW/Rectangle-244.png"
+                  className="w-full h-full object-cover object-center"
+                  alt="product images"
+                  src={currentProductDetails.image}
                 />
               </div>
             </div>
+
             <div className="xl:w-2/5 md:w-1/2 lg:ml-8 md:ml-6 md:mt-0 mt-6">
               <div className="border-b border-gray-200 pb-6">
-                <p className="text-sm leading-none text-gray-600">
-                  Balenciaga Fall Collection
-                </p>
                 <h1
                   className="
 							lg:text-2xl
-							text-xl
+							text-2xl
 							font-semibold
+                            font-serif
 							lg:leading-6
 							leading-7
 							text-gray-800
 							mt-2
 						"
                 >
-                  Balenciaga Signature Sweatshirt
+                  {capitalizeFirstLetter(currentProductDetails.name)}
                 </h1>
               </div>
-              <div className="py-4 border-b border-gray-200 flex items-center justify-between">
-                <p className="text-base leading-4 text-gray-800">Colours</p>
+              <div className="py-4 border-b border-gray-200 flex flex-wrap items-center justify-between">
+                <p className="text-base leading-4 text-gray-800">Category</p>
                 <div className="flex items-center justify-center">
                   <p className="text-sm leading-none text-gray-600">
-                    Smoke Blue with red accents
+                    {currentProductDetails.category.name}
                   </p>
                   <div
                     className="
@@ -183,10 +166,10 @@ const ProductDetails = ({ togglePopup }) => {
                 </div>
               </div>
               <div className="py-4 border-b border-gray-200 flex items-center justify-between">
-                <p className="text-base leading-4 text-gray-800">Size</p>
+                <p className="text-base leading-4 text-gray-800">Rating</p>
                 <div className="flex items-center justify-center">
                   <p className="text-sm leading-none text-gray-600 mr-3">
-                    38.2
+                    <Rating value={4} readonly />;
                   </p>
                   <svg
                     className="cursor-pointer"
@@ -208,27 +191,44 @@ const ProductDetails = ({ togglePopup }) => {
               </div>
               {isAddedToCart ? checkoutBtn : addToCartBtn}
               <div>
-                <p className="xl:pr-48 text-base lg:leading-tight leading-normal text-gray-600 mt-7">
-                  It is a long established fact that a reader will be distracted
-                  by thereadable content of a page when looking at its layout.
-                  The point of usingLorem Ipsum is that it has a more-or-less
-                  normal distribution of letters.
-                </p>
-                <p className="text-base leading-4 mt-7 text-gray-600">
-                  Product Code: 8BN321AF2IF0NYA
+                <div className="mt-7">
+                  <p className="font-bold font-serif"> Product Details</p>
+                  <p className="xl:pr-10 mt-2 text-base lg:leading-tight leading-normal text-gray-600 ">
+                    <span className="text-gray-900"> Description:</span>{" "}
+                    {currentProductDetails.description}
+                  </p>
+                </div>
+
+                <p className="text-base leading-4 mt-4 text-gray-600">
+                  <span className="text-gray-900">Product Code:</span>{" "}
+                  8BN321AF2IF0NYA
                 </p>
                 <p className="text-base leading-4 mt-4 text-gray-600">
-                  Length: 13.2 inches
+                  <span className="text-gray-900">Product availability: </span>{" "}
+                  In stock
                 </p>
                 <p className="text-base leading-4 mt-4 text-gray-600">
-                  Height: 10 inches
+                  <span className="text-gray-900">Location: </span> Available in
+                  and around {currentProductDetails.vendor.county}, Kenya.
                 </p>
-                <p className="text-base leading-4 mt-4 text-gray-600">
-                  Depth: 5.1 inches
-                </p>
+
                 <p className="md:w-96 text-base leading-normal text-gray-600 mt-4">
-                  Composition: 100% calf leather, inside: 100% lamb leather
+                  <span className="text-gray-900"> Bulk order discounts:</span>{" "}
+                  {currentProductDetails.vendor.name}
                 </p>
+                <p className="mt-4 font-bold font-serif"> Vendor Details</p>
+                <p className="text-base leading-4 mt-2 mb-2 text-gray-600">
+                  <span className="text-gray-900">
+                    <span className="text-gray-900"> Sold by: </span>{" "}
+                  </span>{" "}
+                  {currentProductDetails.vendor.business_name}
+                </p>
+                <Link
+                  to="/vendors"
+                  className="text-base leading-4 mt-4 text-blue-600 underline"
+                >
+                  More information about this vendor
+                </Link>
               </div>
               <div>
                 <div className="border-t border-b py-4 mt-7 border-gray-200">
@@ -274,9 +274,9 @@ const ProductDetails = ({ togglePopup }) => {
                     }
                     id="sect"
                   >
-                    You will be responsible for paying for your own shipping
-                    costs for returning your item. Shipping costs are
-                    nonrefundable
+                    We are able to organize for shipping. However, you will be
+                    responsible for paying for your own shipping costs for
+                    returning your item. Shipping costs are also nonrefundable.
                   </div>
                 </div>
               </div>
@@ -325,7 +325,7 @@ const ProductDetails = ({ togglePopup }) => {
                     id="sect"
                   >
                     If you have any questions on how to return your item to us,
-                    contact us.
+                    contact us. Mobile: {currentProductDetails.name}
                   </div>
                 </div>
               </div>
@@ -338,3 +338,33 @@ const ProductDetails = ({ togglePopup }) => {
 };
 
 export default ProductDetails;
+
+//    <div className="md:hidden">
+//      <img
+//        className="w-full"
+//        alt="product images"
+//        src={currentProductDetails.category.image}
+//      />
+//      <div className="flex items-center justify-between mt-3 space-x-4 md:space-x-0">
+//        <img
+//          alt="img-tag-one"
+//          className="md:w-48 md:h-48 w-full"
+//          src={currentProductDetails.category.image}
+//        />
+//        <img
+//          alt="img-tag-one"
+//          className="md:w-48 md:h-48 w-full"
+//          src={currentProductDetails.category.image}
+//        />
+//        <img
+//          alt="img-tag-one"
+//          className="md:w-48 md:h-48 w-full"
+//          src={currentProductDetails.category.image}
+//        />
+//        <img
+//          alt="img-tag-one"
+//          className="md:w-48 md:h-48 w-full"
+//          src="https://i.ibb.co/f17NXrW/Rectangle-244.png"
+//        />
+//      </div>
+//    </div>;

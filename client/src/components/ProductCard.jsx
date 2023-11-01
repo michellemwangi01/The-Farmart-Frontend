@@ -40,7 +40,7 @@ const ProductCard = ({ product, togglePopup }) => {
             </p>
           </div>
 
-          <h6 onClick={togglePopup} class="read-more">
+          <h6 onClick={() => togglePopup(product.id)} class="read-more">
             View details <span class="sr-only">about this is product</span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
