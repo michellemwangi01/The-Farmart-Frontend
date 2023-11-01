@@ -26,6 +26,9 @@ function Checkout() {
     Kenya_counties,
     currentUser,
   } = useContext(dataContext);
+
+  // ------------------- CALL AND USE FORM HOOK
+
   const {
     register,
     handleSubmit,
@@ -38,8 +41,9 @@ function Checkout() {
     toast(message, { autoClose: 3000, type });
   };
 
-  const toastSuccessfulRemoveFromOrder = (message, type) =>
+  const toastSuccessfulRemoveFromOrder = (message, type) => {
     toast(message, { autoClose: 3000, type });
+  };
 
   // ------------------- HANDLE REMOVE FROM ORDER TEMPLATE
 
@@ -101,7 +105,6 @@ function Checkout() {
       </div>
     </div>
   ));
-  console.log(currentUserCartItems);
 
   // -------------------GENERATE RANDOM TRANSACTION ACCOUNT
 
@@ -276,16 +279,15 @@ function Checkout() {
 
             <div class="relative mb-4">
               <input
-                {...register("DoorStepDelivery")}
+                {...register("DeliveryOption")}
                 class="peer hidden"
                 id="radio_1"
                 type="radio"
-                name="DoorStepDelivery"
-                checked
+                name="DeliveryOption"
               />
-              <span class=" peer-checked:border-gray-700 absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-gray-300 bg-white"></span>
+              <span class="peer-checked:border-green-700 absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-green-700 bg-white"></span>
               <label
-                class="peer-checked:border-2 peer-checked:border-gray-700 peer-checked:bg-gray-50 flex cursor-pointer select-none rounded-lg border border-gray-300 p-4"
+                class="peer-checked:border-2 peer-checked:border-green-700 peer-checked:text-green-700 peer-checked:bg-gray-50 flex cursor-pointer select-none rounded-lg border border-green-700 p-4"
                 for="radio_1"
               >
                 <img
@@ -295,7 +297,7 @@ function Checkout() {
                 />
                 <div class="ml-5">
                   <span class="mt-2 font-semibold">Door Step Delivery</span>
-                  <p class="text-slate-500 text-sm leading-6">
+                  <p class="text-slate-500 text-sm leading-6 ">
                     Delivery: 2-4 Days
                   </p>
                 </div>
@@ -303,15 +305,15 @@ function Checkout() {
             </div>
             <div class="relative">
               <input
-                {...register("Pickup")}
+                {...register("DeliveryOption")}
                 class="peer hidden"
                 id="radio_2"
                 type="radio"
-                name="Pickup"
+                name="DeliveryOption"
               />
-              <span class="peer-checked:border-gray-700 absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-gray-300 bg-white"></span>
+              <span class="peer-checked:border-green-700 absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-green-700 bg-white"></span>
               <label
-                class="peer-checked:border-2 peer-checked:border-gray-700 peer-checked:bg-gray-50 flex cursor-pointer select-none rounded-lg border border-gray-300 p-4"
+                class="peer-checked:border-2 peer-checked:border-green-700 peer-checked:text-green-700 peer-checked:bg-gray-50 flex cursor-pointer select-none rounded-lg border border-green-700 p-4"
                 for="radio_2"
               >
                 <img
@@ -348,13 +350,13 @@ function Checkout() {
                   })}
                   type="text"
                   id="email"
-                  class="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+                  class="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-green-500 focus:ring-green-500"
                   placeholder="your.email@gmail.com"
                 />
                 <div class="pointer-events-none absolute inset-y-0 left-0 inline-flex items-center px-3">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    class="h-4 w-4 text-gray-400"
+                    class="h-4 w-4 text-green-700"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -385,13 +387,13 @@ function Checkout() {
                   })}
                   type="text"
                   id="card-holder"
-                  class="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm uppercase shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+                  class="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm uppercase shadow-sm outline-none focus:z-10 focus:border-green-500 focus:ring-green-500"
                   placeholder="Your full name here"
                 />
                 <div class="pointer-events-none absolute inset-y-0 left-0 inline-flex items-center px-3">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    class="h-4 w-4 text-gray-400"
+                    class="h-4 w-4 text-green-700"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -422,12 +424,12 @@ function Checkout() {
                     })}
                     type="text"
                     id="card-no"
-                    class="w-full rounded-md border border-gray-200 px-2 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+                    class="w-full rounded-md border border-gray-200 px-2 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-green-500 focus:ring-green-500"
                     placeholder="xxxx-xxx-xxx"
                   />
                   <div class="pointer-events-none absolute inset-y-0 left-0 inline-flex items-center px-3">
                     <svg
-                      class="h-4 w-4 text-gray-400"
+                      class="h-4 w-4 text-green-700"
                       xmlns="http://www.w3.org/2000/svg"
                       width="16"
                       height="16"
@@ -461,7 +463,7 @@ function Checkout() {
                     })}
                     type="text"
                     id="billing-address"
-                    class="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+                    class="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-green-500 focus:ring-green-500"
                     placeholder="Exact Delivery Address"
                   />
                   <div class="pointer-events-none absolute inset-y-0 left-0 inline-flex items-center px-3">
@@ -477,7 +479,7 @@ function Checkout() {
                     },
                   })}
                   name="county"
-                  className="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+                  className="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-green-500 focus:ring-green-500"
                 >
                   {Kenya_counties.map((county) => (
                     <option key={county} value={county}>
