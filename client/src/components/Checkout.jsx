@@ -6,19 +6,29 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { dataContext } from "../contextProvider/DataContextProvider";
 import { useForm } from "react-hook-form";
+import Payment from "./Payment";
 
 function Checkout() {
   // ------------------- DEFINE STATE VARIABLES
-  const [orderItems, setOrderItems] = useState([]);
-  const [totalAmountDue, setTotalAmountDue] = useState(0);
+  const [isPopupOpen, setPopupOpen] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [paymentConfirmationDetails, setPaymentConfirmationDetails] =
-    useState("");
-  const [transactionInitiated, setTransactionInitiated] = useState(false);
+  const [transactionID, setTransactionID] = useState("");
+  const [orderTotalAmount, setOrderTotalAmount] = useState(0);
 
   // ------------------- CALL AND USE DATA CONTEXT
-  const { hostedRoutePrefix, localRoutePrefix, products, Kenya_counties } =
-    useContext(dataContext);
+
+  const {
+    hostedRoutePrefix,
+    localRoutePrefix,
+    products,
+    currentUserCartItems,
+    setCurrentUserCartItems,
+    Kenya_counties,
+    currentUser,
+  } = useContext(dataContext);
+
+  // ------------------- CALL AND USE FORM HOOK
+
   const {
     register,
     handleSubmit,
@@ -26,49 +36,66 @@ function Checkout() {
   } = useForm();
 
   // -------------------TOAST NOIFICATIONS
-  const toastPaymentSuccessfullyInitiated = (message, type) => {
-    toast(message, type);
+
+  const orderSuccessfullyPlaced = (message, type) => {
+    toast(message, { autoClose: 3000, type });
   };
 
-  const toastEmptyDetails = (message, type) =>
+  const toastSuccessfulRemoveFromOrder = (message, type) => {
     toast(message, { autoClose: 3000, type });
-
-  const toastSuccessfulRemoveFromOrder = (message, type) =>
-    toast(message, { autoClose: 3000, type });
-
-  // ------------------- DUMMY DATA
-  useEffect(() => {
-    const samplecartproducts = products.filter((product) =>
-      product.category.name.toLowerCase().includes("fish")
-    );
-    setOrderItems(samplecartproducts);
-  }, []);
+  };
 
   // ------------------- HANDLE REMOVE FROM ORDER TEMPLATE
+
   const deleteFromOrder = (id) => {
-    const finalOrderItems = orderItems.filter((item) => item.id !== id);
-    toastSuccessfulRemoveFromOrder(
-      "Item successfully removed from order!",
-      "success"
+    const updatedCartItems = currentUserCartItems.filter(
+      (cartItem) => cartItem.id != id
     );
-    setOrderItems(finalOrderItems);
+    setCurrentUserCartItems(updatedCartItems);
+    axios
+      .delete(`${localRoutePrefix}/cartitems/cart_items/${id}`)
+      .then((response) => {
+        toastSuccessfulRemoveFromOrder(
+          "Item successfully removed from order!",
+          "success"
+        );
+      })
+      .catch((error) => {
+        console.error("Error removing item from order", error);
+      });
   };
 
+  // ------------------- CALCULATE TOTAL ORDER AMOUNT
+
+  useEffect(() => {
+    const totalAmount = currentUserCartItems.reduce(
+      (total, cartItem) => total + cartItem.product.price,
+      0
+    );
+    setOrderTotalAmount(totalAmount);
+  }, [currentUserCartItems]);
+
   // ------------------- ORDER ITEMS SUMMARY TEMPLATE
-  const cartItemsList = orderItems.map((cartItem) => (
+
+  const cartItemsList = currentUserCartItems.map((cartItem) => (
     <div class="flex flex-col rounded-lg bg-gray-100 sm:flex-row">
       <img
         class="m-2 h-24 w-28 rounded-md border object-cover object-center"
-        src={`${cartItem.image}`}
+        src={`${cartItem.product.image}`}
         alt=""
       />
       <div class="flex w-full flex-col px-4 py-4">
-        <span class="font-semibold">{cartItem.name}</span>
+        <span class="font-semibold">{cartItem.product.name}</span>
         <span class="float-right text-gray-400">
-          {cartItem.vendor.business_name}
+          {cartItem.product.vendor.business_name}
         </span>
         <p>Quantity: 4 batches</p>
-        <p class="text-lg font-bold">${cartItem.price.toFixed(2)}</p>
+        <p class="text-lg font-bold">
+          KES{" "}
+          {cartItem.product.price.toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+          })}
+        </p>
         <p
           onClick={() => deleteFromOrder(cartItem.id)}
           className="flex items-center justify-end text-red-600 font-light"
@@ -80,6 +107,7 @@ function Checkout() {
   ));
 
   // -------------------GENERATE RANDOM TRANSACTION ACCOUNT
+
   function generateRandomString(length) {
     const characters =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -97,55 +125,61 @@ function Checkout() {
     return prefix + randomString;
   }
 
-  // -------------------DEFINE PAY HANDLER
-  const pay = () => {
-    setTotalAmountDue(1);
-    setPhoneNumber("0700562291");
+  // ------------------- HANDLE ORDER SUBMIT
+
+  const handleSubmitOrderDetails = (data) => {
+    setPopupOpen(true);
+    setPhoneNumber(data.phone_number);
     const prefix = "FAR";
     const transactionID = generateUniqueAccountNumber(prefix, 6);
-    console.log(totalAmountDue, phoneNumber);
-    if (totalAmountDue === 0 || phoneNumber === "") {
-      toastEmptyDetails(
-        "Please fill out all details correctly before initiating payment.",
-        "warning"
-      );
-    } else {
-      console.log(
-        `amount=${totalAmountDue}&msisdn=${phoneNumber}&account_no=${transactionID}`
-      );
-      const url = "https://tinypesa.com/api/v1/express/initialize";
-      fetch(url, {
-        body: `amount=${totalAmountDue}&msisdn=${phoneNumber}&account_no=${transactionID}`,
-        headers: {
-          Apikey: "TnfBPxXIGWe",
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        method: "POST",
+    setTransactionID(transactionID);
+    const delivery_type =
+      data.Pickup === "on" ? "Customer Pickup" : "DoorStepDelivery";
+    console.log(transactionID);
+    const orderData = {
+      ...data,
+      payment_uid: transactionID,
+      user_id: currentUser,
+      product_id: 5,
+      vendor_id: 6,
+      quantity: 4,
+      status: "Order Placed",
+      delivery_type: delivery_type,
+      amount: orderTotalAmount,
+    };
+    console.log(orderData);
+    axios
+      .post("http://127.0.0.1:5555/orders/orders", orderData)
+      .then((res) => {
+        console.log("response", res.data);
+        orderSuccessfullyPlaced(
+          "Your order is sucessfully placed. Complete payment to confirm your order",
+          "success"
+        );
       })
-        .then((response) => response.json())
-        .then((responseData) => {
-          if (responseData.ok) {
-            console.log("SUCCESSFUL");
-          }
-          console.log("Pay request sent");
-          toastPaymentSuccessfullyInitiated(
-            "Process initiated, please check your phone to complete payment.",
-            "success"
-          );
-          setTransactionInitiated(true);
-        });
-    }
+      .catch((error) => {
+        console.error("Post Error", error);
+      });
   };
 
-  //
-  const handleSubmitOrderDetails = (data) => {
-    console.log(data);
+  // --------------------- OPEN AND CLOSE PAYMENT POPUP
+
+  const closePopup = () => {
+    setPopupOpen(false);
   };
 
   return (
     <div>
-      {/* <button onClick={pay}>Click to Pay</button>
-      <p>Payment confirmation details: {paymentConfirmationDetails}</p> */}
+      <div>
+        <Payment
+          isOpen={isPopupOpen}
+          onClose={closePopup}
+          transactionID={transactionID}
+          setPhoneNumber={setPhoneNumber}
+          phoneNumber={phoneNumber}
+          orderTotalAmount={orderTotalAmount}
+        />
+      </div>
       <div class="flex flex-col items-center border-b bg-white py-4 sm:flex-row sm:px-10 lg:px-20 xl:px-32">
         <a href="#" class="text-2xl font-bold text-gray-800">
           Farmart
@@ -196,7 +230,7 @@ function Checkout() {
                 >
                   2
                 </a>
-                <span class="font-semibold text-gray-900">Shipping</span>
+                <span class="font-semibold text-gray-900">Order</span>
               </li>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -243,18 +277,17 @@ function Checkout() {
 
             <p class="mt-8 text-lg font-medium">Shipping Methods</p>
 
-            <div class="relative">
+            <div class="relative mb-4">
               <input
-                {...register("DoorStepDelivery")}
+                {...register("DeliveryOption")}
                 class="peer hidden"
                 id="radio_1"
                 type="radio"
-                name="radio"
-                checked
+                name="DeliveryOption"
               />
-              <span class="peer-checked:border-gray-700 absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-gray-300 bg-white"></span>
+              <span class="peer-checked:border-green-700 absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-green-700 bg-white"></span>
               <label
-                class="peer-checked:border-2 peer-checked:border-gray-700 peer-checked:bg-gray-50 flex cursor-pointer select-none rounded-lg border border-gray-300 p-4"
+                class="peer-checked:border-2 peer-checked:border-green-700 peer-checked:text-green-700 peer-checked:bg-gray-50 flex cursor-pointer select-none rounded-lg border border-green-700 p-4"
                 for="radio_1"
               >
                 <img
@@ -264,7 +297,7 @@ function Checkout() {
                 />
                 <div class="ml-5">
                   <span class="mt-2 font-semibold">Door Step Delivery</span>
-                  <p class="text-slate-500 text-sm leading-6">
+                  <p class="text-slate-500 text-sm leading-6 ">
                     Delivery: 2-4 Days
                   </p>
                 </div>
@@ -272,16 +305,15 @@ function Checkout() {
             </div>
             <div class="relative">
               <input
-                {...register("Pickup")}
+                {...register("DeliveryOption")}
                 class="peer hidden"
                 id="radio_2"
                 type="radio"
-                name="radio"
-                checked
+                name="DeliveryOption"
               />
-              <span class="peer-checked:border-gray-700 absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-gray-300 bg-white"></span>
+              <span class="peer-checked:border-green-700 absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-green-700 bg-white"></span>
               <label
-                class="peer-checked:border-2 peer-checked:border-gray-700 peer-checked:bg-gray-50 flex cursor-pointer select-none rounded-lg border border-gray-300 p-4"
+                class="peer-checked:border-2 peer-checked:border-green-700 peer-checked:text-green-700 peer-checked:bg-gray-50 flex cursor-pointer select-none rounded-lg border border-green-700 p-4"
                 for="radio_2"
               >
                 <img
@@ -290,7 +322,7 @@ function Checkout() {
                   alt=""
                 />
                 <div class="ml-5">
-                  <span class="mt-2 font-semibold">Pick Up</span>
+                  <span class="mt-2 font-semibold">Customer Pick Up</span>
                   <p class="text-slate-500 text-sm leading-6">
                     Delivery: 2-4 Days
                   </p>
@@ -298,7 +330,7 @@ function Checkout() {
               </label>
             </div>
           </div>
-          <div class="mt-10 bg-gray-50 px-4 pt-8 lg:mt-28">
+          <div class="mt-10 bg-gray-50 px-4 pt-8 lg:mt-18">
             <p class="text-xl font-medium">Payment Details</p>
             <p class="text-gray-400">
               Complete your order by providing your payment details.
@@ -311,19 +343,20 @@ function Checkout() {
                 <input
                   {...register("email", {
                     required: "Enter a valid email",
-                    pattern: {
-                      value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                    },
+                    validate: (value) =>
+                      /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(
+                        value
+                      ) || "Enter a valid email",
                   })}
                   type="text"
                   id="email"
-                  class="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+                  class="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-green-500 focus:ring-green-500"
                   placeholder="your.email@gmail.com"
                 />
                 <div class="pointer-events-none absolute inset-y-0 left-0 inline-flex items-center px-3">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    class="h-4 w-4 text-gray-400"
+                    class="h-4 w-4 text-green-700"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -354,13 +387,13 @@ function Checkout() {
                   })}
                   type="text"
                   id="card-holder"
-                  class="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm uppercase shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+                  class="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm uppercase shadow-sm outline-none focus:z-10 focus:border-green-500 focus:ring-green-500"
                   placeholder="Your full name here"
                 />
                 <div class="pointer-events-none absolute inset-y-0 left-0 inline-flex items-center px-3">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    class="h-4 w-4 text-gray-400"
+                    class="h-4 w-4 text-green-700"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -382,7 +415,7 @@ function Checkout() {
               <div class="flex">
                 <div class="relative w-7/12 flex-shrink-0">
                   <input
-                    {...register("PhoneNumber", {
+                    {...register("phone_number", {
                       required: "Must be a minimum of 10 digits",
 
                       minLength: {
@@ -391,12 +424,12 @@ function Checkout() {
                     })}
                     type="text"
                     id="card-no"
-                    class="w-full rounded-md border border-gray-200 px-2 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+                    class="w-full rounded-md border border-gray-200 px-2 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-green-500 focus:ring-green-500"
                     placeholder="xxxx-xxx-xxx"
                   />
                   <div class="pointer-events-none absolute inset-y-0 left-0 inline-flex items-center px-3">
                     <svg
-                      class="h-4 w-4 text-gray-400"
+                      class="h-4 w-4 text-green-700"
                       xmlns="http://www.w3.org/2000/svg"
                       width="16"
                       height="16"
@@ -410,7 +443,7 @@ function Checkout() {
                 </div>
               </div>
               <p className="text-xs text-red-700">
-                {errors.PhoneNumber?.message}
+                {errors.phone_number?.message}
               </p>
               <label
                 for="billing-address"
@@ -421,7 +454,7 @@ function Checkout() {
               <div class="flex flex-col sm:flex-row">
                 <div class="relative flex-shrink-0 sm:w-7/12">
                   <input
-                    {...register("ShippingAddress", {
+                    {...register("shipping_address", {
                       required: "Shipping address is required",
 
                       minLength: {
@@ -430,7 +463,7 @@ function Checkout() {
                     })}
                     type="text"
                     id="billing-address"
-                    class="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+                    class="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-green-500 focus:ring-green-500"
                     placeholder="Exact Delivery Address"
                   />
                   <div class="pointer-events-none absolute inset-y-0 left-0 inline-flex items-center px-3">
@@ -440,15 +473,13 @@ function Checkout() {
                 <select
                   {...register("county", {
                     required: "County is required",
-
                     minLength: {
                       value: 4,
                       message: "Must be Selected",
                     },
                   })}
-                  type="text"
-                  name="billing-state"
-                  class="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+                  name="county"
+                  className="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-green-500 focus:ring-green-500"
                 >
                   {Kenya_counties.map((county) => (
                     <option key={county} value={county}>
@@ -464,21 +495,39 @@ function Checkout() {
               <div class="mt-6 border-t border-b py-2">
                 <div class="flex items-center justify-between">
                   <p class="text-sm font-medium text-gray-900">Subtotal</p>
-                  <p class="font-semibold text-gray-900">$399.00</p>
+                  <p class="font-semibold text-gray-900">
+                    KES{" "}
+                    {`${orderTotalAmount.toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                    })}`}
+                  </p>
                 </div>
                 <div class="flex items-center justify-between">
                   <p class="text-sm font-medium text-gray-900">Shipping</p>
-                  <p class="font-semibold text-gray-900">$8.00</p>
+                  <p class="font-semibold text-gray-900">
+                    KES{" "}
+                    {`${(orderTotalAmount * 0.05).toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                    })}`}
+                  </p>
                 </div>
               </div>
               <div class="mt-6 flex items-center justify-between">
                 <p class="text-sm font-medium text-gray-900">Total</p>
-                <p class="text-2xl font-semibold text-gray-900">$408.00</p>
+                <p class="text-2xl font-semibold text-gray-900">
+                  KES{" "}
+                  {`${(
+                    orderTotalAmount +
+                    orderTotalAmount * 0.05
+                  ).toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                  })}`}
+                </p>
               </div>
             </div>
             <button
               type="submit"
-              class="mt-4 mb-8 w-full rounded-md bg-gray-900 px-6 py-3 font-medium text-white"
+              class="mt-4 bg-blue-600  mb-8 w-full rounded-md bg-gray-900 px-6 py-3 font-medium text-white"
             >
               Place Order
             </button>

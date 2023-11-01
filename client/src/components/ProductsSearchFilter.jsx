@@ -56,8 +56,8 @@ const ProductsSearchFilter = ({}) => {
       key={category.id}
       onClick={() => filterByProductsHandler(category.id, category.name)}
       type="button"
-      className="py-2.5 px-5 mr-2 mb-2 text-base  font-base focus:outline-none border bg-gray-100 hover:bg-green-600 hover:text-white focus:z-10 focus:ring-2 focus:ring-green-600 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-green-700
-      light:text-gray-400 dark:border-green-700 dark:hover:text-white
+      className="py-2.5 px-5 mr-2 mb-2 text-base font-base focus:outline-none border bg-gray-100 text-black hover:bg-green-600 hover:text-white focus:z-10 focus:ring-2 focus:ring-green-500 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-green-700 dark:focus:ring-2 
+      light:text-gray-400 dark:border-green-700 dark:hover:text-white 
       dark:hover:bg-green-700"
     >
       {category.name}
@@ -74,7 +74,7 @@ const ProductsSearchFilter = ({}) => {
     <div>
       <form
         onSubmit={handleSubmit(submitSearchInput)}
-        class="flex items-center"
+        class="flex items-center justify-center lg:mb-2 lg:mt-8"
       >
         <label for="simple-search" class="sr-only">
           Search
@@ -114,10 +114,10 @@ const ProductsSearchFilter = ({}) => {
 
         <button
           type="submit"
-          class="p-2.5 ml-2 text-sm font-medium text-white light:bg-green-700 rounded-lg border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-600 dark:focus:ring-green-800"
+          class="p-2.5 mt-0 mb-0 ml-2 text-sm font-medium text-white light:bg-green-700 rounded-lg border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-600 dark:focus:ring-green-800"
         >
           <svg
-            class="w-4 h-4"
+            class="w-5 h-5"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -136,7 +136,7 @@ const ProductsSearchFilter = ({}) => {
       </form>
       <p className="text-xs text-red-700">{errors.searchValue?.message}</p>
       <div>
-        <div className="flex flex-col flex-wrap">
+        <div className="flex flex-wrap xl:flex-col justify-center">
           <button
             type="button"
             class="py-2.5 px-5 mr-2 mb-2 text-base  bg-green-600 font-base focus:outline-none border bg-gray-100 hover:bg-green-600 hover:text-white focus:z-10 focus:ring-2 focus:ring-green-600"

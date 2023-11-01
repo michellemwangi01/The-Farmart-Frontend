@@ -7,6 +7,8 @@ import AboutUs from "./Aboutus";
 import Error404 from "./Error404";
 import Checkout from "./Checkout";
 import ProductCard from "./ProductCard";
+import Signup from "./Signup";
+import Login from "./Login";
 
 const RouterComponent = () => {
   return (
@@ -18,7 +20,9 @@ const RouterComponent = () => {
         <Route path="/aboutus" element={<AboutUs />} />
         <Route path="*" element={<Error404 />} />
         <Route path="/checkout" element={<Checkout />} />
-        <Route path="/ProductCard" element={<ProductCard />} />
+        <Route path="/productcard" element={<ProductCard />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
       </Routes>
     </div>
   );

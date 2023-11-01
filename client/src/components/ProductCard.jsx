@@ -3,7 +3,7 @@ import "../styles/ProductCard.css";
 
 const ProductCard = ({ product }) => {
   return (
-    <article>
+    <article data-aos="zoom-in" data-aos-once="true">
       <div class="article-wrapper">
         <figure style={{ width: "100%", height: "100%", overflow: "hidden" }}>
           <img
