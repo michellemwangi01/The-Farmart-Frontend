@@ -1,12 +1,13 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { dataContext } from "../contextProvider/DataContextProvider";
 import "../styles/ProductCard.css";
 import ProductCard from "./ProductCard";
 import ProductsSearchFilter from "./ProductsSearchFilter";
+import ProductDetails from "./ProductDetails";
 
 const Products = () => {
   // -------------------------------------------- DEFINE STATE  & CONTEXT VARIABLES --------------------------------------------
-
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
   const { products, productsTitleDisplay, currentUser, currentUserName } =
     useContext(dataContext);
 
@@ -14,15 +15,34 @@ const Products = () => {
     "Sorry, There are no products for this category at the moment."
   );
 
-  // -------------------------------------------- CREATE DISPLAYS FOR THE DATA --------------------------------------------
+  const togglePopup = () => {
+    setIsPopupVisible(!isPopupVisible);
+  };
+
+  useEffect(() => {
+    setIsPopupVisible(false);
+  }, []);
+
+  // -------------------------------------------- CREATE INTERFACE FOR THE DATA --------------------------------------------
 
   const productsList = products.map((product) => {
-    return <ProductCard key={product.id} product={product} />;
+    return (
+      <ProductCard
+        togglePopup={togglePopup}
+        isPopupVisible={isPopupVisible}
+        setIsPopupVisible={setIsPopupVisible}
+        key={product.id}
+        product={product}
+      />
+    );
   });
+  console.log(isPopupVisible);
   // -------------------------------------------- THE INTERFACE --------------------------------------------
 
   return (
     <div className="flex flex-wrap sm:flex-no-wrap justify-center align-center min-w-full mt-6 ">
+      {isPopupVisible && <ProductDetails togglePopup={togglePopup} />}
+
       <div className="flex grow-1 sm:flex-grow-0 flex-2 ml-6 mb-4 ">
         <ProductsSearchFilter setEmptyProductsAlert={setEmptyProductsAlert} />
       </div>

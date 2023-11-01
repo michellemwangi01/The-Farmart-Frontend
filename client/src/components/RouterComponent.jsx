@@ -7,6 +7,7 @@ import AboutUs from "./Aboutus";
 import Error404 from "./Error404";
 import Checkout from "./Checkout";
 import ProductCard from "./ProductCard";
+import ProductDetails from "./ProductDetails";
 import Signup from "./Signup";
 import Login from "./Login";
 
@@ -23,6 +24,7 @@ const RouterComponent = () => {
         <Route path="/productcard" element={<ProductCard />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/productdetails" element={<ProductDetails />} />
       </Routes>
     </div>
   );

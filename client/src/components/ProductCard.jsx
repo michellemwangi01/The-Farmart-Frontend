@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import "../styles/ProductCard.css";
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, togglePopup }) => {
+  // -------------------------------------------- DEFINE STATE  & CONTEXT VARIABLES --------------------------------------------
+
+  // -------------------------------------------- THE INTERFACE --------------------------------------------
+
   return (
     <article data-aos="zoom-in" data-aos-once="true">
       <div class="article-wrapper">
@@ -36,8 +40,8 @@ const ProductCard = ({ product }) => {
             </p>
           </div>
 
-          <a href="#" class="read-more">
-            Read more <span class="sr-only">about this is some title</span>
+          <h6 onClick={togglePopup} class="read-more">
+            View details <span class="sr-only">about this is product</span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               class="icon"
@@ -50,7 +54,7 @@ const ProductCard = ({ product }) => {
                 clip-rule="evenodd"
               />
             </svg>
-          </a>
+          </h6>
         </div>
       </div>
     </article>

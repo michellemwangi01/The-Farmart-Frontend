@@ -49,6 +49,11 @@ const NavBar = () => {
               CHECKOUT
             </NavLink>
           </li>
+          <li className="navLinks" style={{ marginRight: "10px" }}>
+            <NavLink exact to="productdetails">
+              PRODUCT DETAILS
+            </NavLink>
+          </li>
           <button onClick={handleLogout}>Logout</button>
         </ul>
         <p>Welcome, {currentUserName}</p>

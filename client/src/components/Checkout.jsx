@@ -416,7 +416,7 @@ function Checkout() {
                 <div class="relative w-7/12 flex-shrink-0">
                   <input
                     {...register("phone_number", {
-                      required: "Must be a minimum of 10 digits",
+                      required: "Phone number must be 10 digits",
 
                       minLength: {
                         value: /^[0-9]{10}$/,
@@ -465,6 +465,7 @@ function Checkout() {
                     id="billing-address"
                     class="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-green-500 focus:ring-green-500"
                     placeholder="Exact Delivery Address"
+                    required
                   />
                   <div class="pointer-events-none absolute inset-y-0 left-0 inline-flex items-center px-3">
                     <span class="fi fi-ke fis"></span>

@@ -149,7 +149,7 @@ const Signup = () => {
                     </div>
                   </div>
                 </div>
-                <div class="flex flex-wrap -mx-3">
+                <div class="flex flex-wrap lg-flex-no-wrap -mx-3">
                   <div class="w-full md:w-1/2 px-3 md:mb-12 mb-2 ">
                     <label for="" class="text-sm font-semibold px-1">
                       Password
