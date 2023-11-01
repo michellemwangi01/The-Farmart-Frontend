@@ -11,12 +11,7 @@ const Home = () => {
   ));
 
   console.log(categoriesList);
-  return (
-    <div>
-      <h1>Home</h1>
-      {categoriesList}
-    </div>
-  );
+  return <div></div>;
 };
 
 export default Home;

@@ -10,6 +10,7 @@ const DataContextProvider = ({ children }) => {
   const [jwToken, setJWToken] = useState("");
   const [currentUser, setCurrentUser] = useState(0);
   const [currentUserName, setCurrentUserName] = useState("");
+  const [currentUserEmail, setCurrentUserEmail] = useState("");
   const [currentUserCartItems, setCurrentUserCartItems] = useState([]);
   const [currentUserOrderHistory, setCurrentUserOrderHistory] = useState([]);
   const [originalProductList, setOriginalProductList] = useState([]);
@@ -176,6 +177,8 @@ const DataContextProvider = ({ children }) => {
     jwToken,
     setJWToken,
     capitalizeFirstLetter,
+    setCurrentUserEmail,
+    currentUserEmail,
   };
 
   return <dataContext.Provider value={data}>{children}</dataContext.Provider>;

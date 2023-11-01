@@ -1,0 +1,11 @@
+@import url("https://fonts.googleapis.com/css2?family=Cinzel&family=Cormorant+Garamond:wght@300&family=Dancing+Script:wght@600;700&family=Edu+TAS+Beginner&family=IBM+Plex+Serif:wght@300&family=Kalam:wght@300&family=Satisfy&family=Ysabeau+Infant:ital,wght@1,300&display=swap");
+.active {
+  background-color: #045f2a;
+  color: #ffffff;
+}
+
+#FarmartLogo {
+  font-family: "Edu TAS Beginner", cursive;
+  /* font-size: "2rem"; */
+  color: #045f2a;
+}

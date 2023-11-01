@@ -26,6 +26,7 @@ const Login = () => {
     currentUserName,
     jwToken,
     setJWToken,
+    setCurrentUserEmail,
   } = useContext(dataContext);
   const navigate = useNavigate();
   // -------------------------------------------- USE FORM HOOK  --------------------------------------------
@@ -40,7 +41,8 @@ const Login = () => {
         localStorage.setItem("jwToken", res.data.access_token);
         setJWToken(res.data.access_token);
         setCurrentUser(res.data.user_id);
-        setCurrentUserName(res.data.firstname);
+        setCurrentUserName(res.data.firstname + " " + res.data.lastname);
+        setCurrentUserEmail(res.data.email);
         navigate("/products");
         console.log("CURRENT USER ID", res.data.user_id);
         console.log("CURRENT USER NAME", res.data.firstname);
