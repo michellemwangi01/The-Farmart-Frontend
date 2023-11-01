@@ -8,9 +8,7 @@ const DataContextProvider = ({ children }) => {
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
   const [jwToken, setJWToken] = useState("");
-  const [currentUser, setCurrentUser] = useState(0);
-  const [currentUserName, setCurrentUserName] = useState("");
-  const [currentUserEmail, setCurrentUserEmail] = useState("");
+  const [currentUser, setCurrentUser] = useState({});
   const [currentUserCartItems, setCurrentUserCartItems] = useState([]);
   const [currentUserOrderHistory, setCurrentUserOrderHistory] = useState([]);
   const [originalProductList, setOriginalProductList] = useState([]);
@@ -172,13 +170,9 @@ const DataContextProvider = ({ children }) => {
     setCurrentUserCartItems,
     currentUser,
     setCurrentUser,
-    currentUserName,
-    setCurrentUserName,
     jwToken,
     setJWToken,
     capitalizeFirstLetter,
-    setCurrentUserEmail,
-    currentUserEmail,
   };
 
   return <dataContext.Provider value={data}>{children}</dataContext.Provider>;

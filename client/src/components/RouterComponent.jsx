@@ -10,6 +10,7 @@ import ProductCard from "./ProductCard";
 import ProductDetails from "./ProductDetails";
 import Signup from "./Signup";
 import Login from "./Login";
+import LoggedOutNav from "./LoggedOutNav";
 
 const RouterComponent = () => {
   return (
@@ -25,6 +26,7 @@ const RouterComponent = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/productdetails" element={<ProductDetails />} />
+        <Route path="/loggedOutNav" element={<LoggedOutNav />} />
       </Routes>
     </div>
   );

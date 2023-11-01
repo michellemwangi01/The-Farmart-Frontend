@@ -128,7 +128,7 @@ function Checkout() {
   // ------------------- HANDLE ORDER SUBMIT
 
   const handleSubmitOrderDetails = (data) => {
-    setPopupOpen(true);
+    setPopupOpen(!isPopupOpen);
     setPhoneNumber(data.phone_number);
     const prefix = "FAR";
     const transactionID = generateUniqueAccountNumber(prefix, 6);
@@ -165,7 +165,9 @@ function Checkout() {
   // --------------------- OPEN AND CLOSE PAYMENT POPUP
 
   const closePopup = () => {
-    setPopupOpen(false);
+    console.log("trying to close popup");
+    setPopupOpen(!isPopupOpen);
+    console.log(isPopupOpen);
   };
 
   return (
@@ -173,7 +175,7 @@ function Checkout() {
       <div>
         <Payment
           isOpen={isPopupOpen}
-          onClose={closePopup}
+          closePopup={closePopup}
           transactionID={transactionID}
           setPhoneNumber={setPhoneNumber}
           phoneNumber={phoneNumber}

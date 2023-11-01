@@ -1,8 +1,10 @@
 import React, { useContext, useState } from "react";
 import { FaRegWindowClose } from "react-icons/fa";
-import { AiOutlineShoppingCart } from "react-icons/ai";
+import { AiOutlineShoppingCart, AiOutlineCloseSquare } from "react-icons/ai";
 import { MdShoppingCartCheckout } from "react-icons/md";
 import { useNavigate, Link } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { Rating } from "@material-tailwind/react";
 import { dataContext } from "../contextProvider/DataContextProvider";
 
@@ -21,9 +23,17 @@ const ProductDetails = ({ togglePopup, currentProductDetails }) => {
 
   const navigate = useNavigate();
   const { capitalizeFirstLetter } = useContext(dataContext);
+
+  // -------------------------------------------- TOAST NOIFICATIONS --------------------------------------------
+
+  const itemAddedToCart = (message, type) => {
+    toast(message, { autoClose: 3000, type });
+  };
+
   // -------------------------------------------- STORING BUTTONS IN VARIABLES  --------------------------------------------
 
   const addToCartHandler = () => {
+    itemAddedToCart(`Product has successfully been added to cart.`, "success");
     setIsAddedToCart(true);
   };
 
@@ -75,6 +85,31 @@ const ProductDetails = ({ togglePopup, currentProductDetails }) => {
     </button>
   );
 
+  const viewCartHandler = () => {
+    navigate("/cart");
+  };
+
+  const viewCartBtn = (
+    <button
+      onClick={viewCartHandler}
+      className="
+      focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800
+      text-base
+      flex
+      items-center
+      justify-center
+      leading-none
+      text-white
+      bg-blue-900
+      w-full
+      py-4
+      hover:bg-blue-700
+    "
+    >
+      <MdShoppingCartCheckout className="mr-2" />
+      View Your Cart
+    </button>
+  );
   // -------------------------------------------- THE INTERFACE  --------------------------------------------
 
   return (
@@ -82,12 +117,15 @@ const ProductDetails = ({ togglePopup, currentProductDetails }) => {
       <div className="background-content "></div>
       <div className="popup active">
         <div className="popup-content w-2/3 h-5/6 overflow-scroll ">
-          <h1 className="text-center text-2xl font-serif"> Product Details</h1>
-          <div className="flex justify-end items-center  ">
-            <p onClick={togglePopup} className="text-black-500 fixed">
-              <FaRegWindowClose />{" "}
+          <div className="flex justify-end items-top  ">
+            <p onClick={togglePopup} className="text-black text-2xl fixed">
+              <AiOutlineCloseSquare />{" "}
             </p>
           </div>
+          <h1 className="text-center text-2xl font-serif text-black">
+            {" "}
+            Product Details
+          </h1>
 
           <div className="md:flex items-start justify-center  py-8 2xl:px-20 md:px-2 px-2 sm:w-full ">
             <div
@@ -189,7 +227,14 @@ const ProductDetails = ({ togglePopup, currentProductDetails }) => {
                   </svg>
                 </div>
               </div>
-              {isAddedToCart ? checkoutBtn : addToCartBtn}
+              {isAddedToCart ? (
+                <div>
+                  {viewCartBtn}
+                  {checkoutBtn}
+                </div>
+              ) : (
+                addToCartBtn
+              )}
               <div>
                 <div className="mt-7">
                   <p className="font-bold font-serif"> Product Details</p>
