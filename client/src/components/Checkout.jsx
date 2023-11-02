@@ -123,7 +123,7 @@ function Checkout() {
     const orderData = {
       ...data,
       payment_uid: transactionID,
-      user_id: currentUser,
+      user_id: currentUser.user_id,
       product_id: 5,
       vendor_id: 6,
       quantity: 4,
@@ -267,7 +267,7 @@ function Checkout() {
 
             <div class="relative mb-4">
               <input
-                {...register("DeliveryOption")}
+                // {...register("DeliveryOption")}
                 class="peer hidden"
                 id="radio_1"
                 type="radio"
@@ -405,7 +405,6 @@ function Checkout() {
                   <input
                     {...register("phone_number", {
                       required: "Phone number must be 10 digits",
-
                       minLength: {
                         value: /^[0-9]{10}$/,
                       },

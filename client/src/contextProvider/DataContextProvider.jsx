@@ -10,6 +10,7 @@ const DataContextProvider = ({ children }) => {
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
   const [jwToken, setJWToken] = useState("");
+  const [isAddedToCart, setIsAddedToCart] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
   const [currentUserCartItems, setCurrentUserCartItems] = useState([]);
   const [currentUserOrderHistory, setCurrentUserOrderHistory] = useState([]);
@@ -118,7 +119,7 @@ const DataContextProvider = ({ children }) => {
       .catch((error) => {
         console.error("Error fetching cart items:", error);
       });
-  }, [currentUser]);
+  }, [currentUser, isAddedToCart]);
 
   // ---------------- FETCHING USER ORDER HISTORY
 
@@ -215,6 +216,8 @@ const DataContextProvider = ({ children }) => {
     capitalizeFirstLetter,
     orderTotalAmount,
     setOrderTotalAmount,
+    isAddedToCart,
+    setIsAddedToCart,
   };
 
   return <dataContext.Provider value={data}>{children}</dataContext.Provider>;

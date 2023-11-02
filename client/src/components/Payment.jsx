@@ -45,10 +45,6 @@ function Payment({
     closePopup();
   };
 
-  useEffect(() => {
-    onClose();
-  }, []);
-
   // ----------------------------- DEFINE PAY HANDLER -----------------------------
   const pay = () => {
     console.log(orderTotalAmount, phoneNumber);

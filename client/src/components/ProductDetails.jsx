@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import axios from "axios";
 import { FaRegWindowClose } from "react-icons/fa";
 import { AiOutlineShoppingCart, AiOutlineCloseSquare } from "react-icons/ai";
 import { MdShoppingCartCheckout } from "react-icons/md";
@@ -11,18 +12,24 @@ import { dataContext } from "../contextProvider/DataContextProvider";
 import "../styles/ProductDetails.css";
 
 const ProductDetails = ({ togglePopup, currentProductDetails }) => {
-  console.log(currentProductDetails);
+  // console.log(currentProductDetails);
   // -------------------------------------------- STATE VARIABLES  --------------------------------------------
 
   const [show, setShow] = useState(false);
   const [show2, setShow2] = useState(false);
-  const [isAddedToCart, setIsAddedToCart] = useState(false);
   const [addToCartBtnText, setAddToCartBtnText] = useState("");
 
   // -------------------------------------------- USE HOOKS  --------------------------------------------
 
   const navigate = useNavigate();
-  const { capitalizeFirstLetter } = useContext(dataContext);
+  const {
+    capitalizeFirstLetter,
+    isAddedToCart,
+    setIsAddedToCart,
+    localRoutePrefix,
+    jwToken,
+    currentUser,
+  } = useContext(dataContext);
 
   // -------------------------------------------- TOAST NOIFICATIONS --------------------------------------------
 
@@ -33,6 +40,21 @@ const ProductDetails = ({ togglePopup, currentProductDetails }) => {
   // -------------------------------------------- STORING BUTTONS IN VARIABLES  --------------------------------------------
 
   const addToCartHandler = () => {
+    const addedProduct = {
+      product_id: currentProductDetails.id,
+      quantity: 1,
+      user_id: currentUser.user_id,
+    };
+    console.log(addedProduct);
+    axios
+      .post(`${localRoutePrefix}/cartitems/cart_items`, addedProduct, {
+        headers: {
+          Authorization: `Bearer ${jwToken}`,
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => console.log(res.data))
+      .catch((error) => console.error(error));
     itemAddedToCart(`Product has successfully been added to cart.`, "success");
     setIsAddedToCart(true);
   };
@@ -86,6 +108,7 @@ const ProductDetails = ({ togglePopup, currentProductDetails }) => {
   );
 
   const viewCartHandler = () => {
+    setIsAddedToCart(false);
     navigate("/cart");
   };
 
@@ -254,7 +277,7 @@ const ProductDetails = ({ togglePopup, currentProductDetails }) => {
                 </p>
                 <p className="text-base leading-4 mt-4 text-gray-600">
                   <span className="text-gray-900">Location: </span> Available in
-                  and around {currentProductDetails.vendor.county}, Kenya.
+                  and around {currentProductDetails.vendor.county}Meru, Kenya.
                 </p>
 
                 <p className="md:w-96 text-base leading-normal text-gray-600 mt-4">
