@@ -77,13 +77,13 @@ const LoggedInNav = () => {
   return (
     <div>
       <nav class="bg-white border-gray-200 dark:bg-gray-900">
-        <div class=" flex flex-wrap items-center justify-between mx-auto p-8">
+        <div class=" flex flex-wrap items-center sm:justify-between justify-center mx-auto p-8">
           <a id="FarmartLogo" href="#home" class="flex items-center">
             <span class="self-center text-6xl font-semibold whitespace-nowrap dark:text-white">
               Farmart
             </span>
           </a>
-          <div className="flex">
+          <div className="flex flex-wrap sm:justify-between justify-center">
             <div class="flex items-center md:order-2">
               <button
                 onClick={toggleShowUserMenu}
@@ -131,12 +131,12 @@ const LoggedInNav = () => {
               }`}
               id="navbar-user"
             >
-              <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+              <ul class="flex flex-col  font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
                 <li>
                   <NavLink
                     to="/"
                     activeClassName="active-link"
-                    className="block font-serif text-lg px-2 py-2 rounded md:bg-transparent md:text-black"
+                    className="block border-b   border-green-700  text-white font-serif text-lg px-2 py-2 rounded md:bg-transparent text-white"
                   >
                     Home
                   </NavLink>
@@ -145,7 +145,7 @@ const LoggedInNav = () => {
                   <NavLink
                     exact
                     to="/aboutus"
-                    className="block font-serif text-lg px-2 py-2 rounded md:bg-transparent md:text-black"
+                    className="block border-b   border-green-700  font-serif text-lg px-2 py-2 rounded md:bg-transparent text-white"
                   >
                     About
                   </NavLink>
@@ -154,7 +154,7 @@ const LoggedInNav = () => {
                   <NavLink
                     exact
                     to="products"
-                    className="block font-serif text-lg px-2 py-2 rounded md:bg-transparent md:text-black"
+                    className="block border-b   border-green-700  font-serif text-lg px-2 py-2 rounded md:bg-transparent text-white"
                   >
                     Products
                   </NavLink>
@@ -163,7 +163,7 @@ const LoggedInNav = () => {
                   <NavLink
                     exact
                     to="vendor"
-                    className="block border-b   border-green-700 font-serif text-lg px-2 py-2 rounded md:bg-transparent md:text-black"
+                    className="block border-b   border-green-700  font-serif text-lg px-2 py-2 mr-2 rounded md:bg-transparent text-white"
                   >
                     Vendor
                   </NavLink>

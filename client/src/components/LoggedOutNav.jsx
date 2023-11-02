@@ -28,7 +28,7 @@ const LoggedOutNav = () => {
               <NavLink
                 to="/"
                 activeClassName="active-link"
-                className="block font-serif text-lg px-2 py-2 rounded md:bg-transparent md:text-black dark:text-white"
+                className="block font-serif text-lg px-2 py-2 rounded md:bg-transparent md:text-white dark:text-white"
               >
                 Home
               </NavLink>
@@ -37,7 +37,7 @@ const LoggedOutNav = () => {
               <NavLink
                 to="/login"
                 activeClassName="active-link"
-                className="block font-serif text-lg px-2 py-2 rounded md:bg-transparent md:text-black dark:text-white"
+                className="block font-serif text-lg px-2 py-2 rounded md:bg-transparent md:text-white dark:text-white"
               >
                 Login
               </NavLink>
