@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Axios from 'axios';
+import '../styles/Profile.css';
 import '../App.css'; 
 import { FaCheckCircle, FaCreditCard, FaInfoCircle } from 'react-icons/fa';
 import { useForm, Controller } from 'react-hook-form';
