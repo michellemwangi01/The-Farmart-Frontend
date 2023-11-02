@@ -1,15 +1,33 @@
 import React, { useState } from 'react';
-import Axios from 'axios';
-import '../styles/Profile.css';
+import '../styles/Profile.css'
 import '../App.css'; 
+import axios from 'axios';
 import { FaCheckCircle, FaCreditCard, FaInfoCircle } from 'react-icons/fa';
 import { useForm, Controller } from 'react-hook-form';
 
 function Profile() {
   const { control, handleSubmit, formState: { errors } } = useForm();
   const [image, setImage] = useState(null); 
-  const onSubmit = (data) => {
-    console.log(data);
+  
+
+
+  const onSubmit = async (data) => {
+    try {
+      
+      const formData = new FormData();
+
+      
+      const response = await axios.post('https://the-farmart-api-flask.onrender.com//uploadimage', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      
+      console.log(response.data);
+    } catch (error) {
+      console.error('Image upload failed:', error);
+    }
   };
 
   const handleImageUpload = (e) => {
@@ -22,7 +40,7 @@ function Profile() {
     }
   };
   const handleDeleteImage = () => {
-    // Handle image deletion here by clearing the 'image' state.
+    
     setImage(null);
   };
 
