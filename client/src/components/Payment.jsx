@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/PaymentPopup.css";
 import { FaRegWindowClose } from "react-icons/fa";
+import { AiOutlineCloseSquare } from "react-icons/ai";
 // import { FaWindowClose } from "react-icons/bi";
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
@@ -8,21 +9,21 @@ import "react-toastify/dist/ReactToastify.css";
 
 function Payment({
   isOpen,
-  onClose,
+  closePopup,
   onPlaceOrder,
   transactionID,
   phoneNumber,
   setPhoneNumber,
   orderTotalAmount,
 }) {
-  // ------------------- DEFINE STATE VARIABLES
+  // ------------------- DEFINE STATE VARIABLES -----------------------------
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  // -------------------TOAST NOIFICATIONS
+  // ----------------------------- TOAST NOIFICATIONS -----------------------------
   const toastPaymentSuccessfullyInitiated = (message, type) => {
     toast(message, type);
   };
@@ -34,11 +35,21 @@ function Payment({
     console.log(data);
     if (phoneNumber && orderTotalAmount) {
       pay();
-      //   onClose();
+      // onClose();
     }
   };
 
-  // ------------------- DEFINE PAY HANDLER
+  // ----------------------------- CLOSE PAYMENT POPUP -----------------------------
+
+  const onClose = () => {
+    closePopup();
+  };
+
+  useEffect(() => {
+    onClose();
+  }, []);
+
+  // ----------------------------- DEFINE PAY HANDLER -----------------------------
   const pay = () => {
     console.log(orderTotalAmount, phoneNumber);
     if (orderTotalAmount === 0 || phoneNumber === "") {
@@ -81,8 +92,8 @@ function Payment({
     >
       <div className="popup-content flex flex-col w-1/3 mg-auto border-solid border-gray-400 border-2 ">
         <div className="flex justify-end">
-          <p onClick={onClose} className="text-black-500">
-            <FaRegWindowClose />{" "}
+          <p onClick={onClose} className="text-black-500 text-2xl">
+            <AiOutlineCloseSquare />{" "}
           </p>
         </div>
 

@@ -8,8 +8,7 @@ const DataContextProvider = ({ children }) => {
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
   const [jwToken, setJWToken] = useState("");
-  const [currentUser, setCurrentUser] = useState(0);
-  const [currentUserName, setCurrentUserName] = useState("");
+  const [currentUser, setCurrentUser] = useState({});
   const [currentUserCartItems, setCurrentUserCartItems] = useState([]);
   const [currentUserOrderHistory, setCurrentUserOrderHistory] = useState([]);
   const [originalProductList, setOriginalProductList] = useState([]);
@@ -67,7 +66,9 @@ const DataContextProvider = ({ children }) => {
     "Nyamira",
     "Nairobi City",
   ];
-
+  function capitalizeFirstLetter(sentence) {
+    return sentence.charAt(0).toUpperCase() + sentence.slice(1);
+  }
   // ---------------- FETCHING ALL CATEGORIES
 
   useEffect(() => {
@@ -134,7 +135,7 @@ const DataContextProvider = ({ children }) => {
       });
   }, [currentUser]);
 
-  // ---------------- FETCHING USER VENDOR PRODUCT
+  // ---------------- FETCHING  VENDOR PRODUCT
 
   useEffect(() => {
     axios
@@ -169,10 +170,9 @@ const DataContextProvider = ({ children }) => {
     setCurrentUserCartItems,
     currentUser,
     setCurrentUser,
-    currentUserName,
-    setCurrentUserName,
     jwToken,
     setJWToken,
+    capitalizeFirstLetter,
   };
 
   return <dataContext.Provider value={data}>{children}</dataContext.Provider>;
