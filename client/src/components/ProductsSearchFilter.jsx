@@ -57,12 +57,15 @@ const ProductsSearchFilter = ({}) => {
       onClick={() => filterByProductsHandler(category.id, category.name)}
       type="button"
       className="
-  py-2.5 px-5 mr-2 mb-2 text-base font-base focus:outline-none 
-  border bg-gray-800 text-white hover:bg-green-700 hover:text-white 
+  lg:my-1 py-2.5 px-5 mr-2 mb-2 text-base font-base 
+  light:text-gray-400 dark:border-green-700  focus:outline-none 
   focus:z-10 focus:ring-2 focus:ring-green-700 focus:ring-4 focus:ring-gray-200 
+  focus:text-green-800
+  border bg-gray-800 text-white
   dark:focus:ring-green-700 dark:focus:ring-2 
-  light:text-gray-400 dark:border-green-700 dark:hover:text-white 
-  dark:hover:bg-green-700 focus:bg-white focus:text-green-800"
+  dark:hover:text-white 
+  dark:hover:bg-green-700 focus:bg-white
+  hover:bg-green-700 hover:text-white  "
     >
       {category.name}
     </button>
