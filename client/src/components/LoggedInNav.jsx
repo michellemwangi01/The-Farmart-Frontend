@@ -19,13 +19,36 @@ const LoggedInNav = () => {
     navigate("/login");
   };
 
-  // -------------------------------------------- NAVBAR DROPDOWN --------------------------------------------
+  // -------------------------------------------- HANDLE VIEW CART --------------------------------------------
+
+  const viewCartHandler = () => {
+    navigate("/cart");
+    setShowUserMenu(false);
+  };
+
+  // -------------------------------------------- HANDLE VIEW ORDER HISTORY --------------------------------------------
+
+  const openOrderHistory = () => {
+    navigate("/orderhistory");
+    setShowUserMenu(false);
+  };
+
+  // -------------------------------------------- HANDLE VIEW PROFILE --------------------------------------------
+
+  const openProfile = () => {
+    navigate("/profile");
+    setShowUserMenu(false);
+  };
+
+  // -------------------------------------------- NAVBAR MENUS --------------------------------------------
   const toggleShowUserMenu = () => {
     setShowUserMenu(!showUserMenu);
+    setShowMainMenu(false);
     console.log(showUserMenu);
   };
   const toggleShowMainMenu = () => {
     setShowMainMenu(!showMainMenu);
+    setShowUserMenu(false);
     console.log(showMainMenu);
   };
 
@@ -47,23 +70,22 @@ const LoggedInNav = () => {
         </span>
       </div>
       <ul class="py-2">
-        <li>
-          <a
-            href="#"
-            class="flex justify-center block px-4 py-2  text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-          >
-            Dashboard
-          </a>
-        </li>
-        <li>
-          <a
-            href="#"
-            class="flex justify-center block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-          >
-            Profile
-          </a>
+        <li onClick={openOrderHistory}>
+          <p class="flex justify-center block px-4 py-2  text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white cursor-pointer">
+            Order History
+          </p>
         </li>
 
+        <li onClick={viewCartHandler}>
+          <p class="flex justify-center block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white cursor-pointer">
+            Your Cart
+          </p>
+        </li>
+        <li onClick={openProfile}>
+          <p class="flex justify-center block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+            Profile
+          </p>
+        </li>
         <li onClick={handleLogout}>
           <p class="flex justify-center block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white cursor-pointer">
             Sign out
@@ -83,7 +105,7 @@ const LoggedInNav = () => {
               Farmart
             </span>
           </a>
-          <div className="flex flex-wrap sm:justify-between justify-center">
+          <div className="flex sm:justify-between justify-center">
             <div class="flex items-center md:order-2">
               <button
                 onClick={toggleShowUserMenu}
@@ -122,11 +144,11 @@ const LoggedInNav = () => {
                 </svg>
               </button>
             </div>
-            {/* <!-- Main menu --> */}
+
             <div
               class={`${
                 showMainMenu
-                  ? "items-center justify-between w-full md:flex md:w-auto md:order-1"
+                  ? "items-center justify-between flex  md:order-1"
                   : "sm:items-center sm:justify-between sm:w-full sm:flex sm:w-auto sm:order-1 hidden"
               }`}
               id="navbar-user"

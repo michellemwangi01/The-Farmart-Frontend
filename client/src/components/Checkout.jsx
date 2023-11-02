@@ -13,11 +13,13 @@ function Checkout() {
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [transactionID, setTransactionID] = useState("");
-  const [orderTotalAmount, setOrderTotalAmount] = useState(0);
 
   // ------------------- CALL AND USE DATA CONTEXT
 
   const {
+    orderTotalAmount,
+    setOrderTotalAmount,
+    deleteFromOrder,
     hostedRoutePrefix,
     localRoutePrefix,
     products,
@@ -41,28 +43,10 @@ function Checkout() {
     toast(message, { autoClose: 3000, type });
   };
 
-  const toastSuccessfulRemoveFromOrder = (message, type) => {
-    toast(message, { autoClose: 3000, type });
-  };
-
   // ------------------- HANDLE REMOVE FROM ORDER TEMPLATE
 
-  const deleteFromOrder = (id) => {
-    const updatedCartItems = currentUserCartItems.filter(
-      (cartItem) => cartItem.id != id
-    );
-    setCurrentUserCartItems(updatedCartItems);
-    axios
-      .delete(`${localRoutePrefix}/cartitems/cart_items/${id}`)
-      .then((response) => {
-        toastSuccessfulRemoveFromOrder(
-          "Item successfully removed from order!",
-          "success"
-        );
-      })
-      .catch((error) => {
-        console.error("Error removing item from order", error);
-      });
+  const deleteFromOrderHandler = (id) => {
+    deleteFromOrder(id);
   };
 
   // ------------------- CALCULATE TOTAL ORDER AMOUNT
@@ -97,7 +81,7 @@ function Checkout() {
           })}
         </p>
         <p
-          onClick={() => deleteFromOrder(cartItem.id)}
+          onClick={() => deleteFromOrderHandler(cartItem.id)}
           className="flex items-center justify-end text-red-600 font-light"
         >
           <FaRegTrashAlt className="text-red-400" />
@@ -173,14 +157,16 @@ function Checkout() {
   return (
     <div>
       <div>
-        <Payment
-          isOpen={isPopupOpen}
-          closePopup={closePopup}
-          transactionID={transactionID}
-          setPhoneNumber={setPhoneNumber}
-          phoneNumber={phoneNumber}
-          orderTotalAmount={orderTotalAmount}
-        />
+        {isPopupOpen && (
+          <Payment
+            isOpen={isPopupOpen}
+            closePopup={closePopup}
+            transactionID={transactionID}
+            setPhoneNumber={setPhoneNumber}
+            phoneNumber={phoneNumber}
+            orderTotalAmount={orderTotalAmount}
+          />
+        )}
       </div>
       <div class="flex flex-col items-center border-b bg-white py-4 sm:flex-row sm:px-10 lg:px-20 xl:px-32">
         <a href="#" class="text-2xl font-bold text-gray-800">
@@ -232,9 +218,9 @@ function Checkout() {
                 >
                   2
                 </a>
-                <span class="font-semibold text-gray-900">Order</span>
+                <span class="font-semibold text-gray-900">Order & Payment</span>
               </li>
-              <svg
+              {/* <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="h-4 w-4 text-gray-400"
                 fill="none"
@@ -247,8 +233,8 @@ function Checkout() {
                   stroke-linejoin="round"
                   d="M9 5l7 7-7 7"
                 />
-              </svg>
-              <li class="flex items-center space-x-3 text-left sm:space-x-4">
+              </svg> */}
+              {/* <li class="flex items-center space-x-3 text-left sm:space-x-4">
                 <a
                   class="flex h-6 w-6 items-center justify-center rounded-full bg-gray-400 text-xs font-semibold text-white"
                   href="#"
@@ -256,7 +242,7 @@ function Checkout() {
                   3
                 </a>
                 <span class="font-semibold text-gray-500">Payment</span>
-              </li>
+              </li> */}
             </ul>
           </div>
         </div>

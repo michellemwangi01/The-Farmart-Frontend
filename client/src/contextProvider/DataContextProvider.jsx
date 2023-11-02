@@ -1,5 +1,7 @@
 import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const dataContext = createContext();
 
@@ -12,6 +14,7 @@ const DataContextProvider = ({ children }) => {
   const [currentUserCartItems, setCurrentUserCartItems] = useState([]);
   const [currentUserOrderHistory, setCurrentUserOrderHistory] = useState([]);
   const [originalProductList, setOriginalProductList] = useState([]);
+  const [orderTotalAmount, setOrderTotalAmount] = useState(0);
   const [loadingCategories, setLoadingCategories] = useState(true);
   const [productsTitleDisplay, setProductsTitleDisplay] =
     useState("All Products");
@@ -153,9 +156,46 @@ const DataContextProvider = ({ children }) => {
       });
   }, [currentUser]);
 
+  // ------------------- HANDLE REMOVE FROM ORDER TEMPLATE
+
+  const deleteFromOrder = (id) => {
+    const updatedCartItems = currentUserCartItems.filter(
+      (cartItem) => cartItem.id != id
+    );
+    setCurrentUserCartItems(updatedCartItems);
+    axios
+      .delete(`${localRoutePrefix}/cartitems/cart_items/${id}`)
+      .then((response) => {
+        toastSuccessfulRemoveFromOrder(
+          "Item successfully removed from cart/order!",
+          "success"
+        );
+      })
+      .catch((error) => {
+        console.error("Error removing item from order", error);
+      });
+  };
+
+  // -------------------TOAST NOIFICATIONS
+
+  const toastSuccessfulRemoveFromOrder = (message, type) => {
+    toast(message, { autoClose: 3000, type });
+  };
+
+  // -------------------------------------------- CALCULATE CART/ORDER TOTAL AMOUNT ----------------------------------------
+
+  useEffect(() => {
+    const totalAmount = currentUserCartItems.reduce(
+      (total, cartItem) => total + cartItem.product.price,
+      0
+    );
+    setOrderTotalAmount(totalAmount);
+  }, [currentUserCartItems]);
+
   // ---------------- POPULATE THE DATA CONTEXT
 
   const data = {
+    deleteFromOrder,
     categories,
     setCategories,
     hostedRoutePrefix,
@@ -173,6 +213,8 @@ const DataContextProvider = ({ children }) => {
     jwToken,
     setJWToken,
     capitalizeFirstLetter,
+    orderTotalAmount,
+    setOrderTotalAmount,
   };
 
   return <dataContext.Provider value={data}>{children}</dataContext.Provider>;

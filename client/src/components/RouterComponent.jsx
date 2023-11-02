@@ -11,6 +11,8 @@ import ProductDetails from "./ProductDetails";
 import Signup from "./Signup";
 import Login from "./Login";
 import LoggedOutNav from "./LoggedOutNav";
+import Cart from "./Cart";
+import OrderHistory from "./OrderHistory";
 
 const RouterComponent = () => {
   return (
@@ -20,13 +22,15 @@ const RouterComponent = () => {
         <Route path="/products" element={<Products />} />
         <Route path="/vendor" element={<Vendor />} />
         <Route path="/aboutus" element={<AboutUs />} />
-        <Route path="*" element={<Error404 />} />
+        <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/productcard" element={<ProductCard />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/productdetails" element={<ProductDetails />} />
         <Route path="/loggedOutNav" element={<LoggedOutNav />} />
+        <Route path="/orderhistory" element={<OrderHistory />} />
+        <Route path="*" element={<Error404 />} />
       </Routes>
     </div>
   );

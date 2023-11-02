@@ -3,9 +3,10 @@ import { dataContext } from "../contextProvider/DataContextProvider";
 import { useForm } from "react-hook-form";
 
 const ProductsSearchFilter = ({}) => {
-  // ---------------- DEFINE STATE VARIABLES
+  // -------------------------------- DEFINE STATE VARIABLES --------------------------------
 
-  // ---------------- CREATE HOOK OBJECTS
+  // -------------------------------- CREATE HOOK OBJECTS --------------------------------
+
   const {
     categories,
     setProducts,
@@ -14,14 +15,16 @@ const ProductsSearchFilter = ({}) => {
     setProductsTitleDisplay,
   } = useContext(dataContext);
 
-  // ---------------- REACT FORM HOOOK
+  // -------------------------------- REACT FORM HOOOK --------------------------------
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  // ---------------- FILTER BY SEARCH HANDLER
+  // -------------------------------- FILTER BY SEARCH HANDLER --------------------------------
+
   const submitSearchInput = (data) => {
     const searchedProducts = products.filter((product) => {
       const searchValueLowerCase = data.searchValue.toLowerCase();
@@ -40,7 +43,8 @@ const ProductsSearchFilter = ({}) => {
     setProductsTitleDisplay(`Products with keyword '${data.searchValue}'`);
   };
 
-  // ---------------- FILTER BY CATEGORY HANDLER
+  // -------------------------------- FILTER BY CATEGORY HANDLER --------------------------------
+
   const filterByProductsHandler = (id = 0, category_name) => {
     const filteredProductsByCategory = originalProductList.filter((product) => {
       return product.category_id === id;
@@ -50,7 +54,8 @@ const ProductsSearchFilter = ({}) => {
     setProducts(filteredProductsByCategory);
   };
 
-  // ---------------- DISPLAY CATEGORY BUTTONS
+  // -------------------------------- DISPLAY CATEGORY BUTTONS --------------------------------
+
   const categoriesList = categories.map((category) => (
     <button
       key={category.id}
@@ -71,12 +76,13 @@ const ProductsSearchFilter = ({}) => {
     </button>
   ));
 
-  // ---------------- RESET PRODUCTS FILTER
+  // -------------------------------- RESET PRODUCTS FILTER --------------------------------
+
   const resetProducts = () => {
     setProducts(originalProductList);
   };
 
-  // ---------------- THE GUI
+  // -------------------------------- THE GUI --------------------------------
   return (
     <div>
       <form
