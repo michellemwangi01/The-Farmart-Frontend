@@ -127,7 +127,7 @@ const LoggedInNav = () => {
               class={`${
                 showMainMenu
                   ? "items-center justify-between w-full md:flex md:w-auto md:order-1"
-                  : " hidden"
+                  : "sm:items-center sm:justify-between sm:w-full sm:flex sm:w-auto sm:order-1 hidden"
               }`}
               id="navbar-user"
             >
