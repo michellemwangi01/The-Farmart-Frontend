@@ -12,7 +12,6 @@ import { dataContext } from "../contextProvider/DataContextProvider";
 import "../styles/ProductDetails.css";
 
 const ProductDetails = ({ togglePopup, currentProductDetails }) => {
-  // console.log(currentProductDetails);
   // -------------------------------------------- STATE VARIABLES  --------------------------------------------
 
   const [show, setShow] = useState(false);
@@ -30,6 +29,7 @@ const ProductDetails = ({ togglePopup, currentProductDetails }) => {
     jwToken,
     currentUser,
   } = useContext(dataContext);
+  console.log(isAddedToCart);
 
   // -------------------------------------------- TOAST NOIFICATIONS --------------------------------------------
 
@@ -82,6 +82,7 @@ const ProductDetails = ({ togglePopup, currentProductDetails }) => {
   );
 
   const proceedToCheckoutHandler = () => {
+    setIsAddedToCart(false);
     navigate("/checkout");
   };
 

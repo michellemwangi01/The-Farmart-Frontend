@@ -158,7 +158,7 @@ const LoggedInNav = () => {
                   <NavLink
                     to="/"
                     activeClassName="active-link"
-                    className="block border-b   border-green-700  text-white font-serif text-lg px-2 py-2 rounded md:bg-transparent text-white"
+                    className="block border-b  border-green-700 font-serif text-lg font-medium px-2 py-2 rounded md:bg-transparent text-green-700"
                   >
                     Home
                   </NavLink>
@@ -167,7 +167,7 @@ const LoggedInNav = () => {
                   <NavLink
                     exact
                     to="/aboutus"
-                    className="block border-b   border-green-700  font-serif text-lg px-2 py-2 rounded md:bg-transparent text-white"
+                    className="block border-b   border-green-700  font-serif text-lg px-2 py-2 rounded md:bg-transparent text-green-700"
                   >
                     About
                   </NavLink>
@@ -176,7 +176,7 @@ const LoggedInNav = () => {
                   <NavLink
                     exact
                     to="products"
-                    className="block border-b   border-green-700  font-serif text-lg px-2 py-2 rounded md:bg-transparent text-white"
+                    className="block border-b   border-green-700  font-serif text-lg px-2 py-2 rounded md:bg-transparent text-green-700"
                   >
                     Products
                   </NavLink>
@@ -185,7 +185,7 @@ const LoggedInNav = () => {
                   <NavLink
                     exact
                     to="vendor"
-                    className="block border-b   border-green-700  font-serif text-lg px-2 py-2 mr-2 rounded md:bg-transparent text-white"
+                    className="block border-b   border-green-700  font-serif text-lg px-2 py-2 mr-2 rounded md:bg-transparent text-green-700"
                   >
                     Vendor
                   </NavLink>

@@ -19,6 +19,7 @@ const Products = () => {
     currentUserName,
     localRoutePrefix,
     hostedRoutePrefix,
+    setIsAddedToCart,
   } = useContext(dataContext);
 
   const [emptyProductsAlert, setEmptyProductsAlert] = useState(
@@ -29,6 +30,7 @@ const Products = () => {
 
   const togglePopup = (id) => {
     setSelectedProductID(id);
+    setIsAddedToCart(false);
   };
 
   // -------------------------------------------- HANDLE PRODUCT DETAILS DISPLAY --------------------------------------------

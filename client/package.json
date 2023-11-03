@@ -12,6 +12,7 @@
     "flag-icons": "^6.11.2",
     "google-maps-react": "^2.0.6",
     "localtunnel": "^2.0.2",
+    "lottie-react": "^2.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.47.0",
