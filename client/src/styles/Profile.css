@@ -83,6 +83,16 @@ body {
     padding: 60px;
     margin-top: 40px;
   }
+
+  .upload-content {
+    display: flex; 
+    align-items: center; 
+    color: #06752E;
+  }
+  
+  .upload-content svg {
+    margin-right: 10px; 
+  }
   
   
   
@@ -242,14 +252,6 @@ body {
     align-items: center;
     justify-content: flex-end;
     padding: 10px 20px;
-  }
-  .upload-content {
-    display: flex; 
-    align-items: center; 
-  }
-  .upload-content svg {
-    margin-right: 10px;
-    color: #06752E;
   }
   
   .nav i {
