@@ -16,7 +16,7 @@ const LoggedOutNav = () => {
   return (
     <div>
       <nav class="bg-white border-gray-200 dark:bg-gray-900 p-0">
-        <div class=" flex flex-wrap items-center justify-between mx-auto p-4">
+        <div class=" flex flex-wrap items-center justify-between mx-auto p-2">
           <a id="FarmartLogo" href="#home" class="flex items-center">
             <span class="self-center text-6xl font-semibold whitespace-nowrap dark:text-white">
               Farmart

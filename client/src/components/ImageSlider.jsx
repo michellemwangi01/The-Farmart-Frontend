@@ -41,7 +41,7 @@ const ImageSlider = () => {
   };
 
   const shopNowHandler = () => {
-    navigate("/products");
+    navigate("/login");
   };
 
   return (

@@ -98,8 +98,8 @@ const LoggedInNav = () => {
   // -------------------------------------------- USER INTERFACE --------------------------------------------
   return (
     <div>
-      <nav class="bg-white border-gray-200 dark:bg-gray-900">
-        <div class=" flex flex-wrap items-center sm:justify-between justify-center mx-auto p-8">
+      <nav class="bg-white border-gray-200 dark:bg-gray-900 shadow-lg shadow-green-100 m-2">
+        <div class=" flex flex-wrap items-center sm:justify-between justify-center mx-auto p-2">
           <a id="FarmartLogo" href="#home" class="flex items-center">
             <span class="self-center text-6xl font-semibold whitespace-nowrap dark:text-white">
               Farmart
