@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { FaRegWindowClose } from "react-icons/fa";
 import { AiOutlineShoppingCart, AiOutlineCloseSquare } from "react-icons/ai";
@@ -17,6 +17,7 @@ const ProductDetails = ({ togglePopup, currentProductDetails }) => {
   const [show, setShow] = useState(false);
   const [show2, setShow2] = useState(false);
   const [addToCartBtnText, setAddToCartBtnText] = useState("");
+  const [productAlreadyInCart, setProductAlreadyInCart] = useState(false);
 
   // -------------------------------------------- USE HOOKS  --------------------------------------------
 
@@ -28,8 +29,20 @@ const ProductDetails = ({ togglePopup, currentProductDetails }) => {
     localRoutePrefix,
     jwToken,
     currentUser,
+    currentUserCartItems,
   } = useContext(dataContext);
   console.log(isAddedToCart);
+
+  // --------------------------------------------  CHECK IF PRODUCT ALREADY IN CART  --------------------------------------------
+  useEffect(() => {
+    const existingProductOnCart = currentUserCartItems.filter(
+      (cartItem) => cartItem.product_id === currentProductDetails.id
+    );
+    console.log(existingProductOnCart);
+    if (existingProductOnCart.length > 0) {
+      setProductAlreadyInCart(true);
+    }
+  });
 
   // -------------------------------------------- TOAST NOIFICATIONS --------------------------------------------
 
@@ -251,7 +264,7 @@ const ProductDetails = ({ togglePopup, currentProductDetails }) => {
                   </svg>
                 </div>
               </div>
-              {isAddedToCart ? (
+              {productAlreadyInCart || isAddedToCart ? (
                 <div>
                   {viewCartBtn}
                   {checkoutBtn}
@@ -259,6 +272,7 @@ const ProductDetails = ({ togglePopup, currentProductDetails }) => {
               ) : (
                 addToCartBtn
               )}
+
               <div>
                 <div className="mt-7">
                   <p className="font-bold font-serif"> Product Details</p>
