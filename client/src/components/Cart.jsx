@@ -37,12 +37,22 @@ const Cart = () => {
 
   // -------------------------------------------- CALCULATE TOTAL AMOUNT ----------------------------------------
 
+  // Load the initial quantities from the database when the component mounts
+  useEffect(() => {
+    const initialQuantities = {};
+    currentUserCartItems.forEach((cartItem) => {
+      initialQuantities[cartItem.id] = cartItem.quantity;
+    });
+    setCartItemQuantities(initialQuantities);
+  }, [currentUserCartItems]);
+
   const increaseItemQuantity = (cartId) => {
     setCartItemQuantities((prevQuantities) => ({
       ...prevQuantities,
       [cartId]: (prevQuantities[cartId] || 1) + 1,
     }));
   };
+
   const decreaseItemQuantity = (cartId) => {
     setCartItemQuantities((prevQuantities) => {
       const currentQuantity = prevQuantities[cartId] || 1;
@@ -55,11 +65,25 @@ const Cart = () => {
       return prevQuantities;
     });
   };
+
   // -------------------------------------------- CALCULATE TOTAL AMOUNT ----------------------------------------
 
   const handleCheckout = () => {
     // navigate("/checkout");
     console.log(cartItemQuantities);
+    for (const id in cartItemQuantities) {
+      console.log(id);
+      axios
+        .patch(`${localRoutePrefix}/cartitems/cart_items/${id}`, {
+          quantity: cartItemQuantities[id],
+        })
+        .then((response) => {
+          console.log("Quantity updated successfully:", response.data);
+        })
+        .catch((error) => {
+          console.error("Error updating quantity:", error);
+        });
+    }
   };
 
   // -------------------------------------------- CALCULATE TOTAL AMOUNT ----------------------------------------
@@ -190,9 +214,9 @@ const Cart = () => {
                 >
                   +
                 </button>
-                <div>{cartItem.quantity}</div>
+                <div>{cartItemQuantities[cartItem.id]}</div>
                 <button
-                  onSubmit={() => decreaseItemQuantity(cartItem.id)}
+                  onClick={() => decreaseItemQuantity(cartItem.id)}
                   className="w-16 h-8 text-black font-serif text-center text-lg bg-transparent border-b-2 rounded"
                   step="1"
                 >
