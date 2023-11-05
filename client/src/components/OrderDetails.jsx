@@ -1,22 +1,57 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "../styles/ProductDetails.css";
+import axios from "axios";
 import { AiOutlineShoppingCart, AiOutlineCloseSquare } from "react-icons/ai";
+import { dataContext } from "../contextProvider/DataContextProvider";
 
-const OrderDetails = ({
-  selectedOrderDetails,
-  isOrderDetailsVisible,
-  setIsOrderDetailsVisible,
-}) => {
+const OrderDetails = ({ selectedOrderDetails, setIsOrderDetailsVisible }) => {
+  // -------------------------------------------- STATE VARIABLES  --------------------------------------------
+
   const [viewCarrierDetails, setViewCarrierDetails] = useState(false);
+  const [orderCancellationMessage, setOrdercancellationMessage] = useState("");
+  const {
+    localRoutePrefix,
+    iscancellationApproved,
+    setIsCancellationApproved,
+  } = useContext(dataContext);
+
+  // -------------------------------------------- VIEW CARRIER DETAILS HANDLER  --------------------------------------------
 
   const viewCarrierDetailsHandler = () => {
     setViewCarrierDetails(!viewCarrierDetails);
   };
-  console.log(selectedOrderDetails);
-  const [noProducts, setNoProducts] = useState(false);
-  const products = selectedOrderDetails.products.slice().reverse();
-  console.log(products);
 
+  // -------------------------------------------- CANCEL ORDER HANDLER  --------------------------------------------
+
+  const cancelOrderHandler = () => {
+    if (selectedOrderDetails.status === "Order Placed") {
+      axios
+        .patch(`${localRoutePrefix}/orders/orders/${selectedOrderDetails.id}`, {
+          status: "Order Cancelled",
+        })
+        .then((res) => {
+          console.log(res.data);
+          setIsCancellationApproved(true);
+          setOrdercancellationMessage(
+            `Your order No.${selectedOrderDetails.id} is Successfully Cancelled.`
+          );
+          selectedOrderDetails.status = "Order Cancelled";
+        });
+    } else {
+      setIsCancellationApproved(false);
+      setOrdercancellationMessage(
+        `Sorry, your order No.${selectedOrderDetails.id} cannot be cancelled.`
+      );
+    }
+  };
+
+  // -------------------------------------------- FECTH SELECTED PRODUCT DETAILS  --------------------------------------------
+
+  // console.log(selectedOrderDetails);
+  // console.log(products);
+  // -------------------------------------------- CREATE ORDER LIST PRODUCTS DISPLAY  --------------------------------------------
+
+  const products = selectedOrderDetails.products;
   const productDetailsList = products.map((product) => {
     return (
       <div className="mt-2 md:mt-2 flex flex-col bg-white md:flex-row justify-start items-start md:items-center md:space-x-6 xl:space-x-8 w-full ">
@@ -70,18 +105,35 @@ const OrderDetails = ({
     );
   });
 
+  // -------------------------------------------- TOGGLE DETAILS PAGE VIEW --------------------------------------------
+
   const togglePopup = () => {
-    setIsOrderDetailsVisible(!isOrderDetailsVisible);
+    setIsOrderDetailsVisible(false);
   };
 
+  // -------------------------------------------- DETAILS PAGE INTERFACE  --------------------------------------------
+
   return (
-    <div className="popup active ">
+    <div className="popup active">
       <div className="popup-content w-2/3 h-5/6 overflow-scroll  ">
+        {orderCancellationMessage !== "" && (
+          <div
+            id="CancellationNotificationDiv"
+            className={iscancellationApproved ? "bg-green-500" : "bg-red-500"}
+            style={{ position: "fixed", left: 0, top: 0, width: "100%" }}
+          >
+            <p className="text-white text-center text-lg font-serif py-2 ">
+              {orderCancellationMessage}
+            </p>
+          </div>
+        )}
+
         <div className="flex justify-end items-top  ">
           <p onClick={togglePopup} className="text-black text-2xl fixed">
             <AiOutlineCloseSquare />{" "}
           </p>
         </div>
+
         <div className="py-4 px-4 md:px-2 2xl:px-10 2xl:container 2xl:mx-auto ">
           <div className="flex justify-between item-start space-y-2 ">
             <h1 className="text-3xl lg:text-4xl font-semibold leading-7 lg:leading-9  text-gray-800">
@@ -289,7 +341,10 @@ const OrderDetails = ({
                     </div>
                   </div>
                   <div className="flex lg:3/4 w-full justify-center items-center md:justify-start md:items-start">
-                    <button className=" md:mt-0 py-5 bg-green-900 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-900 border border-green-900 font-medium 2xl:w-full text-base leading-4 text-white">
+                    <button
+                      onClick={cancelOrderHandler}
+                      className=" md:mt-0 py-5 bg-green-900 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-900 border border-green-900 font-medium 2xl:w-full text-base leading-4 text-white"
+                    >
                       Cancel Order
                     </button>
                   </div>

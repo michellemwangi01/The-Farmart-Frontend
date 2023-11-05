@@ -6,9 +6,16 @@ import OrderDetails from "./OrderDetails";
 
 const OrderHistory = () => {
   const [isOrderDetailsVisible, setIsOrderDetailsVisible] = useState(false);
-  const { currentUserOrderHistory, localRoutePrefix } = useContext(dataContext);
+  const [filteredOrderHistory, setFilteredOrderHistory] = useState(false);
   const [selectedOrderID, setSelectedOrderID] = useState(0);
   const [selectedOrderDetails, setSelectedOrderDetails] = useState({});
+  const [searchValue, setSearchValue] = useState("");
+  const {
+    currentUserOrderHistory,
+    localRoutePrefix,
+    setCurrentUserOrderHistory,
+    unfilteredCurrentUserOrderHistory,
+  } = useContext(dataContext);
 
   // -------------------------------------------- FECTH SELECTED PRODUCT DETAILS  --------------------------------------------
   const ViewProductDetailsHandler = (id) => {
@@ -78,6 +85,25 @@ const OrderHistory = () => {
       </tr>
     ));
 
+  // -------------------------------- FILTER BY SEARCH HANDLER --------------------------------
+
+  const handleSearchOrders = (e) => {
+    const searchValueLowerCase = e.target.value.toLowerCase();
+
+    const searchedProducts = unfilteredCurrentUserOrderHistory.filter(
+      (order) => {
+        const stringID = order.id.toString();
+        return (
+          order.status.toLowerCase().includes(searchValueLowerCase) ||
+          order.payment_uid.toLowerCase().includes(searchValueLowerCase) ||
+          stringID === searchValueLowerCase
+        );
+      }
+    );
+    console.log(searchedProducts);
+    setCurrentUserOrderHistory(searchedProducts);
+  };
+
   // ------------------------------------------ CREATE ORDER HISTORY INTERFACE -------------------------------------
 
   return (
@@ -90,7 +116,9 @@ const OrderHistory = () => {
         />
       )}
 
-      <h1 className="text-center font-serif text-2xl">Your Order History</h1>
+      <h1 className="text-center font-serif text-2xl text-green-900">
+        Your Order History
+      </h1>
       <div class="pb-4 bg-white dark:bg-gray-900">
         <label for="table-search" class="sr-only">
           Search
@@ -114,10 +142,11 @@ const OrderHistory = () => {
             </svg>
           </div>
           <input
+            onChange={handleSearchOrders}
             type="text"
             id="table-search"
-            class="block p-2 pl-10 text-sm text-green-700 border border-green-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:green-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="Search by order id or payment id"
+            class="block p-2 pl-10 text-sm text-green-700 border border-green-300 rounded-lg w-80 bg-gray-50 focus:ring-green-700 focus:green-700 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="Search by status, order ID or payment ID"
           />
         </div>
       </div>

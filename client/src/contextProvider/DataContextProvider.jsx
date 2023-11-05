@@ -14,10 +14,16 @@ const DataContextProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState({});
   const [currentUserCartItems, setCurrentUserCartItems] = useState([]);
   const [currentUserOrderHistory, setCurrentUserOrderHistory] = useState([]);
+  const [
+    unfilteredCurrentUserOrderHistory,
+    setUnfilteredCurrentUserOrderHistory,
+  ] = useState([]);
+
   const [originalProductList, setOriginalProductList] = useState([]);
   const [orderTotalAmount, setOrderTotalAmount] = useState(0);
   const [loadingCategories, setLoadingCategories] = useState(true);
   const [cartItemQuantities, setCartItemQuantities] = useState({});
+  const [iscancellationApproved, setIsCancellationApproved] = useState("");
   const [productsTitleDisplay, setProductsTitleDisplay] =
     useState("All Products");
   const localRoutePrefix = "http://127.0.0.1:5555";
@@ -133,12 +139,13 @@ const DataContextProvider = ({ children }) => {
       })
       .then((res) => {
         setCurrentUserOrderHistory(res.data);
+        setUnfilteredCurrentUserOrderHistory(res.data);
         console.log("ORDER HISTORY", res.data);
       })
       .catch((error) => {
         console.error("Error fetching order history:", error);
       });
-  }, [currentUser]);
+  }, [currentUser, iscancellationApproved]);
 
   // ---------------- FETCHING  VENDOR PRODUCT
 
@@ -222,6 +229,10 @@ const DataContextProvider = ({ children }) => {
     cartItemQuantities,
     setCartItemQuantities,
     currentUserOrderHistory,
+    iscancellationApproved,
+    setIsCancellationApproved,
+    setCurrentUserOrderHistory,
+    unfilteredCurrentUserOrderHistory,
   };
 
   return <dataContext.Provider value={data}>{children}</dataContext.Provider>;
