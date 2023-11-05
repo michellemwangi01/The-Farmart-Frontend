@@ -17,6 +17,7 @@ const DataContextProvider = ({ children }) => {
   const [originalProductList, setOriginalProductList] = useState([]);
   const [orderTotalAmount, setOrderTotalAmount] = useState(0);
   const [loadingCategories, setLoadingCategories] = useState(true);
+  const [cartItemQuantities, setCartItemQuantities] = useState({});
   const [productsTitleDisplay, setProductsTitleDisplay] =
     useState("All Products");
   const localRoutePrefix = "http://127.0.0.1:5555";
@@ -119,7 +120,7 @@ const DataContextProvider = ({ children }) => {
       .catch((error) => {
         console.error("Error fetching cart items:", error);
       });
-  }, [currentUser, isAddedToCart]);
+  }, [currentUser, isAddedToCart, cartItemQuantities]);
 
   // ---------------- FETCHING USER ORDER HISTORY
 
@@ -218,6 +219,8 @@ const DataContextProvider = ({ children }) => {
     setOrderTotalAmount,
     isAddedToCart,
     setIsAddedToCart,
+    cartItemQuantities,
+    setCartItemQuantities,
   };
 
   return <dataContext.Provider value={data}>{children}</dataContext.Provider>;

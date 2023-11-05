@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState, useEffect, useContext } from "react";
+import "../App.css";
 import "/node_modules/flag-icons/css/flag-icons.min.css";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
@@ -13,6 +14,7 @@ function Checkout() {
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [transactionID, setTransactionID] = useState("");
+  const [orderID, setOrderID] = useState(0);
 
   // ------------------- CALL AND USE DATA CONTEXT
 
@@ -69,11 +71,11 @@ function Checkout() {
         alt=""
       />
       <div class="flex w-full flex-col px-4 py-4">
-        <span class="font-semibold">{cartItem.product.name}</span>
+        <span class="font-semibold">{cartItem.product.name.toUpperCase()}</span>
         <span class="float-right text-gray-400">
           {cartItem.product.vendor.business_name}
         </span>
-        <p>Quantity: 4 batches</p>
+        <p>Quantity: {cartItem.quantity} batches</p>
         <p class="text-lg font-bold">
           KES{" "}
           {cartItem.product.price.toLocaleString(undefined, {
@@ -109,7 +111,7 @@ function Checkout() {
     return prefix + randomString;
   }
 
-  // ------------------- HANDLE ORDER SUBMIT
+  // ------------------------------------------ HANDLE ORDER SUBMIT ------------------------------------------
 
   const handleSubmitOrderDetails = (data) => {
     setPopupOpen(!isPopupOpen);
@@ -120,23 +122,22 @@ function Checkout() {
     const delivery_type =
       data.Pickup === "on" ? "Customer Pickup" : "DoorStepDelivery";
     console.log(transactionID);
-    const productOrders = currentUserCartItems
     const orderData = {
       ...data,
       payment_uid: transactionID,
       user_id: currentUser.user_id,
-      product_id: 5,
-      vendor_id: 6,
-      quantity: 4,
       status: "Order Placed",
       delivery_type: delivery_type,
-      amount: orderTotalAmount,
+      amount: orderTotalAmount + orderTotalAmount * 0.05,
     };
+
+    // -------------------------- Create an order
     console.log(orderData);
     axios
       .post("http://127.0.0.1:5555/orders/orders", orderData)
       .then((res) => {
         console.log("response", res.data);
+        setOrderID(res.data.id);
         orderSuccessfullyPlaced(
           "Your order is sucessfully placed. Complete payment to confirm your order",
           "success"
@@ -145,6 +146,32 @@ function Checkout() {
       .catch((error) => {
         console.error("Post Error", error);
       });
+
+    // -------------------------- Populate contents order_products table
+    const product_orders = [];
+    for (const cart_item of currentUserCartItems) {
+      const product_order = {
+        order_id: orderID,
+        product_id: cart_item.product.id,
+        quantity: cart_item.quantity,
+        amount: cart_item.product.price * cart_item.quantity,
+      };
+      product_orders.push(product_order);
+    }
+
+    // -------------------------- Populate contents order_products table
+    console.log("PRODUCT ORDERS", product_orders);
+    for (const product_order of product_orders) {
+      console.log(product_order);
+      axios
+        .post("http://127.0.0.1:5555/orders/product_orders", product_order)
+        .then((res) => {
+          console.log("response", res.data);
+        })
+        .catch((error) => {
+          console.error("Post Error", error);
+        });
+    }
   };
 
   // --------------------- OPEN AND CLOSE PAYMENT POPUP
@@ -156,7 +183,7 @@ function Checkout() {
   };
 
   return (
-    <div>
+    <div className="mb-4 pb-4">
       <div>
         {isPopupOpen && (
           <Payment
@@ -170,9 +197,11 @@ function Checkout() {
         )}
       </div>
       <div class="flex flex-col items-center border-b bg-white py-4 sm:flex-row sm:px-10 lg:px-20 xl:px-32">
-        <a href="#" class="text-2xl font-bold text-gray-800">
-          Farmart
-        </a>
+        <p class="text-4xl font-serif font-medium">Order Summary</p>
+
+        <p class="text-gray-800 font-serif ml-4">
+          Check your items. And select a suitable shipping method.
+        </p>
         <div class="mt-4 py-2 text-xs sm:mt-0 sm:ml-auto sm:text-base">
           <div class="relative">
             <ul class="relative flex w-full items-center justify-between space-x-2 sm:space-x-4">
@@ -214,36 +243,15 @@ function Checkout() {
               </svg>
               <li class="flex items-center space-x-3 text-left sm:space-x-4">
                 <a
-                  class="flex h-6 w-6 items-center justify-center rounded-full bg-gray-600 text-xs font-semibold text-white ring ring-gray-600 ring-offset-2"
+                  class="flex h-6 w-6 items-center justify-center rounded-full bg-green-900 text-xs font-semibold text-white ring ring-green-900 ring-offset-2"
                   href="#"
                 >
                   2
                 </a>
-                <span class="font-semibold text-gray-900">Order & Payment</span>
+                <span class="font-semibold text-green-900">
+                  Order & Payment
+                </span>
               </li>
-              {/* <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-4 w-4 text-gray-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M9 5l7 7-7 7"
-                />
-              </svg> */}
-              {/* <li class="flex items-center space-x-3 text-left sm:space-x-4">
-                <a
-                  class="flex h-6 w-6 items-center justify-center rounded-full bg-gray-400 text-xs font-semibold text-white"
-                  href="#"
-                >
-                  3
-                </a>
-                <span class="font-semibold text-gray-500">Payment</span>
-              </li> */}
             </ul>
           </div>
         </div>
@@ -254,72 +262,13 @@ function Checkout() {
       >
         <div class="grid sm:px-10 lg:grid-cols-2 lg:px-20 xl:px-32">
           <div class="px-4 pt-8">
-            <p class="text-xl font-medium">Order Summary</p>
-            <p class="text-gray-400">
-              Check your items. And select a suitable shipping method.
-            </p>
-            <div class="mt-8 space-y-3 rounded-lg border bg-white px-2 py-4 sm:px-6">
+            <div class="mt-8 space-y-3 rounded-lg bg-white px-2 py-4 sm:px-6 border border-solid border-green-900">
               {/* ----------------------CART ITEMS */}
               {cartItemsList}
               {/* ----------------------CART ITEMS */}
             </div>
-
-            <p class="mt-8 text-lg font-medium">Shipping Methods</p>
-
-            <div class="relative mb-4">
-              <input
-                // {...register("DeliveryOption")}
-                class="peer hidden"
-                id="radio_1"
-                type="radio"
-                name="DeliveryOption"
-              />
-              <span class="peer-checked:border-green-700 absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-green-700 bg-white"></span>
-              <label
-                class="peer-checked:border-2 peer-checked:border-green-700 peer-checked:text-green-700 peer-checked:bg-gray-50 flex cursor-pointer select-none rounded-lg border border-green-700 p-4"
-                for="radio_1"
-              >
-                <img
-                  class="w-14 object-contain"
-                  src="/images/naorrAeygcJzX0SyNI4Y0.png"
-                  alt=""
-                />
-                <div class="ml-5">
-                  <span class="mt-2 font-semibold">Door Step Delivery</span>
-                  <p class="text-slate-500 text-sm leading-6 ">
-                    Delivery: 2-4 Days
-                  </p>
-                </div>
-              </label>
-            </div>
-            <div class="relative">
-              <input
-                {...register("DeliveryOption")}
-                class="peer hidden"
-                id="radio_2"
-                type="radio"
-                name="DeliveryOption"
-              />
-              <span class="peer-checked:border-green-700 absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-green-700 bg-white"></span>
-              <label
-                class="peer-checked:border-2 peer-checked:border-green-700 peer-checked:text-green-700 peer-checked:bg-gray-50 flex cursor-pointer select-none rounded-lg border border-green-700 p-4"
-                for="radio_2"
-              >
-                <img
-                  class="w-14 object-contain"
-                  src="/images/oG8xsl3xsOkwkMsrLGKM4.png"
-                  alt=""
-                />
-                <div class="ml-5">
-                  <span class="mt-2 font-semibold">Customer Pick Up</span>
-                  <p class="text-slate-500 text-sm leading-6">
-                    Delivery: 2-4 Days
-                  </p>
-                </div>
-              </label>
-            </div>
           </div>
-          <div class="mt-10 bg-gray-50 px-4 pt-8 lg:mt-18">
+          <div class="mt-12 bg-gray-50 px-4 pt-8 lg:mt-2 border border-solid border-green-900">
             <p class="text-xl font-medium">Payment Details</p>
             <p class="text-gray-400">
               Complete your order by providing your payment details.
@@ -468,10 +417,10 @@ function Checkout() {
                     },
                   })}
                   name="county"
-                  className="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-green-500 focus:ring-green-500"
+                  className="w-full ml-2 text-green-900 font-serif text-medium rounded-md border border-gray-200 px-4 py-0 text-sm shadow-sm outline-none focus:z-10 focus:border-green-500 focus:ring-green-500"
                 >
                   {Kenya_counties.map((county) => (
-                    <option key={county} value={county}>
+                    <option className="text-lg" key={county} value={county}>
                       {county}
                     </option>
                   ))}
@@ -480,11 +429,68 @@ function Checkout() {
               <p className="text-xs text-red-700">
                 {errors.ShippingAddress?.message}
               </p>
-              {/* <!-- Total --> */}
+              <div id="shippingDetailsDiv" className="mt-8 ">
+                {" "}
+                <p class="mt-8 text-lg font-medium">Shipping Methods</p>
+                <div class="relative mb-4">
+                  <input
+                    // {...register("DeliveryOption")}
+                    class="peer hidden"
+                    id="radio_1"
+                    type="radio"
+                    name="DeliveryOption"
+                  />
+                  <span class="peer-checked:border-green-700 absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-gray-800 bg-white"></span>
+                  <label
+                    class="peer-checked:border-2 peer-checked:border-green-700 peer-checked:text-green-700 peer-checked:bg-gray-50 flex cursor-pointer select-none rounded-lg border border-gray-400 p-4"
+                    for="radio_1"
+                  >
+                    <img
+                      class="w-14 object-contain"
+                      src="/images/naorrAeygcJzX0SyNI4Y0.png"
+                      alt=""
+                    />
+                    <div class="ml-5">
+                      <span class="mt-2 font-semibold">Door Step Delivery</span>
+                      <p class="text-slate-500 text-sm leading-6 ">
+                        Delivery: 2-4 Days
+                      </p>
+                    </div>
+                  </label>
+                </div>
+                <div class="relative">
+                  <input
+                    {...register("DeliveryOption")}
+                    class="peer hidden"
+                    id="radio_2"
+                    type="radio"
+                    name="DeliveryOption"
+                  />
+                  <span class="peer-checked:border-green-700 absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-gray-800 bg-white"></span>
+                  <label
+                    class="peer-checked:border-2 peer-checked:border-green-700 peer-checked:text-green-700 peer-checked:bg-gray-50 flex cursor-pointer select-none rounded-lg border border-gray-400 p-4"
+                    for="radio_2"
+                  >
+                    <img
+                      class="w-14 object-contain"
+                      src="/images/oG8xsl3xsOkwkMsrLGKM4.png"
+                      alt=""
+                    />
+                    <div class="ml-5">
+                      <span class="mt-2 font-semibold">Customer Pick Up</span>
+                      <p class="text-slate-500 text-sm leading-6">
+                        Delivery: 2-4 Days
+                      </p>
+                    </div>
+                  </label>
+                </div>
+              </div>
               <div class="mt-6 border-t border-b py-2">
                 <div class="flex items-center justify-between">
-                  <p class="text-sm font-medium text-gray-900">Subtotal</p>
-                  <p class="font-semibold text-gray-900">
+                  <p class="text-lg font-semibild text-gray-900 font-serif">
+                    Subtotal
+                  </p>
+                  <p class="font-semibold text-gray-900 ">
                     KES{" "}
                     {`${orderTotalAmount.toLocaleString(undefined, {
                       minimumFractionDigits: 2,
@@ -492,8 +498,10 @@ function Checkout() {
                   </p>
                 </div>
                 <div class="flex items-center justify-between">
-                  <p class="text-sm font-medium text-gray-900">Shipping</p>
-                  <p class="font-semibold text-gray-900">
+                  <p class="text-lg font-semibild text-gray-900 font-serif">
+                    Shipping
+                  </p>
+                  <p class="font-semibold text-gray-900 ">
                     KES{" "}
                     {`${(orderTotalAmount * 0.05).toLocaleString(undefined, {
                       minimumFractionDigits: 2,
@@ -502,7 +510,9 @@ function Checkout() {
                 </div>
               </div>
               <div class="mt-6 flex items-center justify-between">
-                <p class="text-sm font-medium text-gray-900">Total</p>
+                <p class="text-lg font-semibild text-gray-900 font-serif">
+                  Total
+                </p>
                 <p class="text-2xl font-semibold text-gray-900">
                   KES{" "}
                   {`${(
@@ -514,11 +524,12 @@ function Checkout() {
                 </p>
               </div>
             </div>
+
             <button
               type="submit"
-              class="mt-4 bg-blue-600  mb-8 w-full rounded-md bg-gray-900 px-6 py-3 font-medium text-white"
+              class="mt-4 mb-8 w-full rounded-md bg-green-900 px-6 py-3 font-medium text-white hover:bg-white hover:border hover:border-solid hover:border-green-900 hover:text-green-900 p-2"
             >
-              Place Order
+              PLACE ORDER
             </button>
           </div>
         </div>

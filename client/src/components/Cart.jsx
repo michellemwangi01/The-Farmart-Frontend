@@ -8,7 +8,6 @@ import AddtoCart from "../animations/AddtoCart.json";
 
 import Lottie from "lottie-react";
 const Cart = () => {
-  const [cartItemQuantities, setCartItemQuantities] = useState({});
   const {
     register,
     handleSubmit,
@@ -25,6 +24,8 @@ const Cart = () => {
     deleteFromOrder,
     orderTotalAmount,
     setOrderTotalAmount,
+    cartItemQuantities,
+    setCartItemQuantities,
   } = useContext(dataContext);
 
   const navigate = useNavigate();
@@ -35,9 +36,9 @@ const Cart = () => {
     deleteFromOrder(id);
   };
 
-  // -------------------------------------------- CALCULATE TOTAL AMOUNT ----------------------------------------
+  // -------------------------------------------- UPDATE QUANTITIY VALUES FOR CART ITEMS----------------------------------------
 
-  // Load the initial quantities from the database when the component mounts
+  // Load the initial quantities from the database
   useEffect(() => {
     const initialQuantities = {};
     currentUserCartItems.forEach((cartItem) => {
@@ -46,6 +47,7 @@ const Cart = () => {
     setCartItemQuantities(initialQuantities);
   }, [currentUserCartItems]);
 
+  //Increment initial quantities
   const increaseItemQuantity = (cartId) => {
     setCartItemQuantities((prevQuantities) => ({
       ...prevQuantities,
@@ -53,6 +55,7 @@ const Cart = () => {
     }));
   };
 
+  //Decrement initial quantities
   const decreaseItemQuantity = (cartId) => {
     setCartItemQuantities((prevQuantities) => {
       const currentQuantity = prevQuantities[cartId] || 1;
@@ -66,10 +69,9 @@ const Cart = () => {
     });
   };
 
-  // -------------------------------------------- CALCULATE TOTAL AMOUNT ----------------------------------------
+  // -------------------------------------------- UPDATE CARTITEM QUANTITIES ON CHECKOUT ----------------------------------------
 
   const handleCheckout = () => {
-    // navigate("/checkout");
     console.log(cartItemQuantities);
     for (const id in cartItemQuantities) {
       console.log(id);
@@ -84,6 +86,7 @@ const Cart = () => {
           console.error("Error updating quantity:", error);
         });
     }
+    navigate("/checkout");
   };
 
   // -------------------------------------------- CALCULATE TOTAL AMOUNT ----------------------------------------
@@ -209,15 +212,17 @@ const Cart = () => {
                 {/* <label className="mr-3 mb-2">Quantity</label> */}
                 <button
                   onClick={() => increaseItemQuantity(cartItem.id)}
-                  className="w-16 h-8 text-black font-serif text-center text-lg bg-transparent border-b-2 rounded"
+                  className="w-8 text-green-900 h-8 pb-2 hover:bg-white text-black text-lg m-auto font-serif text-center text-lg bg-transparent border-b-2 rounded"
                   step="1"
                 >
                   +
                 </button>
-                <div>{cartItemQuantities[cartItem.id]}</div>
+                <div className="px-6 pb-1 text-green-900 border-b border-1 border-solid border-green-900">
+                  {cartItemQuantities[cartItem.id]}
+                </div>
                 <button
                   onClick={() => decreaseItemQuantity(cartItem.id)}
-                  className="w-16 h-8 text-black font-serif text-center text-lg bg-transparent border-b-2 rounded"
+                  className="w-8 h-8  text-green-900 hover:bg-white text-black text-lg m-auto font-serif text-center text-lg bg-transparent border-b-2 rounded"
                   step="1"
                 >
                   -
