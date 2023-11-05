@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "../styles/imageSlider.css";
 
 const images = [
@@ -9,6 +10,7 @@ const images = [
 ];
 
 const ImageSlider = () => {
+  const navigate = useNavigate();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const prevImage = () => {
@@ -38,6 +40,10 @@ const ImageSlider = () => {
     backgroundRepeat: "no-repeat",
   };
 
+  const shopNowHandler = () => {
+    navigate("/products");
+  };
+
   return (
     <div
       className="image-slider"
@@ -64,6 +70,7 @@ const ImageSlider = () => {
         </div>
         <div className="w-1/3">
           <button
+            onClick={shopNowHandler}
             type="button"
             class="py-3 m-auto px-12 text-lg rounded-none font-medium text-white-900 focus:outline-none bg-green-900 border border-green-900 hover:bg-green-500 hover:text-white-900 focus:z-10 focus:ring-4 focus:ring-green-900 dark:focus:ring-green-900 dark:bg-green-900 dark:text-green-400 dark:border-greeny-600 dark:hover:text-white dark:hover:bg-green-900"
           >

@@ -18,6 +18,7 @@ const Cart = () => {
   // -------------------------------------------- GET REQUIRED DATA --------------------------------------------
   const {
     jwToken,
+    currentUser,
     localRoutePrefix,
     currentUserCartItems,
     setCurrentUserCartItems,
@@ -63,17 +64,43 @@ const Cart = () => {
 
   // -------------------------------------------- CALCULATE TOTAL AMOUNT ----------------------------------------
 
+  // const clearCartHandler = () => {
+  //   console.log(currentUser.user_id);
+  //   axios
+  //     .delete(`${localRoutePrefix}/cartitems/user_cart_items`, {
+  //       headers: {
+  //         Authorization: `Bearer ${jwToken}`,
+  //         "Content-Type": "application/json",
+  //       },
+  //     })
+  //     .then((res) => {
+  //       console.log(res);
+  //       setCurrentUserCartItems([]);
+  //     })
+  //     .catch((error) => console.error(error));
+  // };
+  // const clearCartHandler = () => {
+  //   console.log(currentUser.user_id);
+
   const clearCartHandler = () => {
-    console.log(jwToken);
+    console.log(currentUser.user_id);
     axios
-      .delete(`${localRoutePrefix}/clearcartitems`, {
+      .delete(`${localRoutePrefix}/cartitems/clear_cart_items`, {
         headers: {
-          Authorization: `Bearer ${jwToken}`,
-          // "Content-Type": "application/json",
+          "Content-Type": "application/json",
+        },
+        data: {
+          user_id: currentUser.user_id,
         },
       })
       .then((res) => {
-        console.log(res);
+        if (res.status !== 200) {
+          throw new Error("Network response was not ok");
+        }
+        return res.data;
+      })
+      .then((data) => {
+        console.log(data);
         setCurrentUserCartItems([]);
       })
       .catch((error) => console.error(error));

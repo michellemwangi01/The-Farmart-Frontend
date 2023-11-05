@@ -13,6 +13,7 @@ import Login from "./Login";
 import LoggedOutNav from "./LoggedOutNav";
 import Cart from "./Cart";
 import OrderHistory from "./OrderHistory";
+import OrderDetails from "./OrderDetails";
 
 const RouterComponent = () => {
   return (
@@ -30,6 +31,7 @@ const RouterComponent = () => {
         <Route path="/productdetails" element={<ProductDetails />} />
         <Route path="/loggedOutNav" element={<LoggedOutNav />} />
         <Route path="/orderhistory" element={<OrderHistory />} />
+        <Route path="/orderdetails" element={<OrderDetails />} />
         <Route path="*" element={<Error404 />} />
       </Routes>
     </div>

@@ -120,6 +120,7 @@ function Checkout() {
     const delivery_type =
       data.Pickup === "on" ? "Customer Pickup" : "DoorStepDelivery";
     console.log(transactionID);
+    const productOrders = currentUserCartItems
     const orderData = {
       ...data,
       payment_uid: transactionID,
