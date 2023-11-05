@@ -48,17 +48,18 @@ function Profile() {
   };
 
   const handleVerificationClick = () => {
-    // Toggle the Verification section
+   
     setShowVerification(!showVerification);
   };
 
   const handleMembershipClick = () => {
-    // Toggle the Membership section
+    
     setShowMembership(!showMembership);
   };
 
   const handleInfoClick = () => {
-    // Toggle the Info section
+    
+    
     setShowInfo(!showInfo);
   };
 
