@@ -1,7 +1,7 @@
 import "./App.css";
 import { useEffect } from "react";
 import Navbar from "./components/Navbar";
-import Profile from "./components/Profile"
+import Profile from "./components/Profile";
 import RouterComponent from "./components/RouterComponent";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
