@@ -61,37 +61,6 @@ function Checkout() {
     setOrderTotalAmount(totalAmount);
   }, [currentUserCartItems]);
 
-  // ------------------- ORDER ITEMS SUMMARY TEMPLATE
-
-  const cartItemsList = currentUserCartItems.map((cartItem) => (
-    <div class="flex flex-col rounded-lg bg-gray-100 sm:flex-row">
-      <img
-        class="m-2 h-24 w-28 rounded-md border object-cover object-center"
-        src={`${cartItem.product.image}`}
-        alt=""
-      />
-      <div class="flex w-full flex-col px-4 py-4">
-        <span class="font-semibold">{cartItem.product.name.toUpperCase()}</span>
-        <span class="float-right text-gray-400">
-          {cartItem.product.vendor.business_name}
-        </span>
-        <p>Quantity: {cartItem.quantity} batches</p>
-        <p class="text-lg font-bold">
-          KES{" "}
-          {cartItem.product.price.toLocaleString(undefined, {
-            minimumFractionDigits: 2,
-          })}
-        </p>
-        <p
-          onClick={() => deleteFromOrderHandler(cartItem.id)}
-          className="flex items-center justify-end text-red-600 font-light"
-        >
-          <FaRegTrashAlt className="text-red-400" />
-        </p>
-      </div>
-    </div>
-  ));
-
   // -------------------GENERATE RANDOM TRANSACTION ACCOUNT
 
   function generateRandomString(length) {
@@ -120,8 +89,7 @@ function Checkout() {
     const transactionID = generateUniqueAccountNumber(prefix, 6);
     setTransactionID(transactionID);
     const delivery_type =
-      data.Pickup === "on" ? "Customer Pickup" : "DoorStepDelivery";
-    console.log(transactionID);
+      data.Pickup === "on" ? "Customer Pickup" : "Doorstep Delivery";
     const orderData = {
       ...data,
       payment_uid: transactionID,
@@ -181,6 +149,37 @@ function Checkout() {
     setPopupOpen(!isPopupOpen);
     console.log(isPopupOpen);
   };
+
+  // ------------------- ORDER ITEMS SUMMARY TEMPLATE
+
+  const cartItemsList = currentUserCartItems.map((cartItem) => (
+    <div class="flex flex-col rounded-lg bg-gray-100 sm:flex-row">
+      <img
+        class="m-2 h-24 w-28 rounded-md border object-cover object-center"
+        src={`${cartItem.product.image}`}
+        alt=""
+      />
+      <div class="flex w-full flex-col px-4 py-4">
+        <span class="font-semibold">{cartItem.product.name.toUpperCase()}</span>
+        <span class="float-right text-gray-400">
+          {cartItem.product.vendor.business_name}
+        </span>
+        <p>Quantity: {cartItem.quantity} batches</p>
+        <p class="text-lg font-bold">
+          KES{" "}
+          {cartItem.product.price.toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+          })}
+        </p>
+        <p
+          onClick={() => deleteFromOrderHandler(cartItem.id)}
+          className="flex items-center justify-end text-red-600 font-light"
+        >
+          <FaRegTrashAlt className="text-red-400" />
+        </p>
+      </div>
+    </div>
+  ));
 
   return (
     <div className="mb-4 pb-4">

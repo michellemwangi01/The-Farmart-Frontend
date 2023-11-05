@@ -221,6 +221,7 @@ const DataContextProvider = ({ children }) => {
     setIsAddedToCart,
     cartItemQuantities,
     setCartItemQuantities,
+    currentUserOrderHistory,
   };
 
   return <dataContext.Provider value={data}>{children}</dataContext.Provider>;

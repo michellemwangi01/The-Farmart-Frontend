@@ -151,7 +151,6 @@ const ProductDetails = ({ togglePopup, currentProductDetails }) => {
 
   return (
     <div>
-      <div className="background-content "></div>
       <div className="popup active">
         <div className="popup-content w-2/3 h-5/6 overflow-scroll ">
           <div className="flex justify-end items-top  ">
@@ -421,33 +420,3 @@ const ProductDetails = ({ togglePopup, currentProductDetails }) => {
 };
 
 export default ProductDetails;
-
-//    <div className="md:hidden">
-//      <img
-//        className="w-full"
-//        alt="product images"
-//        src={currentProductDetails.category.image}
-//      />
-//      <div className="flex items-center justify-between mt-3 space-x-4 md:space-x-0">
-//        <img
-//          alt="img-tag-one"
-//          className="md:w-48 md:h-48 w-full"
-//          src={currentProductDetails.category.image}
-//        />
-//        <img
-//          alt="img-tag-one"
-//          className="md:w-48 md:h-48 w-full"
-//          src={currentProductDetails.category.image}
-//        />
-//        <img
-//          alt="img-tag-one"
-//          className="md:w-48 md:h-48 w-full"
-//          src={currentProductDetails.category.image}
-//        />
-//        <img
-//          alt="img-tag-one"
-//          className="md:w-48 md:h-48 w-full"
-//          src="https://i.ibb.co/f17NXrW/Rectangle-244.png"
-//        />
-//      </div>
-//    </div>;
