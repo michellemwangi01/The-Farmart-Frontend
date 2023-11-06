@@ -1,8 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSpring, animated } from "react-spring";
+import { useForm } from "react-hook-form";
+import "../styles/ProductCard.css";
+import Footer from "./Footer";
 
 const Vendor = () => {
+  const [isFormVisible, setIsFormVisible] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
+
+  // ---------------------------- COUNTER ANIMATION COMPONENT --------------------
   function Number({ n }) {
     const step = 10000;
     const { number } = useSpring({
@@ -18,6 +30,10 @@ const Vendor = () => {
     );
   }
 
+  // ---------------------------- TOGGLE FORM VIEW -------------------------
+  const formViewHandler = () => {
+    setIsFormVisible(!isFormVisible);
+  };
   const navigate = useNavigate();
   const shopNowHandler = () => {
     // navigate
@@ -158,138 +174,293 @@ const Vendor = () => {
         </div>
       </div>
       <div className="p-4 m-4">
-        <button className="rounded-none bg-green-900 hover:border-1 hover:border-solid hover:border-green-900 text-white m-auto hover:bg-white hover:text-green-900">
+        <button
+          onClick={formViewHandler}
+          className="rounded-none bg-green-900 mt-6 font-serif hover:border-1 hover:border-solid hover:border-green-900 text-white m-auto hover:bg-white hover:text-green-900"
+        >
           VENDOR REGISTRATION FORM
         </button>
+        <p className="text-center text-xl font-serif text-gray-800 p-8">
+          {" "}
+          Fill in the form to register as a vendor.
+        </p>
+        {isFormVisible && (
+          <div className="w-2/3 flex justify-center items-center m-auto border border-solid border-1 rounded-lg border-green-900 p-10 ">
+            <form>
+              <div class="relative z-0 w-full mb-6 group">
+                <input
+                  type="email"
+                  name="floating_email"
+                  id="floating_email"
+                  class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-green-400 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                  placeholder=" "
+                  required
+                />
+                <label
+                  for="floating_email"
+                  class="peer-focus:font-medium absolute text-normal font-serif font-normal text-gray-800 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                >
+                  Full names
+                </label>
+              </div>
+              <div class="relative z-0 w-full mb-6 group">
+                <input
+                  type="text"
+                  name=""
+                  id="floating_password"
+                  class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-green-400 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                  placeholder=" "
+                  required
+                />
+                <label
+                  for="Business Name"
+                  class="peer-focus:font-medium absolute text-normal font-serif font-normal text-gray-800 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                >
+                  Business Name
+                </label>
+              </div>
+              <div class="relative z-0 w-full mb-6 group">
+                <input
+                  type="text"
+                  name="mobile_number"
+                  id="mobile_number"
+                  class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-green-400 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                  placeholder=" "
+                  required
+                />
+                <label
+                  for="floating_repeat_password"
+                  class="peer-focus:font-medium absolute text-normal font-serif font-normal text-gray-800 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                >
+                  Mobile Number
+                </label>
+              </div>
+              <div class="grid md:grid-cols-2 md:gap-6">
+                <div class="relative z-0 w-full mb-6 group">
+                  <input
+                    type="text"
+                    {...register("Physical Address")}
+                    id="Physical Address"
+                    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-green-400 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    placeholder=" "
+                    required
+                  />
+                  <label
+                    for="Physical Address"
+                    class="peer-focus:font-medium absolute text-normal font-serif font-normal text-gray-800 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                  >
+                    Physical Address
+                  </label>
+                </div>
+                <div class="relative z-0 w-full mb-6 group">
+                  <input
+                    type="text"
+                    {...register("County")}
+                    name="County"
+                    id="County"
+                    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-green-400 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    placeholder=" "
+                    required
+                  />
+                  <label
+                    for="County"
+                    class="peer-focus:font-medium absolute text-normal font-serif font-normal text-gray-800 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                  >
+                    County
+                  </label>
+                </div>
+              </div>
+              <div class="grid md:grid-cols-2 md:gap-6">
+                <div class="relative z-0 w-full mb-6 group">
+                  <input
+                    type="tel"
+                    pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                    {...register("Image")}
+                    id="Image"
+                    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-green-400 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    placeholder=" "
+                    required
+                  />
+                  <label
+                    for="floating_phone"
+                    class="peer-focus:font-medium absolute text-normal font-serif font-normal text-gray-800 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                  >
+                    Image
+                  </label>
+                </div>
+                <div class="relative z-0 w-full mb-6 group">
+                  <input
+                    type="email"
+                    {...register("Email")}
+                    id="Email Address"
+                    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-green-400 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    placeholder=" "
+                    required
+                  />
+                  <label
+                    for="Email Address"
+                    class="peer-focus:font-medium absolute text-normal font-serif font-normal text-gray-800 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                  >
+                    Email Address
+                  </label>
+                </div>
+              </div>
+              <p className="font-serif text-gray-800 text-lg">
+                Please select the categories of products you'd like to offer on
+                this platform:
+              </p>
 
-        <form>
-          <div class="relative z-0 w-full mb-6 group">
-            <input
-              type="email"
-              name="floating_email"
-              id="floating_email"
-              class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              placeholder=" "
-              required
-            />
-            <label
-              for="floating_email"
-              class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-            >
-              Full names
-            </label>
+              <div id="CategorySelector" className="flex flex-wrap">
+                <div class="flex items-center justify-center mb-4 mx-4 text-xl ">
+                  <input
+                    id="default-checkbox"
+                    type="checkbox"
+                    {...register("category")}
+                    value=" Live Animals"
+                    class="w-4 h-4   text-green-700 bg-gray-100 border-green-400 rounded focus:ring-green-700 dark:focus:ring-green-700 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  />
+                  <label
+                    for="default-checkbox"
+                    class="ml-2 text-sm font-normal text-gray-900 dark:text-gray-300"
+                  >
+                    Live Animals
+                  </label>
+                </div>
+                <div class="flex items-center mb-4  mx-4">
+                  <input
+                    id="default-checkbox"
+                    type="checkbox"
+                    {...register("category")}
+                    value=" Meat & Poultry"
+                    class="w-4 h-4 text-green-700 bg-gray-100 border-green-400 rounded focus:ring-green-700 dark:focus:ring-green-700 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  />
+                  <label
+                    for="default-checkbox"
+                    class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                  >
+                    Meat & Poultry
+                  </label>
+                </div>
+                <div class="flex items-center mb-4  mx-4">
+                  <input
+                    id="default-checkbox"
+                    type="checkbox"
+                    {...register("category")}
+                    value="Dairy Products"
+                    class="w-4 h-4 text-green-700 bg-gray-100 border-green-400 rounded focus:ring-green-700 dark:focus:ring-green-700 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  />
+                  <label
+                    for="default-checkbox"
+                    class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                  >
+                    Dairy Products
+                  </label>
+                </div>
+                <div class="flex items-center mb-4  mx-4">
+                  <input
+                    id="default-checkbox"
+                    type="checkbox"
+                    {...register("category")}
+                    value=" Eggs"
+                    class="w-4 h-4 text-green-700 bg-gray-100 border-green-400 rounded focus:ring-green-700 dark:focus:ring-green-700 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  />
+                  <label
+                    for="default-checkbox"
+                    class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                  >
+                    Dairy Products
+                  </label>
+                </div>
+                <div class="flex items-center mb-4  mx-4">
+                  <input
+                    id="default-checkbox"
+                    type="checkbox"
+                    {...register("category")}
+                    value=" Fresh Produce"
+                    class="w-4 h-4 text-green-700 bg-gray-100 border-green-400 rounded focus:ring-green-700 dark:focus:ring-green-700 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  />
+                  <label
+                    for="default-checkbox"
+                    class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                  >
+                    Fresh Produce
+                  </label>
+                </div>
+                <div class="flex items-center mb-4  mx-4">
+                  <input
+                    id="default-checkbox"
+                    type="checkbox"
+                    {...register("category")}
+                    value="Honey & Bee Products"
+                    class="w-4 h-4 text-green-700 bg-gray-100 border-green-400 rounded focus:ring-green-700 dark:focus:ring-green-700 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  />
+                  <label
+                    for="default-checkbox"
+                    class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                  >
+                    Honey & Bee Products
+                  </label>
+                </div>
+                <div class="flex items-center mb-4  mx-4">
+                  <input
+                    id="default-checkbox"
+                    type="checkbox"
+                    {...register("category")}
+                    value=" Grains & Cereals"
+                    class="w-4 h-4 text-green-700 bg-gray-100 border-green-400 rounded focus:ring-green-700 dark:focus:ring-green-700 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  />
+                  <label
+                    for="default-checkbox"
+                    class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                  >
+                    Grains & Cereals
+                  </label>
+                </div>
+                <div class="flex items-center mb-4  mx-4">
+                  <input
+                    id="default-checkbox"
+                    type="checkbox"
+                    {...register("category")}
+                    value="Fish & Seafood products"
+                    class="w-4 h-4 text-green-700 bg-gray-100 border-green-400 rounded focus:ring-green-700 dark:focus:ring-green-700 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  />
+                  <label
+                    for="default-checkbox"
+                    class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                  >
+                    Fish & Seafood products
+                  </label>
+                </div>
+                <div class="flex items-center mb-4  mx-4">
+                  <input
+                    id="default-checkbox"
+                    type="checkbox"
+                    {...register("category")}
+                    value=" Animal Feed $ Supplements"
+                    class="w-4 h-4 text-green-700 bg-gray-100 border-green-400 rounded focus:ring-green-700 dark:focus:ring-green-700 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  />
+                  <label
+                    for="default-checkbox"
+                    class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                  >
+                    Animal Feed $ Supplements
+                  </label>
+                </div>
+              </div>
+              <div className="flex justify-center m-auto w-full">
+                <button
+                  type="submit"
+                  class=" text-white bg-green-700 border border-solid border-green-700 rounded-none hover:bg-green-800 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium  text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                >
+                  SUBMIT REGISTRATION DETAILS{" "}
+                </button>
+              </div>
+            </form>
           </div>
-          <div class="relative z-0 w-full mb-6 group">
-            <input
-              type="text"
-              name=""
-              id="floating_password"
-              class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              placeholder=" "
-              required
-            />
-            <label
-              for="Business Name"
-              class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-            >
-              Business Name
-            </label>
-          </div>
-          <div class="relative z-0 w-full mb-6 group">
-            <input
-              type="text"
-              name="mobile_number"
-              id="mobile_number"
-              class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              placeholder=" "
-              required
-            />
-            <label
-              for="floating_repeat_password"
-              class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-            >
-              Mobile Number
-            </label>
-          </div>
-          <div class="grid md:grid-cols-2 md:gap-6">
-            <div class="relative z-0 w-full mb-6 group">
-              <input
-                type="text"
-                name="floating_first_name"
-                id="floating_first_name"
-                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                placeholder=" "
-                required
-              />
-              <label
-                for="floating_first_name"
-                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-              >
-                First name
-              </label>
-            </div>
-            <div class="relative z-0 w-full mb-6 group">
-              <input
-                type="text"
-                name="floating_last_name"
-                id="floating_last_name"
-                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                placeholder=" "
-                required
-              />
-              <label
-                for="floating_last_name"
-                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-              >
-                Last name
-              </label>
-            </div>
-          </div>
-          <div class="grid md:grid-cols-2 md:gap-6">
-            <div class="relative z-0 w-full mb-6 group">
-              <input
-                type="tel"
-                pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-                name="floating_phone"
-                id="floating_phone"
-                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                placeholder=" "
-                required
-              />
-              <label
-                for="floating_phone"
-                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-              >
-                Phone number (123-456-7890)
-              </label>
-            </div>
-            <div class="relative z-0 w-full mb-6 group">
-              <input
-                type="text"
-                name="floating_company"
-                id="floating_company"
-                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                placeholder=" "
-                required
-              />
-              <label
-                for="floating_company"
-                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-              >
-                Company (Ex. Google)
-              </label>
-            </div>
-          </div>
-          <button
-            type="submit"
-            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-          >
-            Submit
-          </button>
-        </form>
+        )}
       </div>
 
-      <div className="bg-gray-200 mb-8 pb-8">
+      <div className="bg-gray-200  pb-8">
         <div>
           <h1 className="text-2xl py-6 font-serif text-center">
             JOIN OUR COMMUNITY
@@ -297,7 +468,7 @@ const Vendor = () => {
         </div>
         <div
           id="statistics"
-          className=" flex justify-center items-center w-full"
+          className=" flex flex-wrap justify-center items-center w-full"
         >
           <div className="bg-white flex flex-col border border-1 border-solid border-green-700 justify-center items-center p-10 m-4 rounded-lg text-center shadow-lg">
             <img
@@ -379,6 +550,7 @@ const Vendor = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
