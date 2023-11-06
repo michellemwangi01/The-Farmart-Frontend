@@ -152,7 +152,7 @@ const ProductsSearchFilter = ({}) => {
         <div className="flex flex-wrap xl:flex-col justify-center">
           <button
             type="button"
-            class="py-2.5 px-5 mr-2 mb-2 text-base  bg-green-800 font-base focus:outline-none border bg-gray-100 hover:bg-green-800 hover:text-white focus:z-10 focus:ring-2 focus:ring-green-800"
+            class="py-2.5 px-5 mr-2 mb-2 text-base  bg-green-800 font-base focus:outline-none border  hover:bg-green-800 hover:text-white focus:z-10 focus:ring-2 focus:ring-green-800"
             onClick={resetProducts}
           >
             All Products

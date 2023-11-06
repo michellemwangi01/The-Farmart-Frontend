@@ -131,7 +131,7 @@ const Login = () => {
                     </p>
                     <button
                       type="submit"
-                      class="block w-full max-w-xs mx-auto bg-green-500 hover:bg-green-700 focus:bg-green-700 text-white rounded-lg px-3 py-3 font-semibold"
+                      class="block w-full max-w-xs mx-auto bg-green-800 hover:bg-green-700 focus:bg-green-700 text-white rounded-lg px-3 py-3 font-semibold"
                     >
                       LOGIN NOW
                     </button>

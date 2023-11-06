@@ -74,30 +74,30 @@ const LoggedInNav = () => {
       <ul class="py-2">
         {isVendor && (
           <li onClick={() => navigate("/vendorhome")}>
-            <p class="flex justify-center block px-4 py-2  text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white cursor-pointer">
+            <p class="flex justify-center font-serif block px-4 py-2  text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white cursor-pointer">
               Vendor Portal
             </p>
           </li>
         )}
 
         <li onClick={openOrderHistory}>
-          <p class="flex justify-center block px-4 py-2  text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white cursor-pointer">
+          <p class="flex justify-center font-serif block px-4 py-2  text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white cursor-pointer">
             Order History
           </p>
         </li>
 
         <li onClick={viewCartHandler}>
-          <p class="flex justify-center block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white cursor-pointer">
+          <p class="flex justify-center font-serif block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white cursor-pointer">
             Your Cart
           </p>
         </li>
         <li onClick={openProfile}>
-          <p class="flex justify-center block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+          <p class="flex justify-center font-serif block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
             Profile
           </p>
         </li>
         <li onClick={handleLogout}>
-          <p class="flex justify-center block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white cursor-pointer">
+          <p class="flex justify-center font-serif  block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white cursor-pointer">
             Sign out
           </p>
         </li>

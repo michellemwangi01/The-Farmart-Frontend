@@ -249,7 +249,7 @@ const Vendor = () => {
               alt="Vendors"
             />
             <p className="font-serif text-2xl font-semibold text-green-700 text-center">
-              <Number n={12000} />
+              <Number n={1600} />
             </p>
             <p className="font-serif text-2xl font-bold text-center text-green-700">
               Farmers

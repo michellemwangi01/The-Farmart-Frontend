@@ -14,7 +14,10 @@ import LoggedOutNav from "./LoggedOutNav";
 import Cart from "./Cart";
 import OrderHistory from "./OrderHistory";
 import OrderDetails from "./OrderDetails";
-
+import VendorPortal from "./VendorDashboard";
+import VendorAllOrders from "./VendorAllOrders";
+import VendorNewOrders from "./VendorNewOrders";
+import Vendorproducts from "./Vendorproducts";
 const RouterComponent = () => {
   return (
     <div id="routerComponent">
@@ -32,6 +35,12 @@ const RouterComponent = () => {
         <Route path="/loggedOutNav" element={<LoggedOutNav />} />
         <Route path="/orderhistory" element={<OrderHistory />} />
         <Route path="/orderdetails" element={<OrderDetails />} />
+        <Route path="/vendorhome" element={<VendorPortal />}>
+          <Route index element={<VendorNewOrders />} />
+          <Route path="vendorneworders" element={<VendorNewOrders />} />
+          <Route path="vendorproducts" element={<Vendorproducts />} />
+          <Route path="allorders" element={<VendorAllOrders />} />
+        </Route>
         <Route path="*" element={<Error404 />} />
       </Routes>
     </div>

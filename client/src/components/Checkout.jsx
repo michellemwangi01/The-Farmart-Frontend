@@ -59,6 +59,7 @@ function Checkout() {
       0
     );
     setOrderTotalAmount(totalAmount);
+    console.log(totalAmount);
   }, [currentUserCartItems]);
 
   // -------------------GENERATE RANDOM TRANSACTION ACCOUNT
@@ -98,13 +99,14 @@ function Checkout() {
       delivery_type: delivery_type,
       amount: orderTotalAmount + orderTotalAmount * 0.05,
     };
-
+    const fullamount = orderTotalAmount + orderTotalAmount * 0.05;
+    setOrderTotalAmount(orderTotalAmount + orderTotalAmount * 0.05);
     // -------------------------- Create an order
     console.log(orderData);
     axios
       .post("http://127.0.0.1:5555/orders/orders", orderData)
       .then((res) => {
-        console.log("response", res.data);
+        console.log("ORDER SUCCESSFULLY PLACED", res.data);
         setOrderID(res.data.id);
         orderSuccessfullyPlaced(
           "Your order is sucessfully placed. Complete payment to confirm your order",
@@ -114,7 +116,7 @@ function Checkout() {
       .catch((error) => {
         console.error("Post Error", error);
       });
-
+    console.log(orderID);
     // -------------------------- Populate contents order_products table
     const product_orders = [];
     for (const cart_item of currentUserCartItems) {
@@ -123,6 +125,7 @@ function Checkout() {
         product_id: cart_item.product.id,
         quantity: cart_item.quantity,
         amount: cart_item.product.price * cart_item.quantity,
+        vendor_id: cart_item.product.vendor.id,
       };
       product_orders.push(product_order);
     }
@@ -134,7 +137,7 @@ function Checkout() {
       axios
         .post("http://127.0.0.1:5555/orders/product_orders", product_order)
         .then((res) => {
-          console.log("response", res.data);
+          console.log("PRODUCT_ORDER CREATED", res.data);
         })
         .catch((error) => {
           console.error("Post Error", error);

@@ -15,6 +15,8 @@ const DataContextProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState({});
   const [currentUserCartItems, setCurrentUserCartItems] = useState([]);
   const [currentUserOrderHistory, setCurrentUserOrderHistory] = useState([]);
+  const [vendorOrders, setVendorOrders] = useState([]);
+  const [unfilteredVendorOrders, setUnfilteredVendorOrders] = useState([]);
   const [
     unfilteredCurrentUserOrderHistory,
     setUnfilteredCurrentUserOrderHistory,
@@ -245,6 +247,8 @@ const DataContextProvider = ({ children }) => {
     setIsCancellationApproved,
     setCurrentUserOrderHistory,
     unfilteredCurrentUserOrderHistory,
+    vendorOrders,
+    setVendorOrders,
     isVendor,
     setIsVendor,
   };
