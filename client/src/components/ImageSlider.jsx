@@ -25,12 +25,11 @@ const ImageSlider = () => {
     );
   };
 
-  // Automatically change images every 3 seconds
   useEffect(() => {
-    const interval = setInterval(nextImage, 5000); // 3000 milliseconds (3 seconds)
+    const interval = setInterval(nextImage, 5000);
 
     return () => {
-      clearInterval(interval); // Clear the interval on component unmount
+      clearInterval(interval);
     };
   }, [currentImageIndex]);
 

@@ -7,9 +7,11 @@ const LoggedInNav = () => {
   // -------------------------------------------- IMPORT CONTEXT DATA --------------------------------------------
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showMainMenu, setShowMainMenu] = useState(false);
-  const { currentUser, setCurrentUser, setJWToken } = useContext(dataContext);
+  const { currentUser, setCurrentUser, setJWToken, isVendor } =
+    useContext(dataContext);
   const navigate = useNavigate();
-
+  console.log(currentUser.vendor_id);
+  console.log(isVendor);
   // -------------------------------------------- HANDLE LOGOUT --------------------------------------------
 
   const handleLogout = () => {
@@ -70,6 +72,14 @@ const LoggedInNav = () => {
         </span>
       </div>
       <ul class="py-2">
+        {isVendor && (
+          <li onClick={() => navigate("/vendorhome")}>
+            <p class="flex justify-center block px-4 py-2  text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white cursor-pointer">
+              Vendor Portal
+            </p>
+          </li>
+        )}
+
         <li onClick={openOrderHistory}>
           <p class="flex justify-center block px-4 py-2  text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white cursor-pointer">
             Order History

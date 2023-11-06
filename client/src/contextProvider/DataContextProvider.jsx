@@ -8,6 +8,7 @@ const dataContext = createContext();
 const DataContextProvider = ({ children }) => {
   // -------------------- CREATE STATE VARIABLES
   const [categories, setCategories] = useState([]);
+  const [isVendor, setIsVendor] = useState(false);
   const [products, setProducts] = useState([]);
   const [jwToken, setJWToken] = useState("");
   const [isAddedToCart, setIsAddedToCart] = useState(false);
@@ -80,6 +81,17 @@ const DataContextProvider = ({ children }) => {
   function capitalizeFirstLetter(sentence) {
     return sentence.charAt(0).toUpperCase() + sentence.slice(1);
   }
+
+  // ---------------- CHECK IF USER IS VENDOR
+  useEffect(() => {
+    console.log(currentUser.vendor_id);
+    if (currentUser.vendor_id === "None") {
+      setIsVendor(false);
+    } else {
+      setIsVendor(true);
+    }
+  }, [currentUser]);
+
   // ---------------- FETCHING ALL CATEGORIES
 
   useEffect(() => {
@@ -233,6 +245,8 @@ const DataContextProvider = ({ children }) => {
     setIsCancellationApproved,
     setCurrentUserOrderHistory,
     unfilteredCurrentUserOrderHistory,
+    isVendor,
+    setIsVendor,
   };
 
   return <dataContext.Provider value={data}>{children}</dataContext.Provider>;
