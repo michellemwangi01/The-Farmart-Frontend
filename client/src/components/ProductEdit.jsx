@@ -1,15 +1,15 @@
 import React, { useContext, useState,useEffect } from "react";
 import { dataContext } from "../contextProvider/DataContextProvider";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import backgroundImage from "../images/image3.jpg";
 import axios from "axios";
 
 const EditProduct =()=>{
     const{originalProductList,categories,hostedRoutePrefix}=useContext(dataContext)
     const { id } = useParams();
-const product = originalProductList.find((product) => product.id === Number(id));
+    const product = originalProductList.find((product) => product.id === Number(id));
 
-    
+    const navigate=useNavigate()
     console.log(product);
 
     const [name, setName] = useState("");
@@ -80,11 +80,13 @@ const product = originalProductList.find((product) => product.id === Number(id))
             },
           })
           .then((response) => {
+            response.json()
             console.log('User profile updated successfully');
           })
           .catch((error) => {
             console.error('Error updating user profile:', error);
           });
+          navigate("/shop")
       };
       const categoriesList = categories.map((item) => (
         <option className="hover:bg-white hover:text-green-600 bg-white" key={item.id} value={item.name}>
