@@ -1,6 +1,7 @@
 import "./App.css";
 import { useContext, useEffect } from "react";
 import Navbar from "./components/Navbar";
+import Profile from "./components/Profile";
 import RouterComponent from "./components/RouterComponent";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -28,6 +29,9 @@ function App({}) {
         theme="dark"
       />
       <Navbar />
+
+      <Profile/>
+
       {isCartVisible && (
         <div className="popup-cart active">
           <div className="popup-content-cart">
@@ -35,6 +39,7 @@ function App({}) {
           </div>
         </div>
       )}
+
       <RouterComponent />
     </div>
   );
