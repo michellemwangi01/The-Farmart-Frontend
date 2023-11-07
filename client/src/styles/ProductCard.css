@@ -149,3 +149,8 @@ Generic layout (demo looks)
   white-space: nowrap;
   width: 1px;
 }
+label {
+  font-family: serif;
+  font-weight: lighter;
+  color: gray;
+}

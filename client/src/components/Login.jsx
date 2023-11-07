@@ -2,6 +2,7 @@ import React, { useCallback, useContext, useState } from "react";
 import backgroundImage from "../images/image3.jpg";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import api from "./AxiosAddJWT";
 import { dataContext } from "../contextProvider/DataContextProvider";
 import { Link, NavLink, Navigate, useNavigate } from "react-router-dom";
 import Signup from "./Signup";
@@ -29,13 +30,16 @@ const Login = () => {
   // -------------------------------------------- USE FORM HOOK  --------------------------------------------
   const { register, reset, handleSubmit } = useForm();
 
+  // -------------------------------------------- HANDLE LOGIN  --------------------------------------------
+
   const handleLogin = (data) => {
     console.log(data);
     axios
       .post(`${localRoutePrefix}/authorization/login`, data)
       .then((res) => {
         console.log(res.data);
-        localStorage.setItem("jwToken", res.data.access_token);
+        localStorage.setItem("access_token", res.data.access_token);
+        localStorage.setItem("refresh_token", res.data.refresh_token);
         setJWToken(res.data.access_token);
         setCurrentUser(res.data.current_user);
         navigate("/products");
@@ -48,6 +52,9 @@ const Login = () => {
     reset();
     setErrorMessages("");
   };
+
+  // -------------------------------------------- LOGIN INTERFACE  --------------------------------------------
+
   return (
     <div
       style={{
@@ -131,7 +138,7 @@ const Login = () => {
                     </p>
                     <button
                       type="submit"
-                      class="block w-full max-w-xs mx-auto bg-green-500 hover:bg-green-700 focus:bg-green-700 text-white rounded-lg px-3 py-3 font-semibold"
+                      class="block w-full max-w-xs mx-auto bg-green-800 hover:bg-green-700 focus:bg-green-700 text-white rounded-lg px-3 py-3 font-semibold"
                     >
                       LOGIN NOW
                     </button>

@@ -1,17 +1,13 @@
 import React, { useContext } from "react";
 import { dataContext } from "../contextProvider/DataContextProvider";
+import ImageSlider from "./ImageSlider";
 
 const Home = () => {
-  const { categories } = useContext(dataContext);
-
-  console.log(categories);
-
-  const categoriesList = categories.map((category) => (
-    <img src={`${category.image}`} alt="" key={category.id} />
-  ));
-
-  console.log(categoriesList);
-  return <div></div>;
+  return (
+    <div>
+      <ImageSlider></ImageSlider>
+    </div>
+  );
 };
 
 export default Home;

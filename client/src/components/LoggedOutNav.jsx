@@ -16,7 +16,7 @@ const LoggedOutNav = () => {
   return (
     <div>
       <nav class="bg-white border-gray-200 dark:bg-gray-900 p-0">
-        <div class=" flex flex-wrap items-center justify-between mx-auto p-4">
+        <div class=" flex flex-wrap items-center justify-between mx-auto p-2">
           <a id="FarmartLogo" href="#home" class="flex items-center">
             <span class="self-center text-6xl font-semibold whitespace-nowrap dark:text-white">
               Farmart
@@ -28,7 +28,7 @@ const LoggedOutNav = () => {
               <NavLink
                 to="/"
                 activeClassName="active-link"
-                className="block font-serif text-lg px-2 py-2 rounded md:bg-transparent md:text-black dark:text-white"
+                className="block font-serif text-lg px-2 py-2 rounded md:bg-transparent font-semibold text-green-700 dark:text-white"
               >
                 Home
               </NavLink>
@@ -37,7 +37,7 @@ const LoggedOutNav = () => {
               <NavLink
                 to="/login"
                 activeClassName="active-link"
-                className="block font-serif text-lg px-2 py-2 rounded md:bg-transparent md:text-black dark:text-white"
+                className="block font-serif text-lg px-2 py-2 rounded md:bg-transparent font-semibold text-green-700 dark:text-white"
               >
                 Login
               </NavLink>

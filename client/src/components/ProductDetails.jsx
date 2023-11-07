@@ -1,4 +1,5 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import axios from "axios";
 import { FaRegWindowClose } from "react-icons/fa";
 import { AiOutlineShoppingCart, AiOutlineCloseSquare } from "react-icons/ai";
 import { MdShoppingCartCheckout } from "react-icons/md";
@@ -11,18 +12,39 @@ import { dataContext } from "../contextProvider/DataContextProvider";
 import "../styles/ProductDetails.css";
 
 const ProductDetails = ({ togglePopup, currentProductDetails }) => {
-  console.log(currentProductDetails);
   // -------------------------------------------- STATE VARIABLES  --------------------------------------------
 
   const [show, setShow] = useState(false);
   const [show2, setShow2] = useState(false);
-  const [isAddedToCart, setIsAddedToCart] = useState(false);
   const [addToCartBtnText, setAddToCartBtnText] = useState("");
+  const [productAlreadyInCart, setProductAlreadyInCart] = useState(false);
 
   // -------------------------------------------- USE HOOKS  --------------------------------------------
 
   const navigate = useNavigate();
-  const { capitalizeFirstLetter } = useContext(dataContext);
+  const {
+    capitalizeFirstLetter,
+    isAddedToCart,
+    setIsAddedToCart,
+    localRoutePrefix,
+    jwToken,
+    setCartVisible,
+    currentUser,
+    currentUserCartItems,
+    setIsPopupVisible,
+  } = useContext(dataContext);
+  console.log(isAddedToCart);
+
+  // --------------------------------------------  CHECK IF PRODUCT ALREADY IN CART  --------------------------------------------
+  useEffect(() => {
+    const existingProductOnCart = currentUserCartItems.filter(
+      (cartItem) => cartItem.product_id === currentProductDetails.id
+    );
+    console.log(existingProductOnCart);
+    if (existingProductOnCart.length > 0) {
+      setProductAlreadyInCart(true);
+    }
+  });
 
   // -------------------------------------------- TOAST NOIFICATIONS --------------------------------------------
 
@@ -33,6 +55,21 @@ const ProductDetails = ({ togglePopup, currentProductDetails }) => {
   // -------------------------------------------- STORING BUTTONS IN VARIABLES  --------------------------------------------
 
   const addToCartHandler = () => {
+    const addedProduct = {
+      product_id: currentProductDetails.id,
+      quantity: 1,
+      user_id: currentUser.user_id,
+    };
+    console.log(addedProduct);
+    axios
+      .post(`${localRoutePrefix}/cartitems/cart_items`, addedProduct, {
+        headers: {
+          Authorization: `Bearer ${jwToken}`,
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => console.log(res.data))
+      .catch((error) => console.error(error));
     itemAddedToCart(`Product has successfully been added to cart.`, "success");
     setIsAddedToCart(true);
   };
@@ -60,6 +97,7 @@ const ProductDetails = ({ togglePopup, currentProductDetails }) => {
   );
 
   const proceedToCheckoutHandler = () => {
+    setIsAddedToCart(false);
     navigate("/checkout");
   };
 
@@ -86,7 +124,9 @@ const ProductDetails = ({ togglePopup, currentProductDetails }) => {
   );
 
   const viewCartHandler = () => {
-    navigate("/cart");
+    setIsAddedToCart(false);
+    setCartVisible(true);
+    setIsPopupVisible(false);
   };
 
   const viewCartBtn = (
@@ -114,7 +154,6 @@ const ProductDetails = ({ togglePopup, currentProductDetails }) => {
 
   return (
     <div>
-      <div className="background-content "></div>
       <div className="popup active">
         <div className="popup-content w-2/3 h-5/6 overflow-scroll ">
           <div className="flex justify-end items-top  ">
@@ -227,7 +266,7 @@ const ProductDetails = ({ togglePopup, currentProductDetails }) => {
                   </svg>
                 </div>
               </div>
-              {isAddedToCart ? (
+              {productAlreadyInCart || isAddedToCart ? (
                 <div>
                   {viewCartBtn}
                   {checkoutBtn}
@@ -235,6 +274,7 @@ const ProductDetails = ({ togglePopup, currentProductDetails }) => {
               ) : (
                 addToCartBtn
               )}
+
               <div>
                 <div className="mt-7">
                   <p className="font-bold font-serif"> Product Details</p>
@@ -254,7 +294,7 @@ const ProductDetails = ({ togglePopup, currentProductDetails }) => {
                 </p>
                 <p className="text-base leading-4 mt-4 text-gray-600">
                   <span className="text-gray-900">Location: </span> Available in
-                  and around {currentProductDetails.vendor.county}, Kenya.
+                  and around {currentProductDetails.vendor.county}Meru, Kenya.
                 </p>
 
                 <p className="md:w-96 text-base leading-normal text-gray-600 mt-4">
@@ -383,33 +423,3 @@ const ProductDetails = ({ togglePopup, currentProductDetails }) => {
 };
 
 export default ProductDetails;
-
-//    <div className="md:hidden">
-//      <img
-//        className="w-full"
-//        alt="product images"
-//        src={currentProductDetails.category.image}
-//      />
-//      <div className="flex items-center justify-between mt-3 space-x-4 md:space-x-0">
-//        <img
-//          alt="img-tag-one"
-//          className="md:w-48 md:h-48 w-full"
-//          src={currentProductDetails.category.image}
-//        />
-//        <img
-//          alt="img-tag-one"
-//          className="md:w-48 md:h-48 w-full"
-//          src={currentProductDetails.category.image}
-//        />
-//        <img
-//          alt="img-tag-one"
-//          className="md:w-48 md:h-48 w-full"
-//          src={currentProductDetails.category.image}
-//        />
-//        <img
-//          alt="img-tag-one"
-//          className="md:w-48 md:h-48 w-full"
-//          src="https://i.ibb.co/f17NXrW/Rectangle-244.png"
-//        />
-//      </div>
-//    </div>;
