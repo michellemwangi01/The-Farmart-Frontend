@@ -30,8 +30,6 @@ function App({}) {
       />
       <Navbar />
 
-      <Profile/>
-
       {isCartVisible && (
         <div className="popup-cart active">
           <div className="popup-content-cart">

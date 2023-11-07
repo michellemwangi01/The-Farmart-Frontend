@@ -29,6 +29,7 @@ const VendorRegistrationForm = ({
       latitude: 0,
       longitude: 0,
     };
+
     console.log(newData);
     axios.post(`${localRoutePrefix}/vendors/vendors`, newData).then((res) => {
       vendorRegistrationSuccessful(

@@ -108,24 +108,6 @@ const Cart = () => {
 
   // -------------------------------------------- CALCULATE TOTAL AMOUNT ----------------------------------------
 
-  // const clearCartHandler = () => {
-  //   console.log(currentUser.user_id);
-  //   axios
-  //     .delete(`${localRoutePrefix}/cartitems/user_cart_items`, {
-  //       headers: {
-  //         Authorization: `Bearer ${jwToken}`,
-  //         "Content-Type": "application/json",
-  //       },
-  //     })
-  //     .then((res) => {
-  //       console.log(res);
-  //       setCurrentUserCartItems([]);
-  //     })
-  //     .catch((error) => console.error(error));
-  // };
-  // const clearCartHandler = () => {
-  //   console.log(currentUser.user_id);
-
   const clearCartHandler = () => {
     console.log(currentUser.user_id);
     axios
