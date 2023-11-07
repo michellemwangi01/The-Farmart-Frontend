@@ -19,31 +19,35 @@ import VendorPortal from "./VendorDashboard";
 import VendorAllOrders from "./VendorAllOrders";
 import VendorNewOrders from "./VendorNewOrders";
 import Vendorproducts from "./Vendorproducts";
-
-import ShowProduct from "./ShowProduct"
-import NewProduct from "./NewProduct"
-import EditProduct from "./ProductEdit";
-const RouterComponent = () => {
-  const[productsShow,setProductsShow]=useState([])
-
-import Profile from "./Profile";
 import UserProfile from "./UserProfile";
-const RouterComponent = ({}) => {
+import ShowProduct from "./ShowProduct";
+import NewProduct from "./NewProduct";
+import EditProduct from "./ProductEdit";
+
+const RouterComponent = () => {
+  const [productsShow, setProductsShow] = useState([]);
 
   return (
     <div id="routerComponent">
       <Routes>
-        <Route exact path="/" element={<Home setProductsShow={setProductsShow}/>} />
+        <Route
+          exact
+          path="/"
+          element={<Home setProductsShow={setProductsShow} />}
+        />
         <Route path="/products" element={<Products />} />
         <Route path="/vendor" element={<Vendor />} />
         <Route path="/aboutus" element={<AboutUs />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/shop" element={<Vendorshop />} />
-        <Route path="Login" element={<Login/>}/>
-        <Route path="/signup" element={<Signup/>}/>
-        <Route path="/newproduct" element={<NewProduct/>}/>
-        <Route path="showProduct" element={<ShowProduct productsShow={productsShow}/>}/>
+        <Route path="Login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/newproduct" element={<NewProduct />} />
+        <Route
+          path="showProduct"
+          element={<ShowProduct productsShow={productsShow} />}
+        />
         <Route path="/productdetails" element={<ProductDetails />} />
         <Route path="/loggedOutNav" element={<LoggedOutNav />} />
         <Route path="/orderhistory" element={<OrderHistory />} />
@@ -55,7 +59,7 @@ const RouterComponent = ({}) => {
           <Route path="vendorproducts" element={<Vendorproducts />} />
           <Route path="allorders" element={<VendorAllOrders />} />
         </Route>
-        <Route path="/product/edit/:id" element={<EditProduct/>}/>
+        <Route path="/product/edit/:id" element={<EditProduct />} />
         <Route path="*" element={<Error404 />} />
       </Routes>
     </div>
