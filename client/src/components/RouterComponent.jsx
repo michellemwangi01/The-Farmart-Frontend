@@ -18,7 +18,7 @@ import VendorPortal from "./VendorDashboard";
 import VendorAllOrders from "./VendorAllOrders";
 import VendorNewOrders from "./VendorNewOrders";
 import Vendorproducts from "./Vendorproducts";
-const RouterComponent = () => {
+const RouterComponent = ({}) => {
   return (
     <div id="routerComponent">
       <Routes>

@@ -103,7 +103,7 @@ const VendorNewOrders = () => {
           {orderItem.orders.date_created}
         </td>
         <td class="px-6 py-4  text-base font-serif">
-          <div className="flex xl:flex-nowrap flex-wrap">
+          <div className="flex xl:flex-nowrap flex-wrap ">
             <p
               onClick={() => ViewProductDetailsHandler(orderItem.id)}
               class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer  text-base text-center m-auto"
@@ -130,18 +130,24 @@ const VendorNewOrders = () => {
   // -------------------------------- FILTER BY SEARCH HANDLER --------------------------------
 
   const handleSearchOrders = (e) => {
-    const searchValueLowerCase = e.target.value.toLowerCase();
+    const searchValue = e.target.value;
 
-    const searchedProducts = unfilteredVendorOrders.filter((order) => {
-      const stringID = order.id.toString();
-      return (
-        // order.status.toLowerCase().includes(searchValueLowerCase) ||
-        // order.payment_uid.toLowerCase().includes(searchValueLowerCase) ||
-        stringID === searchValueLowerCase
-      );
-    });
-    console.log(searchedProducts);
-    setVendorOrders(searchedProducts);
+    if (searchValue === "") {
+      setVendorOrders(unfilteredVendorOrders);
+    } else {
+      const searchedProducts = unfilteredVendorOrders.filter((order) => {
+        return (
+          order.orders.status
+            .toLowerCase()
+            .includes(searchValue.toLowerCase()) ||
+          order.orders.payment_uid
+            .toLowerCase()
+            .includes(searchValue.toLowerCase()) ||
+          order.order_id == parseInt(searchValue, 10)
+        );
+      });
+      setVendorOrders(searchedProducts);
+    }
   };
 
   // ------------------------------------------ CREATE ORDER HISTORY INTERFACE -------------------------------------

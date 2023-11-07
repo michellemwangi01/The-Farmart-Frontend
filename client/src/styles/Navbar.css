@@ -9,3 +9,28 @@
   /* font-size: "2rem"; */
   color: #045f2a;
 }
+.vendorNav {
+  background-color: #045f2a;
+  font-family: serif;
+  font-size: medium;
+  color: white;
+  padding: 5px 60px;
+  font-size: large;
+  border-radius: 10px;
+  margin: "20px";
+}
+.vendorNav:hover {
+  background-color: white;
+  color: #045f2a;
+  font-family: serif;
+  font-size: medium;
+
+  padding: 6px 60px;
+  font-size: large;
+}
+.vendorNav.active {
+  background-color: white;
+  color: #045f2a;
+  border: solid 2px #045f2a;
+  border-radius: 10px;
+}

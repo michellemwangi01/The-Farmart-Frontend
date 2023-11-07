@@ -57,7 +57,28 @@ const OrderHistory = () => {
         >
           # {orderItem.id}
         </th>
-        <td class="px-6 py-4 font-serif text-gray-700 ">{orderItem.status}</td>
+        <td
+          className={`px-6 py-4 font-serif text-black ${
+            orderItem.status === "Order Placed"
+              ? "bg-gray-500"
+              : orderItem.status === "Order Cancelled" ||
+                orderItem.status === "Order Rejected"
+              ? "bg-red-400"
+              : orderItem.status === "In Progress"
+              ? "bg-yellow-400"
+              : orderItem.status === "Delivered & Paid"
+              ? "bg-green-500"
+              : orderItem.status === "Payment Made"
+              ? "bg-green-500"
+              : orderItem.status === "Order Fulfilled"
+              ? "bg-green-500"
+              : orderItem.status === "Delivery In Progress"
+              ? "bg-yellow-500"
+              : ""
+          }`}
+        >
+          {orderItem.status ? orderItem.status : "N/A"}
+        </td>
         <td class="px-6 py-4 font-serif text-gray-700">
           {orderItem.payment_uid.toUpperCase()}
         </td>

@@ -164,7 +164,7 @@ function Checkout() {
       />
       <div class="flex w-full flex-col px-4 py-4">
         <span class="font-semibold">{cartItem.product.name.toUpperCase()}</span>
-        <span class="float-right text-gray-400">
+        <span class="float-right text-gray-600">
           {cartItem.product.vendor.business_name}
         </span>
         <p>Quantity: {cartItem.quantity} batches</p>
@@ -185,7 +185,7 @@ function Checkout() {
   ));
 
   return (
-    <div className="mb-4 pb-4">
+    <div className="mb-4 pb-4 font-serif">
       <div>
         {isPopupOpen && (
           <Payment
@@ -198,7 +198,7 @@ function Checkout() {
           />
         )}
       </div>
-      <div class="flex flex-col items-center border-b bg-white py-4 sm:flex-row sm:px-10 lg:px-20 xl:px-32">
+      <div class="flex flex-col font-serif items-center border-b bg-white py-4 sm:flex-row sm:px-10 lg:px-20 xl:px-32">
         <p class="text-4xl font-serif font-medium">Order Summary</p>
 
         <p class="text-gray-800 font-serif ml-4">
@@ -260,9 +260,9 @@ function Checkout() {
       </div>
       <form
         onSubmit={handleSubmit(handleSubmitOrderDetails)}
-        class="mt-5 grid gap-6"
+        class="mt-5 text-gray-800 grid gap-6"
       >
-        <div class="grid sm:px-10 lg:grid-cols-2 lg:px-20 xl:px-32">
+        <div class="grid sm:px-10 lg:grid-cols-2 lg:px-20 text-gray-800 xl:px-32">
           <div class="px-4 pt-8">
             <div class="mt-8 space-y-3 rounded-lg bg-white px-2 py-4 sm:px-6 border border-solid border-green-900">
               {/* ----------------------CART ITEMS */}
@@ -270,13 +270,16 @@ function Checkout() {
               {/* ----------------------CART ITEMS */}
             </div>
           </div>
-          <div class="mt-12 bg-gray-50 px-4 pt-8 lg:mt-2 border border-solid border-green-900">
+          <div class="mt-12 text-gray-800 bg-gray-50 px-4 pt-8 lg:mt-2 border border-solid border-green-900">
             <p class="text-xl font-medium">Payment Details</p>
-            <p class="text-gray-400">
+            <p class="text-gray-800">
               Complete your order by providing your payment details.
             </p>
             <div class="">
-              <label for="email" class="mt-4 mb-2 block text-sm font-medium">
+              <label
+                for="email"
+                class="mt-4 mb-2 block text-gray-800 text-sm font-medium"
+              >
                 Email Confirmation
               </label>
               <div class="relative">
@@ -290,7 +293,7 @@ function Checkout() {
                   })}
                   type="text"
                   id="email"
-                  class="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-green-500 focus:ring-green-500"
+                  class="w-full rounded-md border text-gray-800 border-gray-200 px-4 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-green-500 focus:ring-green-500"
                   placeholder="your.email@gmail.com"
                 />
                 <div class="pointer-events-none absolute inset-y-0 left-0 inline-flex items-center px-3">
@@ -313,7 +316,7 @@ function Checkout() {
               <p className="text-xs text-red-700">{errors.email?.message}</p>
               <label
                 for="card-holder"
-                class="mt-4 mb-2 block text-sm font-medium"
+                class="mt-4 mb-2 text-gray-800 block text-sm font-medium"
               >
                 Full Name
               </label>
@@ -349,7 +352,10 @@ function Checkout() {
               </div>
               <p className="text-xs text-red-700">{errors.FullName?.message}</p>
 
-              <label for="card-no" class="mt-4 mb-2 block text-sm font-medium">
+              <label
+                for="card-no"
+                class="mt-4 text-gray-800 mb-2 block text-sm font-medium"
+              >
                 Phone Number
               </label>
               <div class="flex">
@@ -386,7 +392,7 @@ function Checkout() {
               </p>
               <label
                 for="billing-address"
-                class="mt-4 mb-2 block text-sm font-medium"
+                class="mt-4 mb-2 text-gray-800 block text-sm font-medium"
               >
                 Shipping Address
               </label>
@@ -433,7 +439,9 @@ function Checkout() {
               </p>
               <div id="shippingDetailsDiv" className="mt-8 ">
                 {" "}
-                <p class="mt-8 text-lg font-medium">Shipping Methods</p>
+                <p class="mt-8 text-lg text-gray-800 font-medium">
+                  Shipping Methods
+                </p>
                 <div class="relative mb-4">
                   <input
                     // {...register("DeliveryOption")}
@@ -442,9 +450,9 @@ function Checkout() {
                     type="radio"
                     name="DeliveryOption"
                   />
-                  <span class="peer-checked:border-green-700 absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-gray-800 bg-white"></span>
+                  <span class="peer-checked:border-green-700  absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-gray-800 bg-white"></span>
                   <label
-                    class="peer-checked:border-2 peer-checked:border-green-700 peer-checked:text-green-700 peer-checked:bg-gray-50 flex cursor-pointer select-none rounded-lg border border-gray-400 p-4"
+                    class="peer-checked:border-2 font-normal peer-checked:border-green-700 peer-checked:text-green-700 peer-checked:bg-gray-50 flex cursor-pointer select-none rounded-lg border border-gray-400 p-4"
                     for="radio_1"
                   >
                     <img
@@ -453,7 +461,9 @@ function Checkout() {
                       alt=""
                     />
                     <div class="ml-5">
-                      <span class="mt-2 font-semibold">Door Step Delivery</span>
+                      <span class="mt-2 text-gray-800 font-semibold">
+                        Door Step Delivery
+                      </span>
                       <p class="text-slate-500 text-sm leading-6 ">
                         Delivery: 2-4 Days
                       </p>
@@ -479,7 +489,9 @@ function Checkout() {
                       alt=""
                     />
                     <div class="ml-5">
-                      <span class="mt-2 font-semibold">Customer Pick Up</span>
+                      <span class="mt-2 text-gray-800 font-semibold">
+                        Customer Pick Up
+                      </span>
                       <p class="text-slate-500 text-sm leading-6">
                         Delivery: 2-4 Days
                       </p>

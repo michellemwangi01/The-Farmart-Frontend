@@ -5,10 +5,10 @@ import ProductCard from "./ProductCard";
 import ProductsSearchFilter from "./ProductsSearchFilter";
 import ProductDetails from "./ProductDetails";
 import axios from "axios";
+import Cart from "./Cart";
 
 const Products = () => {
   // -------------------------------------------- DEFINE STATE  & CONTEXT VARIABLES --------------------------------------------
-  const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [selectedProductID, setSelectedProductID] = useState(0);
   const [currentProductDetails, setCurrentProductDetails] = useState({});
 
@@ -20,6 +20,10 @@ const Products = () => {
     localRoutePrefix,
     hostedRoutePrefix,
     setIsAddedToCart,
+    isCartVisible,
+    setCartVisible,
+    isPopupVisible,
+    setIsPopupVisible,
   } = useContext(dataContext);
 
   const [emptyProductsAlert, setEmptyProductsAlert] = useState(
@@ -73,7 +77,10 @@ const Products = () => {
   // -------------------------------------------- THE INTERFACE --------------------------------------------
 
   return (
-    <div className="flex flex-wrap sm:flex-no-wrap justify-center align-center min-w-full mt-6 ">
+    <div
+      // onClick={() => setShowUserMenu(false)}
+      className="flex flex-wrap sm:flex-no-wrap justify-center align-center min-w-full mt-6 "
+    >
       {isPopupVisible && (
         <ProductDetails
           currentProductDetails={currentProductDetails}
