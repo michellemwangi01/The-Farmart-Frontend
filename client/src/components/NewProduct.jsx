@@ -83,7 +83,7 @@ const NewProduct = () => {
         headers:{"Content-Type":"application/json"},
         body:JSON.stringify(data)
     })
-    .then((resp)=>resp.json)
+    .then((resp)=>resp.json())
     .then((data)=>updateProduct(data))
     .catch((error) => {
       console.error("Error during POST request:", error)});

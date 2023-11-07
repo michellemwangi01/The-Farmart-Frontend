@@ -1,19 +1,32 @@
-import React, { createContext, useState,useEffect } from "react";
-import axios from 'axios';
+import React, { createContext, useState, useEffect } from "react";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const dataContext = createContext();
 
 const DataContextProvider = ({ children }) => {
   // -------------------- CREATE STATE VARIABLES
   const [categories, setCategories] = useState([]);
+  const [isVendor, setIsVendor] = useState(false);
   const [products, setProducts] = useState([]);
   const [jwToken, setJWToken] = useState("");
-  const [currentUser, setCurrentUser] = useState(0);
-  const [currentUserName, setCurrentUserName] = useState("");
+  const [isAddedToCart, setIsAddedToCart] = useState(false);
+  const [currentUser, setCurrentUser] = useState({});
   const [currentUserCartItems, setCurrentUserCartItems] = useState([]);
   const [currentUserOrderHistory, setCurrentUserOrderHistory] = useState([]);
+  const [vendorOrders, setVendorOrders] = useState([]);
+  const [unfilteredVendorOrders, setUnfilteredVendorOrders] = useState([]);
+  const [
+    unfilteredCurrentUserOrderHistory,
+    setUnfilteredCurrentUserOrderHistory,
+  ] = useState([]);
+
   const [originalProductList, setOriginalProductList] = useState([]);
+  const [orderTotalAmount, setOrderTotalAmount] = useState(0);
   const [loadingCategories, setLoadingCategories] = useState(true);
+  const [cartItemQuantities, setCartItemQuantities] = useState({});
+  const [iscancellationApproved, setIsCancellationApproved] = useState("");
   const [productsTitleDisplay, setProductsTitleDisplay] =
     useState("All Products");
   const localRoutePrefix = "http://127.0.0.1:5555";
@@ -67,6 +80,19 @@ const DataContextProvider = ({ children }) => {
     "Nyamira",
     "Nairobi City",
   ];
+  function capitalizeFirstLetter(sentence) {
+    return sentence.charAt(0).toUpperCase() + sentence.slice(1);
+  }
+
+  // ---------------- CHECK IF USER IS VENDOR
+  useEffect(() => {
+    console.log(currentUser.vendor_id);
+    if (currentUser.vendor_id === "None") {
+      setIsVendor(false);
+    } else {
+      setIsVendor(true);
+    }
+  }, [currentUser]);
 
   // ---------------- FETCHING ALL CATEGORIES
 
@@ -119,7 +145,7 @@ const DataContextProvider = ({ children }) => {
       .catch((error) => {
         console.error("Error fetching cart items:", error);
       });
-  }, [currentUser]);
+  }, [currentUser, isAddedToCart, cartItemQuantities]);
 
   // ---------------- FETCHING USER ORDER HISTORY
 
@@ -132,14 +158,15 @@ const DataContextProvider = ({ children }) => {
       })
       .then((res) => {
         setCurrentUserOrderHistory(res.data);
+        setUnfilteredCurrentUserOrderHistory(res.data);
         console.log("ORDER HISTORY", res.data);
       })
       .catch((error) => {
         console.error("Error fetching order history:", error);
       });
-  }, [currentUser]);
+  }, [currentUser, iscancellationApproved]);
 
-  // ---------------- FETCHING USER VENDOR PRODUCT
+  // ---------------- FETCHING  VENDOR PRODUCT
 
   useEffect(() => {
     axios
@@ -157,9 +184,46 @@ const DataContextProvider = ({ children }) => {
       });
   }, [currentUser]);
 
+  // ------------------- HANDLE REMOVE FROM ORDER TEMPLATE
+
+  const deleteFromOrder = (id) => {
+    const updatedCartItems = currentUserCartItems.filter(
+      (cartItem) => cartItem.id != id
+    );
+    setCurrentUserCartItems(updatedCartItems);
+    axios
+      .delete(`${localRoutePrefix}/cartitems/cart_items/${id}`)
+      .then((response) => {
+        toastSuccessfulRemoveFromOrder(
+          "Item successfully removed from cart/order!",
+          "success"
+        );
+      })
+      .catch((error) => {
+        console.error("Error removing item from order", error);
+      });
+  };
+
+  // -------------------TOAST NOIFICATIONS
+
+  const toastSuccessfulRemoveFromOrder = (message, type) => {
+    toast(message, { autoClose: 3000, type });
+  };
+
+  // -------------------------------------------- CALCULATE CART/ORDER TOTAL AMOUNT ----------------------------------------
+
+  useEffect(() => {
+    const totalAmount = currentUserCartItems.reduce(
+      (total, cartItem) => total + cartItem.product.price,
+      0
+    );
+    setOrderTotalAmount(totalAmount);
+  }, [currentUserCartItems]);
+
   // ---------------- POPULATE THE DATA CONTEXT
 
   const data = {
+    deleteFromOrder,
     categories,
     setCategories,
     hostedRoutePrefix,
@@ -174,10 +238,24 @@ const DataContextProvider = ({ children }) => {
     setCurrentUserCartItems,
     currentUser,
     setCurrentUser,
-    currentUserName,
-    setCurrentUserName,
     jwToken,
     setJWToken,
+    capitalizeFirstLetter,
+    orderTotalAmount,
+    setOrderTotalAmount,
+    isAddedToCart,
+    setIsAddedToCart,
+    cartItemQuantities,
+    setCartItemQuantities,
+    currentUserOrderHistory,
+    iscancellationApproved,
+    setIsCancellationApproved,
+    setCurrentUserOrderHistory,
+    unfilteredCurrentUserOrderHistory,
+    vendorOrders,
+    setVendorOrders,
+    isVendor,
+    setIsVendor,
     updateProduct,
   };
   return <dataContext.Provider value={data}>{children}</dataContext.Provider>;

@@ -1,0 +1,14 @@
+@import url("https://fonts.googleapis.com/css2?family=Cinzel&family=Cormorant+Garamond:wght@300&family=Dancing+Script:wght@600;700&family=Edu+TAS+Beginner&family=IBM+Plex+Serif:wght@300&family=Kalam:wght@300&family=Satisfy&family=Ysabeau+Infant:ital,wght@1,300&display=swap");
+.image-transition {
+  transition: opacity 0.9s ease-in-out;
+  opacity: 1;
+}
+
+.image-transition.hide {
+  opacity: 0.7;
+}
+
+#LandingpageHeader {
+  font-family: "Edu TAS Beginner", cursive;
+  color: white;
+}

@@ -1,28 +1,86 @@
-import React,{useState,useContext} from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { dataContext } from "../contextProvider/DataContextProvider";
 import ProductCard from "./ProductCard";
 import ProductsSearchFilter from "./ProductsSearchFilter";
-
+import ProductDetails from "./ProductDetails";
+import axios from "axios";
 
 const Products = () => {
   // -------------------------------------------- DEFINE STATE  & CONTEXT VARIABLES --------------------------------------------
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
+  const [selectedProductID, setSelectedProductID] = useState(0);
+  const [currentProductDetails, setCurrentProductDetails] = useState({});
 
-  const { products, productsTitleDisplay, currentUser, currentUserName } =
-    useContext(dataContext);
+  const {
+    products,
+    productsTitleDisplay,
+    currentUser,
+    currentUserName,
+    localRoutePrefix,
+    hostedRoutePrefix,
+    setIsAddedToCart,
+  } = useContext(dataContext);
 
   const [emptyProductsAlert, setEmptyProductsAlert] = useState(
     "Sorry, There are no products for this category at the moment."
   );
 
-  // -------------------------------------------- CREATE DISPLAYS FOR THE DATA --------------------------------------------
+  // -------------------------------------------- FECTH SELECTED PRODUCT DETAILS  --------------------------------------------
+
+  const togglePopup = (id) => {
+    setSelectedProductID(id);
+    setIsAddedToCart(false);
+  };
+
+  // -------------------------------------------- HANDLE PRODUCT DETAILS DISPLAY --------------------------------------------
+
+  useEffect(() => {
+    if (selectedProductID) {
+      axios
+        .get(`${localRoutePrefix}/products/products/${selectedProductID}`)
+        .then((res) => {
+          setCurrentProductDetails(res.data);
+          setIsPopupVisible(true);
+          console.log("SELECTED PRODUCT DETAILS", res.data);
+        })
+        .catch((error) => {
+          console.error(error);
+          setIsPopupVisible(false);
+        });
+    } else {
+      setIsPopupVisible(false);
+    }
+  }, [selectedProductID]);
+
+  useEffect(() => {
+    setIsPopupVisible(false);
+  }, []);
+
+  // -------------------------------------------- CREATE INTERFACE FOR THE DATA --------------------------------------------
 
   const productsList = products.map((product) => {
-    return <ProductCard key={product.id} product={product} />;
+    return (
+      <ProductCard
+        togglePopup={togglePopup}
+        isPopupVisible={isPopupVisible}
+        setIsPopupVisible={setIsPopupVisible}
+        key={product.id}
+        product={product}
+      />
+    );
   });
   // -------------------------------------------- THE INTERFACE --------------------------------------------
 
   return (
     <div className="flex flex-wrap sm:flex-no-wrap justify-center align-center min-w-full mt-6 ">
+      {isPopupVisible && (
+        <ProductDetails
+          currentProductDetails={currentProductDetails}
+          selectedProductID={selectedProductID}
+          togglePopup={togglePopup}
+        />
+      )}
+
       <div className="flex grow-1 sm:flex-grow-0 flex-2 ml-6 mb-4 ">
         <ProductsSearchFilter setEmptyProductsAlert={setEmptyProductsAlert} />
       </div>

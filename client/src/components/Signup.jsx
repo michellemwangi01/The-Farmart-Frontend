@@ -151,7 +151,7 @@ const Signup = () => {
                     </div>
                   </div>
                 </div>
-                <div class="flex flex-wrap -mx-3">
+                <div class="flex flex-wrap lg-flex-no-wrap -mx-3">
                   <div class="w-full md:w-1/2 px-3 md:mb-12 mb-2 ">
                     <label for="" class="text-sm font-semibold px-1">
                       Password
@@ -197,7 +197,7 @@ const Signup = () => {
                   <div class="w-full px-3 mb-5">
                     <button
                       type="submit"
-                      class="block w-full max-w-xs mx-auto bg-green-500 hover:bg-green-700 focus:bg-green-700 text-white rounded-lg px-3 py-3 font-semibold"
+                      class="block w-full max-w-xs mx-auto bg-green-800 hover:bg-green-700 focus:bg-green-700 text-white rounded-lg px-3 py-3 font-semibold"
                     >
                       SIGN UP NOW
                     </button>

@@ -11,15 +11,10 @@ const Vendorshop = () => {
 
 
   return <div>
-    <header>
-      <h1>FARM<h1>ART</h1></h1>
-      <nav>
-        <h1>Products</h1>
-      </nav>
-    </header>
+   
     <div className="flex  justify-between">
       <div className="basis-1/3 p-10">
-      <h1>My Shop</h1>
+
       <ProductsSearchFilter style={{ width: "600px" }} />
       </div>
       

@@ -22,8 +22,6 @@ const Login = () => {
     localRoutePrefix,
     setCurrentUser,
     currentUser,
-    setCurrentUserName,
-    currentUserName,
     jwToken,
     setJWToken,
   } = useContext(dataContext);
@@ -39,11 +37,9 @@ const Login = () => {
         console.log(res.data);
         localStorage.setItem("jwToken", res.data.access_token);
         setJWToken(res.data.access_token);
-        setCurrentUser(res.data.user_id);
-        setCurrentUserName(res.data.firstname);
+        setCurrentUser(res.data.current_user);
         navigate("/products");
-        console.log("CURRENT USER ID", res.data.user_id);
-        console.log("CURRENT USER NAME", res.data.firstname);
+        console.log("CURRENT USER ID", res.data.current_user);
       })
       .catch((error) => {
         console.log(error);
@@ -135,7 +131,7 @@ const Login = () => {
                     </p>
                     <button
                       type="submit"
-                      class="block w-full max-w-xs mx-auto bg-green-500 hover:bg-green-700 focus:bg-green-700 text-white rounded-lg px-3 py-3 font-semibold"
+                      class="block w-full max-w-xs mx-auto bg-green-800 hover:bg-green-700 focus:bg-green-700 text-white rounded-lg px-3 py-3 font-semibold"
                     >
                       LOGIN NOW
                     </button>

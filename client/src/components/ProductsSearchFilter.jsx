@@ -3,9 +3,10 @@ import { dataContext } from "../contextProvider/DataContextProvider";
 import { useForm } from "react-hook-form";
 
 const ProductsSearchFilter = ({}) => {
-  // ---------------- DEFINE STATE VARIABLES
+  // -------------------------------- DEFINE STATE VARIABLES --------------------------------
 
-  // ---------------- CREATE HOOK OBJECTS
+  // -------------------------------- CREATE HOOK OBJECTS --------------------------------
+
   const {
     categories,
     setProducts,
@@ -14,14 +15,16 @@ const ProductsSearchFilter = ({}) => {
     setProductsTitleDisplay,
   } = useContext(dataContext);
 
-  // ---------------- REACT FORM HOOOK
+  // -------------------------------- REACT FORM HOOOK --------------------------------
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  // ---------------- FILTER BY SEARCH HANDLER
+  // -------------------------------- FILTER BY SEARCH HANDLER --------------------------------
+
   const submitSearchInput = (data) => {
     const searchedProducts = products.filter((product) => {
       const searchValueLowerCase = data.searchValue.toLowerCase();
@@ -40,7 +43,8 @@ const ProductsSearchFilter = ({}) => {
     setProductsTitleDisplay(`Products with keyword '${data.searchValue}'`);
   };
 
-  // ---------------- FILTER BY CATEGORY HANDLER
+  // -------------------------------- FILTER BY CATEGORY HANDLER --------------------------------
+
   const filterByProductsHandler = (id = 0, category_name) => {
     const filteredProductsByCategory = originalProductList.filter((product) => {
       return product.category_id === id;
@@ -50,26 +54,35 @@ const ProductsSearchFilter = ({}) => {
     setProducts(filteredProductsByCategory);
   };
 
-  // ---------------- DISPLAY CATEGORY BUTTONS
+  // -------------------------------- DISPLAY CATEGORY BUTTONS --------------------------------
+
   const categoriesList = categories.map((category) => (
     <button
       key={category.id}
       onClick={() => filterByProductsHandler(category.id, category.name)}
       type="button"
-      className="py-2.5 px-5 mr-2 mb-2 text-base font-base focus:outline-none border bg-gray-100 text-black hover:bg-green-600 hover:text-white focus:z-10 focus:ring-2 focus:ring-green-500 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-green-700 dark:focus:ring-2 
-      light:text-gray-400 dark:border-green-700 dark:hover:text-white 
-      dark:hover:bg-green-700"
+      className="
+  lg:my-1 py-2.5 px-5 mr-2 mb-2 text-base font-base 
+  light:text-gray-400 dark:border-green-700  focus:outline-none 
+  focus:z-10 focus:ring-2 focus:ring-green-700 focus:ring-4 focus:ring-gray-200 
+  focus:text-green-800
+  border bg-gray-800 text-white
+  dark:focus:ring-green-700 dark:focus:ring-2 
+  dark:hover:text-white 
+  dark:hover:bg-green-700 focus:bg-white
+  hover:bg-green-700 hover:text-white  "
     >
       {category.name}
     </button>
   ));
 
-  // ---------------- RESET PRODUCTS FILTER
+  // -------------------------------- RESET PRODUCTS FILTER --------------------------------
+
   const resetProducts = () => {
     setProducts(originalProductList);
   };
 
-  // ---------------- THE GUI
+  // -------------------------------- THE GUI --------------------------------
   return (
     <div>
       <form
@@ -114,7 +127,7 @@ const ProductsSearchFilter = ({}) => {
 
         <button
           type="submit"
-          class="p-2.5 mt-0 mb-0 ml-2 text-sm font-medium text-white light:bg-green-700 rounded-lg border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-600 dark:focus:ring-green-800"
+          class="p-2.5 mt-0 mb-0 ml-2 text-sm font-medium text-white bg-green-800 rounded-lg border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-600 dark:focus:ring-green-800"
         >
           <svg
             class="w-5 h-5"
@@ -139,7 +152,7 @@ const ProductsSearchFilter = ({}) => {
         <div className="flex flex-wrap xl:flex-col justify-center">
           <button
             type="button"
-            class="py-2.5 px-5 mr-2 mb-2 text-base  bg-green-600 font-base focus:outline-none border bg-gray-100 hover:bg-green-600 hover:text-white focus:z-10 focus:ring-2 focus:ring-green-600"
+            class="py-2.5 px-5 mr-2 mb-2 text-base  bg-green-800 font-base focus:outline-none border  hover:bg-green-800 hover:text-white focus:z-10 focus:ring-2 focus:ring-green-800"
             onClick={resetProducts}
           >
             All Products
