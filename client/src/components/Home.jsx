@@ -1,8 +1,23 @@
-import React from "react";
+import React,{useContext} from "react";
 import NavBar from "./Navbar";
 import { Link } from "react-router-dom";
+import { dataContext } from "../contextProvider/DataContextProvider";
+
 
 const Home = () => {
+  const {originalProductList,setProducts}=useContext(dataContext)
+    
+    const filterProducts=(id)=>{
+        const filterProduct = originalProductList.filter((product)=>{
+            return product.category_id === id;
+        })
+        setProducts(filterProduct)
+        console.log(filterProduct)
+    } 
+    const handleSubmit = (e)=>{
+      e.preventDefault();
+    }
+ 
   return <div className="  m-0 p-0">
     <div className="home ">
       <div className="flex justify-between m-6 mb-12">
@@ -22,41 +37,41 @@ const Home = () => {
       <div className="flex flex-wrap  m-6 ml-18">
         <div className=" live rounded-xl bg-green-500 w-96 h-48 m-2"
         >
-          <h1 className=" bg-white mt-32 p-1 flex w-36 ml-2"
+          <Link to="/showProduct" className=" bg-white text-black mt-32 p-1 flex w-36 ml-2 hover:bg-green-500" onClick={()=>filterProducts(1)}
           >LIVE ANIMALS<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
               <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
             </svg>
-          </h1>
+          </Link>
         </div>
-        <div className="dairy rounded-xl bg-blue-500 w-96 h-48 m-2">
-          <h1 className=" border bg-white mt-32 p-1 flex w-44 text-md ml-2">DAIRY PRODUCTS<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+        <div className="dairy rounded-xl bg-blue-500 w-96 h-48 m-2 ">
+          <Link to="/showProduct" className=" border bg-white mt-32 p-1 flex w-44 text-md ml-2 text-black hover:bg-green-500" onClick={()=>filterProducts(3)}>DAIRY PRODUCTS<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
             <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
           </svg>
-          </h1>
+          </Link>
         </div>
         <div className="meat rounded-xl bg-blue-500 w-96 h-48 m-2">
-          <h1 className=" border bg-white mt-32 p-1 flex w-44 ml-2">MEAT & POULTRY<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+          <Link to="/showProduct" className=" border bg-white mt-32 p-1 flex w-44 ml-2 text-black hover:bg-green-500" onClick={()=>filterProducts(2)}>MEAT & POULTRY<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
             <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
           </svg>
-          </h1>
+          </Link>
         </div>
         <div className="grain rounded-xl bg-blue-500 w-96 h-48 m-2 ">
-          <h1 className="border bg-white mt-32 p-1 flex w-52 ml-2">GRAINS AND CEREALS<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+          <Link to="/showProduct" className="border bg-white mt-32 p-1 flex w-52 ml-2 text-black hover:bg-green-500" onClick={()=>filterProducts(7)}>GRAINS AND CEREALS<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
             <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
           </svg>
-          </h1>
+          </Link>
         </div>
         <div className="honey rounded-xl bg-blue-500 w-96 h-48 m-2">
-          <h1 className=" border bg-white mt-32 p-1 flex w-64 ml-2">HONEY AND BEE PRODUCTS<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+          <Link to="/showProduct" className=" border bg-white mt-32 p-1 flex w-64 ml-2 text-black hover:bg-green-500" onClick={()=>filterProducts(6)}>HONEY AND BEE PRODUCTS<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
             <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
           </svg>
-          </h1>
+          </Link>
         </div>
         <div className="fresh rounded-xl bg-blue-500 w-96 h-48 m-2">
-          <h1 className="border bg-white mt-32 p-1 flex w-40 ml-2">FRESH PRODUCE<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+          <Link to="/showProduct" className="border bg-white mt-32 p-1 flex w-40 ml-2 text-black hover:bg-green-500" onClick={()=>filterProducts(5)}>FRESH PRODUCE<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
             <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
           </svg>
-          </h1>
+          </Link>
         </div>
       </div>
     </div>
@@ -150,9 +165,9 @@ const Home = () => {
     <div className=" flex flex-col items-center">
       <h1 className="justify-center text-3xl font-bold mt-8">Be The First To Know</h1>
       <p>Subscribe to our newsletter for updates on new services, promotions, and more.</p>
-      <form className="m-4">
+      <form className="m-4 flex" onSubmit={handleSubmit}>
         <input className=" outline outline-gray-500 rounded-lg p-2" type="email" name="email" id="email" placeholder="Your email address" />
-        <input className="p-2 bg-green-600 text-white rounded-lg ml-4" type="submit" value="SUBSCRIBE" />
+        <button className="p-2 bg-green-600 text-white rounded-lg ml-4 "  >SUBMIT</button>
       </form>
     </div>
     <footer className="flex p-10 bg-gray-900">
