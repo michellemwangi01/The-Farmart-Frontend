@@ -3,6 +3,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import api from "../components/AxiosAddJWT";
+import { useSpring, animated } from "react-spring";
 
 const dataContext = createContext();
 
@@ -151,10 +152,10 @@ const DataContextProvider = ({ children }) => {
       });
   }, []);
 
-  const updateProduct = (product)=>{
-     const  update = [...products,product];
-     setProducts(update);
-  }
+  const updateProduct = (product) => {
+    const update = [...products, product];
+    setProducts(update);
+  };
 
   // ---------------- FETCHING USER CARTITEMS
 
@@ -244,6 +245,22 @@ const DataContextProvider = ({ children }) => {
     setOrderTotalAmount(totalAmount);
   }, [currentUserCartItems]);
 
+  // ---------------------------- COUNTER ANIMATION COMPONENT --------------------
+  function Number({ n }) {
+    const step = 10000;
+    const { number } = useSpring({
+      from: { number: n - 500 },
+      number: n,
+      delay: 200,
+      config: { mass: 1, tension: 20, friction: 10 },
+    });
+    return (
+      <animated.div>
+        {number.to((n) => `${Math.round(n).toLocaleString()}+`)}
+      </animated.div>
+    );
+  }
+
   // ---------------- POPULATE THE DATA CONTEXT
 
   const data = {
@@ -281,9 +298,8 @@ const DataContextProvider = ({ children }) => {
     setVendorOrders,
     isVendor,
     setIsVendor,
-
+    Number,
     updateProduct,
-
     refreshAccessToken,
     isCartVisible,
     setCartVisible,
@@ -291,7 +307,6 @@ const DataContextProvider = ({ children }) => {
     setIsPopupVisible,
     isNewOrder,
     setIsNewOrder,
-
   };
   return <dataContext.Provider value={data}>{children}</dataContext.Provider>;
 };
