@@ -35,7 +35,7 @@ const Login = () => {
   const handleLogin = (data) => {
     console.log(data);
     axios
-      .post(`${localRoutePrefix}/authorization/login`, data)
+      .post(`${hostedRoutePrefix}/authorization/login`, data)
       .then((res) => {
         console.log(res.data);
         localStorage.setItem("access_token", res.data.access_token);

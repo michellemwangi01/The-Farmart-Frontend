@@ -14,3 +14,66 @@ code {
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+
+.home{
+  background-image: url('/public/images/farm_image.jpg');
+  background-size: cover; /* This will make the image cover the entire frame */
+  background-position: center;
+  transition: 5s;
+
+  animation-name: animate;
+  animation-direction: alternate-reverse;
+  animation-duration:30s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-play-state: running;
+  animation-timing-function: ease-in-out;
+}
+@keyframes animate{
+  0%{
+    background-image: url('/public/images/image1.jpg');
+  }25%{
+    background-image: url('/src/images/image2.jpg');
+  }50%{
+    background-image: url('/src/images/image3.jpg');
+  }75%{
+    background-image: url('/src/images/image4.jpg');
+  }100%{
+    background-image: url('/public/images/farm_image.jpg');
+  }
+}
+.live{
+  background-image: url('/public/images/live_animals.jpg');
+  background-size: cover; /* This will make the image cover the entire frame */
+  background-position: center;
+}
+
+.meat{
+  background-image: url('/public/images/meat_poultry.jpg');
+  background-size: cover; /* This will make the image cover the entire frame */
+  background-position: center;
+}
+
+.grain{
+  background-image: url('/public/images/grains_cereals.jpg');
+  background-size: cover; /* This will make the image cover the entire frame */
+  background-position: center;
+}
+
+.honey{
+  background-image: url('/public/images/honey_products.jpg');
+  background-size: cover; /* This will make the image cover the entire frame */
+  background-position: center;
+}
+
+.fresh{
+  background-image: url('/public/images/fresh_produce.jpg');
+  background-size: cover; /* This will make the image cover the entire frame */
+  background-position: center;
+}
+
+.dairy{
+  background-image: url('/public/images/dairy_products.jpg');
+  background-size: cover; /* This will make the image cover the entire frame */
+  background-position: center;
+}

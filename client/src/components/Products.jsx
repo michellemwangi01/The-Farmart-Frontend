@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import { dataContext } from "../contextProvider/DataContextProvider";
-import "../styles/ProductCard.css";
 import ProductCard from "./ProductCard";
 import ProductsSearchFilter from "./ProductsSearchFilter";
 import ProductDetails from "./ProductDetails";
@@ -96,7 +95,7 @@ const Products = () => {
         <h1 className="text-center mg-4 font-light text-4xl mb-4 mg-auto">
           {productsTitleDisplay}
         </h1>
-        <section className="articles flex flex-auto justify-center">
+        <section className="articles flex flex-auto ">
           {products.length > 0 ? (
             productsList
           ) : (

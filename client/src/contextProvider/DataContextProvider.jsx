@@ -141,7 +141,7 @@ const DataContextProvider = ({ children }) => {
 
   useEffect(() => {
     axios
-      .get(`${localRoutePrefix}/products/products`)
+      .get(`${hostedRoutePrefix}/products/products`)
       .then((res) => {
         setProducts(res.data);
         setOriginalProductList(res.data);
@@ -150,6 +150,11 @@ const DataContextProvider = ({ children }) => {
         console.error("Error fetching categories:", error);
       });
   }, []);
+
+  const updateProduct = (product)=>{
+     const  update = [...products,product];
+     setProducts(update);
+  }
 
   // ---------------- FETCHING USER CARTITEMS
 
@@ -276,6 +281,9 @@ const DataContextProvider = ({ children }) => {
     setVendorOrders,
     isVendor,
     setIsVendor,
+
+    updateProduct,
+
     refreshAccessToken,
     isCartVisible,
     setCartVisible,
@@ -283,8 +291,8 @@ const DataContextProvider = ({ children }) => {
     setIsPopupVisible,
     isNewOrder,
     setIsNewOrder,
-  };
 
+  };
   return <dataContext.Provider value={data}>{children}</dataContext.Provider>;
 };
 

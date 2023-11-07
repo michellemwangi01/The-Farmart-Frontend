@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState, useEffect, useContext } from "react";
 import "../App.css";
-import "/node_modules/flag-icons/css/flag-icons.min.css";
+//import "/node_modules/flag-icons/css/flag-icons.min.css";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
