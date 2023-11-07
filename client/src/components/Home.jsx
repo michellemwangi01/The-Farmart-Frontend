@@ -6,6 +6,7 @@ import ImageSlider from "./ImageSlider";
 
 
 const Home = () => {
+
   
   const {originalProductList,setProducts}=useContext(dataContext)
     
@@ -75,6 +76,7 @@ const Home = () => {
         </div>
       </div>
     </div>
+
     <div>
       <ImageSlider></ImageSlider>
     </div>

@@ -1,12 +1,31 @@
-import React, { useContext } from "react";
+
+
 import ProductcardV from "./ProductcardV";
 import ProductsSearchFilter from "./ProductsSearchFilter";
 import { dataContext } from "../contextProvider/DataContextProvider";
 import { Link } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import api from "./AxiosAddJWT";
+import { dataContext } from "../contextProvider/DataContextProvider";
 
 const Vendorproducts = () => {
+  
   const { products, productsTitleDisplay, currentUser, currentUserName } =
     useContext(dataContext);
+  useEffect(() => {
+    const fetchVendorProducts = async () => {
+      try {
+        const response = await api.get(
+          `${localRoutePrefix}/products/vendor_products`
+        );
+        setVendorProducts(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchVendorProducts();
+  }, []);
   return  <div className="flex  justify-between">
   <div className="basis-1/3 p-10">
 
@@ -26,6 +45,7 @@ const Vendorproducts = () => {
    
   </div>
 </div>
+
 
 };
 

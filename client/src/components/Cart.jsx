@@ -5,18 +5,24 @@ import { useNavigate } from "react-router-dom";
 import { set, useForm } from "react-hook-form";
 import EmptyCart from "../animations/EmptyCart2.json";
 import AddtoCart from "../animations/AddtoCart.json";
+import { AiOutlineCloseSquare } from "react-icons/ai";
 
 import Lottie from "lottie-react";
 const Cart = () => {
   const {
     register,
     handleSubmit,
+
     formState: { errors },
   } = useForm();
 
   // -------------------------------------------- GET REQUIRED DATA --------------------------------------------
+  const [isDisabled, setIsDisabled] = useState(false);
+
   const {
     jwToken,
+    isCartVisible,
+    setCartVisible,
     currentUser,
     localRoutePrefix,
     currentUserCartItems,
@@ -26,6 +32,9 @@ const Cart = () => {
     setOrderTotalAmount,
     cartItemQuantities,
     setCartItemQuantities,
+    headers,
+    setIsNewOrder,
+    isNewOrder,
   } = useContext(dataContext);
 
   const navigate = useNavigate();
@@ -35,6 +44,17 @@ const Cart = () => {
   const deleteFromCartHandler = (id) => {
     deleteFromOrder(id);
   };
+
+  useEffect(() => {
+    const checkIfItemsInCart = () => {
+      if (currentUserCartItems.length === 0) {
+        setIsDisabled(true);
+      } else {
+        setIsDisabled(false);
+      }
+    };
+    checkIfItemsInCart();
+  }, [currentUserCartItems]);
 
   // -------------------------------------------- UPDATE QUANTITIY VALUES FOR CART ITEMS----------------------------------------
 
@@ -72,6 +92,7 @@ const Cart = () => {
   // -------------------------------------------- UPDATE CARTITEM QUANTITIES ON CHECKOUT ----------------------------------------
 
   const handleCheckout = () => {
+    setCartVisible(false);
     console.log(cartItemQuantities);
     for (const id in cartItemQuantities) {
       console.log(id);
@@ -91,46 +112,16 @@ const Cart = () => {
 
   // -------------------------------------------- CALCULATE TOTAL AMOUNT ----------------------------------------
 
-  // const clearCartHandler = () => {
-  //   console.log(currentUser.user_id);
-  //   axios
-  //     .delete(`${localRoutePrefix}/cartitems/user_cart_items`, {
-  //       headers: {
-  //         Authorization: `Bearer ${jwToken}`,
-  //         "Content-Type": "application/json",
-  //       },
-  //     })
-  //     .then((res) => {
-  //       console.log(res);
-  //       setCurrentUserCartItems([]);
-  //     })
-  //     .catch((error) => console.error(error));
-  // };
-  // const clearCartHandler = () => {
-  //   console.log(currentUser.user_id);
-
   const clearCartHandler = () => {
     console.log(currentUser.user_id);
     axios
-      .delete(`${localRoutePrefix}/cartitems/clear_cart_items`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        data: {
-          user_id: currentUser.user_id,
-        },
-      })
+      .delete(`${localRoutePrefix}/cartitems/clear_cart_items`, { headers })
       .then((res) => {
-        if (res.status !== 200) {
-          throw new Error("Network response was not ok");
-        }
-        return res.data;
-      })
-      .then((data) => {
-        console.log(data);
+        setIsNewOrder(!isNewOrder);
         setCurrentUserCartItems([]);
+        console.log(res);
       })
-      .catch((error) => console.error(error));
+      .catch((error) => console.log(error));
   };
 
   // -------------------------------------------- CREATE CART ITEMS --------------------------------------------
@@ -238,18 +229,29 @@ const Cart = () => {
   // -------------------------------------------- THE INTERFACE--------------------------------------------
 
   return (
-    <div className="static h-screen overflow-hidden">
-      <div className="absolute max-h-5/6 overflow-y-scroll mb-4 bg-white top-32 right-0 flex border border-1 border-green-700 flex-col lg:w-1/3 w-full  p-6 space-y-4 sm:p-10 dark:bg-gray-900 dark:text-gray-100">
-        <div className="flex justify-center w-full">
-          {currentUserCartItems.length === 0 ? (
-            <Lottie className="w-1/4" animationData={EmptyCart} />
-          ) : (
-            <Lottie className="w-1/4" animationData={AddtoCart} />
-          )}
+    <div className="">
+      <div className=" h-screen overflow-y-scroll mb-4 bg-white  flex border font-serif border-1 border-green-700 flex-col  w-full  sm:p-2 dark:bg-gray-900 text-gray-800">
+        <div className="flex justify-end mt-0">
+          <p
+            onClick={() => {
+              setCartVisible(false);
+            }}
+            className="text-black-500 text-2xl"
+          >
+            <AiOutlineCloseSquare />{" "}
+          </p>
         </div>
         <h2 className="text-4xl  font-serif font-semibold text-center ">
           YOUR CART
         </h2>
+        <div className="flex justify-center w-full">
+          {currentUserCartItems.length === 0 ? (
+            <Lottie className="w-full" animationData={EmptyCart} />
+          ) : (
+            <Lottie className="w-1/4" animationData={AddtoCart} />
+          )}
+        </div>
+
         <ul className="flex flex-col divide-y divide-gray-700">
           {cartItemsList}
         </ul>
@@ -268,7 +270,7 @@ const Cart = () => {
             Not including taxes and shipping costs
           </p>
         </div>
-        <div className="flex justify-end space-x-4">
+        <div className="flex justify-end space-x-4 mb-16">
           <button
             onClick={clearCartHandler}
             type="button"
@@ -280,6 +282,7 @@ const Cart = () => {
           </button>
           <button
             onClick={handleCheckout}
+            disabled={isDisabled}
             type="submit"
             className="px-6 py-2 border-solid border-1 border-green-700 rounded-md bg-green-700 
             hover:bg-white hover:text-green-700 dark:bg-violet-400 dark:text-gray-900 dark:border-violet-400"

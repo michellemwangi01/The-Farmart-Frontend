@@ -57,7 +57,37 @@ const OrderHistory = () => {
         >
           # {orderItem.id}
         </th>
-        <td class="px-6 py-4 font-serif text-gray-700 ">{orderItem.status}</td>
+        <td
+          className={`px-6 py-4 font-serif text-black ${
+            orderItem.status === "Order Placed"
+              ? "bg-gray-500"
+              : orderItem.status === "Order Cancelled" ||
+                orderItem.status === "Order Rejected"
+              ? "bg-red-400"
+              : orderItem.status === "In Progress"
+              ? "bg-yellow-400"
+              : orderItem.status === "Delivered & Paid"
+              ? "bg-green-500"
+              : orderItem.status === "Payment Received"
+              ? "bg-green-500"
+              : orderItem.status === "Order Fulfilled"
+              ? "bg-green-500"
+              : orderItem.status === "Delivery In Progress"
+              ? "bg-yellow-500"
+              : ""
+          }`}
+        >
+          {orderItem.status ? orderItem.status : "N/A"}
+        </td>
+        <td class="px-6 py-4 font-serif text-gray-700">
+          Ksh{" "}
+          {orderItem.amount.toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+          })}
+        </td>
+        <td class="px-6 py-4 font-serif text-gray-700">
+          {orderItem.payment.mpesa_receipt_code}
+        </td>
         <td class="px-6 py-4 font-serif text-gray-700">
           {orderItem.payment_uid.toUpperCase()}
         </td>
@@ -67,12 +97,7 @@ const OrderHistory = () => {
         <td class="px-6 py-4 font-serif text-gray-700">
           {orderItem.products.length} items
         </td>
-        <td class="px-6 py-4 font-serif text-gray-700">
-          Ksh{" "}
-          {orderItem.amount.toLocaleString(undefined, {
-            minimumFractionDigits: 2,
-          })}
-        </td>
+
         <td class="px-6 py-4 font-serif text-gray-700">
           {orderItem.date_created}
         </td>
@@ -174,7 +199,13 @@ const OrderHistory = () => {
               STATUS
             </th>
             <th scope="col" class="px-6 py-3">
-              PAYMENT ID
+              AMOUNT
+            </th>
+            <th scope="col" class="px-6 py-3">
+              MPESA ID
+            </th>
+            <th scope="col" class="px-6 py-3">
+              TRANSACTION ID
             </th>
             <th scope="col" class="px-6 py-3">
               DELIVERY TYPE
@@ -182,10 +213,6 @@ const OrderHistory = () => {
             <th scope="col" class="px-6 py-3">
               NO. OF ITEMS
             </th>
-            <th scope="col" class="px-6 py-3">
-              AMOUNT
-            </th>
-
             <th scope="col" class="px-6 py-3">
               ORDER DATE
             </th>

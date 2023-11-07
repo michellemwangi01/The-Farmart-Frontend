@@ -2,11 +2,14 @@ import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import api from "../components/AxiosAddJWT";
 
 const dataContext = createContext();
 
 const DataContextProvider = ({ children }) => {
   // -------------------- CREATE STATE VARIABLES
+  const localRoutePrefix = "http://127.0.0.1:5555";
+  const hostedRoutePrefix = "https://the-farmart-api-flask.onrender.com";
   const [categories, setCategories] = useState([]);
   const [isVendor, setIsVendor] = useState(false);
   const [products, setProducts] = useState([]);
@@ -17,20 +20,22 @@ const DataContextProvider = ({ children }) => {
   const [currentUserOrderHistory, setCurrentUserOrderHistory] = useState([]);
   const [vendorOrders, setVendorOrders] = useState([]);
   const [unfilteredVendorOrders, setUnfilteredVendorOrders] = useState([]);
-  const [
-    unfilteredCurrentUserOrderHistory,
-    setUnfilteredCurrentUserOrderHistory,
-  ] = useState([]);
-
   const [originalProductList, setOriginalProductList] = useState([]);
   const [orderTotalAmount, setOrderTotalAmount] = useState(0);
   const [loadingCategories, setLoadingCategories] = useState(true);
   const [cartItemQuantities, setCartItemQuantities] = useState({});
+  const [isCartVisible, setCartVisible] = useState(false);
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
+  const [isNewOrder, setIsNewOrder] = useState(false);
+
   const [iscancellationApproved, setIsCancellationApproved] = useState("");
+  const [
+    unfilteredCurrentUserOrderHistory,
+    setUnfilteredCurrentUserOrderHistory,
+  ] = useState([]);
   const [productsTitleDisplay, setProductsTitleDisplay] =
     useState("All Products");
-  const localRoutePrefix = "http://127.0.0.1:5555";
-  const hostedRoutePrefix = "https://the-farmart-api-flask.onrender.com";
+
   const Kenya_counties = [
     "Mombasa",
     "Kwale",
@@ -83,8 +88,30 @@ const DataContextProvider = ({ children }) => {
   function capitalizeFirstLetter(sentence) {
     return sentence.charAt(0).toUpperCase() + sentence.slice(1);
   }
+  // ----------------------- REFRESH TOKEN -----------------------------------------
+
+  const refreshAccessToken = async (refreshToken) => {
+    try {
+      const response = await axios.post("/refresh", {
+        refresh_token: refreshToken,
+      });
+      const newAccessToken = response.data.access_token;
+      localStorage.setItem("access_token", newAccessToken);
+      return newAccessToken;
+    } catch (error) {
+      console.error("Token refresh failed", error);
+      return null;
+    }
+  };
+
+  // -------------------------------------------- SET HEADERS ----------------------------------------
+
+  const headers = {
+    Authorization: `Bearer ${jwToken}`,
+  };
 
   // ---------------- CHECK IF USER IS VENDOR
+
   useEffect(() => {
     console.log(currentUser.vendor_id);
     if (currentUser.vendor_id === "None") {
@@ -145,17 +172,14 @@ const DataContextProvider = ({ children }) => {
       .catch((error) => {
         console.error("Error fetching cart items:", error);
       });
-  }, [currentUser, isAddedToCart, cartItemQuantities]);
+  }, [currentUser, isAddedToCart, isNewOrder]);
+  // cartItemQuantities;
 
   // ---------------- FETCHING USER ORDER HISTORY
 
   useEffect(() => {
     axios
-      .get(`${localRoutePrefix}/orders/user_orders`, {
-        headers: {
-          Authorization: `Bearer ${jwToken}`,
-        },
-      })
+      .get(`${localRoutePrefix}/orders/user_orders`, { headers })
       .then((res) => {
         setCurrentUserOrderHistory(res.data);
         setUnfilteredCurrentUserOrderHistory(res.data);
@@ -164,7 +188,7 @@ const DataContextProvider = ({ children }) => {
       .catch((error) => {
         console.error("Error fetching order history:", error);
       });
-  }, [currentUser, iscancellationApproved]);
+  }, [currentUser, iscancellationApproved, isNewOrder]);
 
   // ---------------- FETCHING  VENDOR PRODUCT
 
@@ -237,6 +261,7 @@ const DataContextProvider = ({ children }) => {
     currentUserCartItems,
     setCurrentUserCartItems,
     currentUser,
+    headers,
     setCurrentUser,
     jwToken,
     setJWToken,
@@ -256,7 +281,17 @@ const DataContextProvider = ({ children }) => {
     setVendorOrders,
     isVendor,
     setIsVendor,
+
     updateProduct,
+
+    refreshAccessToken,
+    isCartVisible,
+    setCartVisible,
+    isPopupVisible,
+    setIsPopupVisible,
+    isNewOrder,
+    setIsNewOrder,
+
   };
   return <dataContext.Provider value={data}>{children}</dataContext.Provider>;
 };

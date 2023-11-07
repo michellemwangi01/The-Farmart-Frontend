@@ -28,8 +28,10 @@ const ProductDetails = ({ togglePopup, currentProductDetails }) => {
     setIsAddedToCart,
     localRoutePrefix,
     jwToken,
+    setCartVisible,
     currentUser,
     currentUserCartItems,
+    setIsPopupVisible,
   } = useContext(dataContext);
   console.log(isAddedToCart);
 
@@ -123,7 +125,8 @@ const ProductDetails = ({ togglePopup, currentProductDetails }) => {
 
   const viewCartHandler = () => {
     setIsAddedToCart(false);
-    navigate("/cart");
+    setCartVisible(true);
+    setIsPopupVisible(false);
   };
 
   const viewCartBtn = (

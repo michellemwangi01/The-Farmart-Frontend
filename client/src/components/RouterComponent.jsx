@@ -19,11 +19,17 @@ import VendorPortal from "./VendorDashboard";
 import VendorAllOrders from "./VendorAllOrders";
 import VendorNewOrders from "./VendorNewOrders";
 import Vendorproducts from "./Vendorproducts";
+
 import ShowProduct from "./ShowProduct"
 import NewProduct from "./NewProduct"
 import EditProduct from "./ProductEdit";
 const RouterComponent = () => {
   const[productsShow,setProductsShow]=useState([])
+
+import Profile from "./Profile";
+import UserProfile from "./UserProfile";
+const RouterComponent = ({}) => {
+
   return (
     <div id="routerComponent">
       <Routes>
@@ -42,6 +48,7 @@ const RouterComponent = () => {
         <Route path="/loggedOutNav" element={<LoggedOutNav />} />
         <Route path="/orderhistory" element={<OrderHistory />} />
         <Route path="/orderdetails" element={<OrderDetails />} />
+        <Route path="/profile" element={<UserProfile />} />
         <Route path="/vendorhome" element={<VendorPortal />}>
           <Route index element={<VendorNewOrders />} />
           <Route path="vendorneworders" element={<VendorNewOrders />} />

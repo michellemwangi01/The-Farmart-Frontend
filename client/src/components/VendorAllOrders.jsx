@@ -81,6 +81,12 @@ const VendorAllOrders = () => {
               ? "bg-yellow-400"
               : orderItem.orders.status === "Delivered & Paid"
               ? "bg-green-500"
+              : orderItem.orders.status === "Payment Received"
+              ? "bg-green-500"
+              : orderItem.orders.status === "Order Fulfilled"
+              ? "bg-green-500"
+              : orderItem.orders.status === "Delivery In Progress"
+              ? "bg-yellow-500"
               : ""
           }`}
         >
