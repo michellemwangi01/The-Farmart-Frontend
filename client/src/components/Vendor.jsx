@@ -208,7 +208,7 @@ const Vendor = () => {
 
       <div className="bg-gray-200  pb-8">
         <div>
-          <h1 className="text-2xl py-6 font-serif text-center">
+          <h1 className="text-2xl py-6 text-black font-serif text-center">
             JOIN OUR COMMUNITY
           </h1>
         </div>

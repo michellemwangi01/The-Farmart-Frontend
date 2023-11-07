@@ -32,6 +32,9 @@ const Cart = () => {
     setOrderTotalAmount,
     cartItemQuantities,
     setCartItemQuantities,
+    headers,
+    setIsNewOrder,
+    isNewOrder,
   } = useContext(dataContext);
 
   const navigate = useNavigate();
@@ -50,6 +53,7 @@ const Cart = () => {
         setIsDisabled(false);
       }
     };
+    checkIfItemsInCart();
   }, [currentUserCartItems]);
 
   // -------------------------------------------- UPDATE QUANTITIY VALUES FOR CART ITEMS----------------------------------------
@@ -111,25 +115,13 @@ const Cart = () => {
   const clearCartHandler = () => {
     console.log(currentUser.user_id);
     axios
-      .delete(`${localRoutePrefix}/cartitems/clear_cart_items`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        data: {
-          user_id: currentUser.user_id,
-        },
-      })
+      .delete(`${localRoutePrefix}/cartitems/clear_cart_items`, { headers })
       .then((res) => {
-        if (res.status !== 200) {
-          throw new Error("Network response was not ok");
-        }
-        return res.data;
-      })
-      .then((data) => {
-        console.log(data);
+        setIsNewOrder(!isNewOrder);
         setCurrentUserCartItems([]);
+        console.log(res);
       })
-      .catch((error) => console.error(error));
+      .catch((error) => console.log(error));
   };
 
   // -------------------------------------------- CREATE CART ITEMS --------------------------------------------

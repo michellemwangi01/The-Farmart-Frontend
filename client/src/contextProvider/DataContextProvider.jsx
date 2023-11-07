@@ -8,6 +8,8 @@ const dataContext = createContext();
 
 const DataContextProvider = ({ children }) => {
   // -------------------- CREATE STATE VARIABLES
+  const localRoutePrefix = "http://127.0.0.1:5555";
+  const hostedRoutePrefix = "https://the-farmart-api-flask.onrender.com";
   const [categories, setCategories] = useState([]);
   const [isVendor, setIsVendor] = useState(false);
   const [products, setProducts] = useState([]);
@@ -24,6 +26,7 @@ const DataContextProvider = ({ children }) => {
   const [cartItemQuantities, setCartItemQuantities] = useState({});
   const [isCartVisible, setCartVisible] = useState(false);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
+  const [isNewOrder, setIsNewOrder] = useState(false);
 
   const [iscancellationApproved, setIsCancellationApproved] = useState("");
   const [
@@ -32,8 +35,7 @@ const DataContextProvider = ({ children }) => {
   ] = useState([]);
   const [productsTitleDisplay, setProductsTitleDisplay] =
     useState("All Products");
-  const localRoutePrefix = "http://127.0.0.1:5555";
-  const hostedRoutePrefix = "https://the-farmart-api-flask.onrender.com";
+
   const Kenya_counties = [
     "Mombasa",
     "Kwale",
@@ -102,9 +104,14 @@ const DataContextProvider = ({ children }) => {
     }
   };
 
-  // ----------------------- USING REFRESH TOKEN -----------------------------------------
+  // -------------------------------------------- SET HEADERS ----------------------------------------
+
+  const headers = {
+    Authorization: `Bearer ${jwToken}`,
+  };
 
   // ---------------- CHECK IF USER IS VENDOR
+
   useEffect(() => {
     console.log(currentUser.vendor_id);
     if (currentUser.vendor_id === "None") {
@@ -160,18 +167,14 @@ const DataContextProvider = ({ children }) => {
       .catch((error) => {
         console.error("Error fetching cart items:", error);
       });
-  }, [currentUser, isAddedToCart]);
+  }, [currentUser, isAddedToCart, isNewOrder]);
   // cartItemQuantities;
 
   // ---------------- FETCHING USER ORDER HISTORY
 
   useEffect(() => {
     axios
-      .get(`${localRoutePrefix}/orders/user_orders`, {
-        headers: {
-          Authorization: `Bearer ${jwToken}`,
-        },
-      })
+      .get(`${localRoutePrefix}/orders/user_orders`, { headers })
       .then((res) => {
         setCurrentUserOrderHistory(res.data);
         setUnfilteredCurrentUserOrderHistory(res.data);
@@ -180,7 +183,7 @@ const DataContextProvider = ({ children }) => {
       .catch((error) => {
         console.error("Error fetching order history:", error);
       });
-  }, [currentUser, iscancellationApproved]);
+  }, [currentUser, iscancellationApproved, isNewOrder]);
 
   // ---------------- FETCHING  VENDOR PRODUCT
 
@@ -253,6 +256,7 @@ const DataContextProvider = ({ children }) => {
     currentUserCartItems,
     setCurrentUserCartItems,
     currentUser,
+    headers,
     setCurrentUser,
     jwToken,
     setJWToken,
@@ -277,6 +281,8 @@ const DataContextProvider = ({ children }) => {
     setCartVisible,
     isPopupVisible,
     setIsPopupVisible,
+    isNewOrder,
+    setIsNewOrder,
   };
 
   return <dataContext.Provider value={data}>{children}</dataContext.Provider>;

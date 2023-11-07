@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { dataContext } from "../contextProvider/DataContextProvider";
+import { BiLogOut } from "react-icons/bi";
 import "../styles/Navbar.css";
 
 const LoggedInNav = () => {
@@ -106,8 +107,14 @@ const LoggedInNav = () => {
           </p>
         </li>
         <li onClick={handleLogout}>
-          <p class="flex justify-center font-serif  block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white cursor-pointer">
-            Sign out
+          <p
+            class="flex border text-base mx-2 justify-center font-serif  block px-4 py-2  text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white cursor-pointer"
+            style={{ borderTop: "1px gray solid" }}
+          >
+            <div className="flex justify-center items-center">
+              {" "}
+              <BiLogOut className="text-lg" /> Sign out
+            </div>
           </p>
         </li>
       </ul>

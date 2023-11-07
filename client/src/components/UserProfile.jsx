@@ -1,6 +1,8 @@
 import React, { useContext, useState } from "react";
 import { dataContext } from "../contextProvider/DataContextProvider";
 import { useForm } from "react-hook-form";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
 const UserProfile = () => {
@@ -11,6 +13,7 @@ const UserProfile = () => {
     Kenya_counties,
     hostedRoutePrefix,
     localRoutePrefix,
+    headers,
   } = useContext(dataContext);
   const { register, reset, handleSubmit } = useForm();
 
@@ -20,9 +23,9 @@ const UserProfile = () => {
     email: currentUser.email,
     address: currentUser.address,
     email: currentUser.email,
-    firstname: currentUser.firstname,
+    first_name: currentUser.firstname,
     fullname: currentUser.fullname,
-    lastname: currentUser.lastname,
+    last_name: currentUser.lastname,
     phone_number: currentUser.phone_number,
     profile_pic: currentUser.profile_pic,
     vendor_id: currentUser.vendor_id,
@@ -33,26 +36,32 @@ const UserProfile = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const headers = {
-    Authorization: `Bearer ${jwToken}`,
-  };
   const handleProfileUpdate = (data) => {
     console.log(data);
     currentUser.profile_pic = data.profile_pic;
     currentUser.fullname = data.fullname;
     axios
-      .patch(`${localRoutePrefix}/users/userss`, data, {
+      .patch(`${localRoutePrefix}/users/users`, data, {
         headers,
       })
-      .then((res) => console.log(res.data))
+      .then((res) => {
+        ProfileSuccessfullyUpdated(
+          "Your profile has been updated successfully!",
+          "success"
+        );
+        console.log(res.data);
+      })
       .catch((error) => console.log(error));
   };
 
-  // -------------------------------------------- USE DATA CONTEXT --------------------------------------------
+  // -------------------------------------------- TOAST NOIFICATIONS --------------------------------------------
 
-  //   console.log(currentUser);
+  const ProfileSuccessfullyUpdated = (message, type) => {
+    toast(message, { autoClose: 3000, type });
+  };
+
   return (
-    <div>
+    <div className="bg-gray-800">
       <section class="bg-white dark:bg-gray-900">
         <div class="max-w-2xl m-6 px-4 py-8 mx-auto lg:py-16 border rounded-lg border-1 border-solid border-green-900">
           <div className="flex justify-between items-center">
@@ -101,7 +110,7 @@ const UserProfile = () => {
                 </label>
                 <input
                   type="text"
-                  {...register("firstname")}
+                  {...register("first_name")}
                   id="name"
                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                   value={formData.firstname}
@@ -118,7 +127,7 @@ const UserProfile = () => {
                 </label>
                 <input
                   type="text"
-                  {...register("lastname")}
+                  {...register("last_name")}
                   id="name"
                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                   value={formData.lastname}
