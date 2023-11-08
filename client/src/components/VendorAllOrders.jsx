@@ -93,6 +93,15 @@ const VendorAllOrders = () => {
           {orderItem.orders.status ? orderItem.orders.status : "N/A"}
         </td>
         <td class="px-6 py-4 font-serif text-gray-700">
+          Ksh{" "}
+          {orderItem.amount.toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+          })}
+        </td>
+        <td class="px-6 py-4 font-serif text-gray-700">
+          {orderItem.payment.mpesa_receipt_code}
+        </td>
+        <td class="px-6 py-4 font-serif text-gray-700">
           {orderItem.orders.payment_uid
             ? orderItem.orders.payment_uid?.toUpperCase()
             : "N/A"}
@@ -105,12 +114,7 @@ const VendorAllOrders = () => {
         <td class="px-6 py-4 font-serif text-gray-700">
           {orderItem.quantity} items
         </td>
-        <td class="px-6 py-4 font-serif text-gray-700">
-          Ksh{" "}
-          {orderItem.amount.toLocaleString(undefined, {
-            minimumFractionDigits: 2,
-          })}
-        </td>
+
         <td class="px-6 py-4 font-serif text-gray-700">
           {orderItem.orders.date_created}
         </td>
@@ -216,7 +220,13 @@ const VendorAllOrders = () => {
               STATUS
             </th>
             <th scope="col" class="px-6 py-3">
-              PAYMENT ID
+              AMOUNT
+            </th>
+            <th scope="col" class="px-6 py-3">
+              MPESA ID
+            </th>
+            <th scope="col" class="px-6 py-3">
+              TRANSACTION ID
             </th>
             <th scope="col" class="px-6 py-3">
               DELIVERY TYPE
@@ -224,10 +234,6 @@ const VendorAllOrders = () => {
             <th scope="col" class="px-6 py-3">
               NO. OF ITEMS
             </th>
-            <th scope="col" class="px-6 py-3">
-              AMOUNT
-            </th>
-
             <th scope="col" class="px-6 py-3">
               ORDER DATE
             </th>

@@ -150,8 +150,10 @@ const VendorNewOrderDetails = ({
                 Status: {selectedOrderDetails.orders.status}
               </p>
               <p className="text-base font-serif font-medium leading-6 text-gray-800">
-                Payment Confirmation:{" "}
-                {selectedOrderDetails.orders.payment_uid.toUpperCase()}
+                MPESA Payment Confirmation:{" "}
+                {selectedOrderDetails.payment.mpesa_receipt_code
+                  ? selectedOrderDetails.payment.mpesa_receipt_code.toUpperCase()
+                  : "N/A"}
               </p>
             </div>
           </div>

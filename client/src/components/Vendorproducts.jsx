@@ -4,6 +4,7 @@ import { dataContext } from "../contextProvider/DataContextProvider";
 import { Link } from "react-router-dom";
 import React, { useContext, useEffect, useState } from "react";
 import api from "./AxiosAddJWT";
+import { AiOutlinePlus } from "react-icons/ai";
 
 const Vendorproducts = () => {
   const {
@@ -36,21 +37,10 @@ const Vendorproducts = () => {
 
       <div className="  flex flex-wrap basis-3/4 mt-12">
         <div className="w-72 h-72 m-2 bg-gray-200 rounded-xl p-12">
-          <h1 className="bg-white w-48 h-48 text-2xl text-green-600 text-center p-8 hover:bg-green-400 hover:text-green-700">
+          <h1 className="bg-white w-48 h-48 text-2xl text-green-600 text-center p-8 hover:bg-green-400 hover:text-white">
             <Link to="/newproduct">
-              ADD PRODUCT
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="#0b8609"
-                className="w-14 h-14 ml-9"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M12 3.75a.75.75 0 01.75.75v6.75h6.75a.75.75 0 010 1.5h-6.75v6.75a.75.75 0 01-1.5 0v-6.75H4.5a.75.75 0 010-1.5h6.75V4.5a.75.75 0 01.75-.75z"
-                  clipRule="evenodd"
-                />
-              </svg>
+              ADD A NEW PRODUCT
+              <AiOutlinePlus className="m-auto font-xl mt-2" />
             </Link>
           </h1>
         </div>

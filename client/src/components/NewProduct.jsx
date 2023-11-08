@@ -3,8 +3,13 @@ import { dataContext } from "../contextProvider/DataContextProvider";
 import { useNavigate } from "react-router-dom";
 import backgroundImage from "../images/image3.jpg";
 const NewProduct = () => {
-  const { categories, hostedRoutePrefix, localRoutePrefix, updateProduct } =
-    useContext(dataContext);
+  const {
+    categories,
+    hostedRoutePrefix,
+    localRoutePrefix,
+    currentUser,
+    updateProduct,
+  } = useContext(dataContext);
   const [image, setImage] = useState("");
   const [formData, setFormData] = useState({
     name: "",
@@ -40,7 +45,7 @@ const NewProduct = () => {
       }
     });
   };
-  const handleImageChnge = (e) => {
+  const handleImageChange = (e) => {
     const file = e.target.files[0];
     console.log(file);
     if (file) {
@@ -73,7 +78,7 @@ const NewProduct = () => {
       alert("Please fill out all required fields.");
       return;
     }
-
+    console.log(currentUser);
     const data = {
       name: formData.name,
       description: formData.description,
@@ -122,85 +127,130 @@ const NewProduct = () => {
       formData.category_id = category.id;
     }
   });
+
   return (
-    <div
-      style={{
-        ...backgroundStyles,
-        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url(${backgroundImage})`,
-      }}
-      class=" min-w-screen min-h-screen  flex items-center justify-center px-5 py-5"
-    >
+    <div class=" w-4/6 h-screen m-auto  flex flex-col items-center justify-center px-5 py-5">
+      <h1 className="font-serif text-green-800 text-4xl mb-4">
+        Add New Product
+      </h1>
       <form
-        style={{
-          ...backgroundStyles,
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(${backgroundImage})`,
-          width: "70%",
-          padding: "3rem",
-          borderRadius: "25px",
-          opacity: 1,
-        }}
-        className="outline outline-gray-100 m-14 ml-48 p-4 rounded-xl w-2/3 text-white"
+        className="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5 w-2/3 border border-1 border-green-900 p-5 rounded-lg"
         onSubmit={handleSubmit}
       >
-        <label htmlFor="name">Name</label>
-        <input
-          className="outline outline-green-200 rounded-lg text-green-600"
-          type="text"
-          id="name"
-          name="name"
-          placeholder="Name of Product"
-          onChange={handleChange}
-          value={formData.name}
-        />
-        <label htmlFor="description">Description</label>
-        <input
-          className="outline outline-green-200 rounded-lg text-green-600"
-          type="text"
-          id="description"
-          name="description"
-          placeholder="Description of product"
-          onChange={handleChange}
-          value={formData.description}
-        />
-        <label htmlFor="price">Price</label>
-        <input
-          className="outline outline-green-200 rounded-lg text-green-600"
-          type="number"
-          id="price"
-          name="price"
-          placeholder="Unit Price"
-          onChange={handleChange}
-          value={formData.price}
-        />
-        <label htmlFor="category">Category</label>
-        <select
-          id="category"
-          name="category"
-          value={formData.category}
-          onChange={handleChange}
-          className="w-full p-2 border rounded bg-white text-green-600 rounded-lg outline outline-green-200"
-        >
-          <option className="hover:bg-white hover:text-green-600 bg-white">
-            Select category
-          </option>
-          {categoriesList}
-        </select>
-        <label htmlFor="image">Upload Image</label>
-        <input
-          type="file"
-          name="image"
-          id="name"
-          onChange={handleImageChnge}
-          className=""
-        />
-        <p className="font-bold">Image Preview</p>
-        <img src={image} alt="image" className=" w-28 h-24 rounded-lg" />
-        <button
-          className="bg-green-600 justify-self-center hover:bg-green-700"
-          type="submit"
-        >
-          ADD
-        </button>
+        <div class="sm:col-span-2">
+          <label
+            htmlFor="image"
+            class="block  text-green-900 mb-2 text-base font-medium text-gray-900 dark:text-white"
+          >
+            Upload Image
+          </label>
+          <input
+            type="file"
+            name="image"
+            id="image"
+            onChange={handleImageChange}
+            placeholder="Click to upload an Image"
+            className="w-full p-2.5 bg-white border h-10 border-gray-300 text-gray-900 rounded-lg shadow-sm focus:outline-none focus:ring-primary-600 focus:border-primary-600"
+          />
+        </div>
+        <div class="sm:col-span-2">
+          {" "}
+          <p
+            className="font-bold"
+            class="block  text-green-900 mb-2 text-base font-medium text-gray-900 dark:text-white"
+          >
+            Image Preview
+          </p>
+          <img
+            src={image}
+            alt="image"
+            className=" border border-1 border-green-800 xl:w-1/3 w-2/3 h-52 rounded-lg object-cover"
+          />
+        </div>
+        <div class="sm:col-span-2">
+          <label
+            htmlFor="name"
+            class="block  text-green-900 mb-2 text-base font-medium text-gray-900 dark:text-white"
+          >
+            Name
+          </label>
+          <input
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+            type="text"
+            id="name"
+            name="name"
+            placeholder="Name of Product"
+            onChange={handleChange}
+            value={formData.name}
+          />
+        </div>
+        <div class="sm:col-span-2">
+          {" "}
+          <label
+            htmlFor="description"
+            class="block  text-green-900 mb-2 text-base font-medium text-gray-900 dark:text-white"
+          >
+            Description
+          </label>
+          <textarea
+            rows="5"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-green-700 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+            type="text"
+            id="description"
+            name="description"
+            placeholder="Description of product"
+            onChange={handleChange}
+            value={formData.description}
+          />
+        </div>
+        <div class="sm:col-span-2">
+          {" "}
+          <label
+            htmlFor="price"
+            class="block  text-green-900 mb-2 text-base font-medium text-gray-900 dark:text-white"
+          >
+            Price
+          </label>
+          <input
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+            type="number"
+            id="price"
+            name="price"
+            placeholder="Unit Price"
+            onChange={handleChange}
+            value={formData.price}
+          />
+        </div>
+        <div class="sm:col-span-2">
+          {" "}
+          <label
+            htmlFor="category"
+            class="block  text-green-900 mb-2 text-base font-medium text-gray-900 dark:text-white"
+          >
+            Category
+          </label>
+          <select
+            id="category"
+            name="category"
+            value={formData.category}
+            onChange={handleChange}
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+          >
+            <option className="hover:bg-white hover:text-green-600 bg-white">
+              Select category
+            </option>
+            {categoriesList}
+          </select>
+        </div>
+        <div>
+          {" "}
+          <button
+            className="bg-green-600 justify-self-center hover:bg-green-700"
+            type="submit"
+          >
+            ADD
+          </button>
+        </div>
       </form>
     </div>
   );
