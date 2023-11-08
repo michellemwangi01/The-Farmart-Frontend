@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { FaRegWindowClose } from "react-icons/fa";
 import { AiOutlineShoppingCart, AiOutlineCloseSquare } from "react-icons/ai";
+import { BiMoney } from "react-icons/bi";
 import { MdShoppingCartCheckout } from "react-icons/md";
 import { useNavigate, Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
@@ -29,6 +30,7 @@ const ProductDetails = ({ togglePopup, currentProductDetails }) => {
     localRoutePrefix,
     jwToken,
     setCartVisible,
+    headers,
     currentUser,
     currentUserCartItems,
     setIsPopupVisible,
@@ -63,10 +65,7 @@ const ProductDetails = ({ togglePopup, currentProductDetails }) => {
     console.log(addedProduct);
     axios
       .post(`${localRoutePrefix}/cartitems/cart_items`, addedProduct, {
-        headers: {
-          Authorization: `Bearer ${jwToken}`,
-          "Content-Type": "application/json",
-        },
+        headers,
       })
       .then((res) => console.log(res.data))
       .catch((error) => console.error(error));
@@ -118,7 +117,7 @@ const ProductDetails = ({ togglePopup, currentProductDetails }) => {
       hover:bg-blue-700
     "
     >
-      <MdShoppingCartCheckout className="mr-2" />
+      <BiMoney className="mr-2" />
       Proceed to Checkout
     </button>
   );
@@ -190,7 +189,7 @@ const ProductDetails = ({ togglePopup, currentProductDetails }) => {
             </div>
 
             <div className="xl:w-2/5 md:w-1/2 lg:ml-8 md:ml-6 md:mt-0 mt-6">
-              <div className="border-b border-gray-200 pb-6">
+              <div className="border-b flex justify-between border-gray-200 pb-6">
                 <h1
                   className="
 							lg:text-2xl
@@ -204,6 +203,25 @@ const ProductDetails = ({ togglePopup, currentProductDetails }) => {
 						"
                 >
                   {capitalizeFirstLetter(currentProductDetails.name)}
+                </h1>
+                <h1
+                  className="
+							lg:text-2xl
+							text-2xl
+							font-semibold
+                            font-serif
+							lg:leading-6
+							leading-7
+							text-gray-800
+							mt-2
+						"
+                >
+                  Ksh{" "}
+                  {capitalizeFirstLetter(
+                    currentProductDetails.price.toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                    })
+                  )}
                 </h1>
               </div>
               <div className="py-4 border-b border-gray-200 flex flex-wrap items-center justify-between">
@@ -277,7 +295,10 @@ const ProductDetails = ({ togglePopup, currentProductDetails }) => {
 
               <div>
                 <div className="mt-7">
-                  <p className="font-bold font-serif"> Product Details</p>
+                  <p className="font-bold text-black font-serif">
+                    {" "}
+                    Product Details
+                  </p>
                   <p className="xl:pr-10 mt-2 text-base lg:leading-tight leading-normal text-gray-600 ">
                     <span className="text-gray-900"> Description:</span>{" "}
                     {currentProductDetails.description}
@@ -301,7 +322,10 @@ const ProductDetails = ({ togglePopup, currentProductDetails }) => {
                   <span className="text-gray-900"> Bulk order discounts:</span>{" "}
                   {currentProductDetails.vendor.name}
                 </p>
-                <p className="mt-4 font-bold font-serif"> Vendor Details</p>
+                <p className="mt-4 font-bold text-black font-serif">
+                  {" "}
+                  Vendor Details
+                </p>
                 <p className="text-base leading-4 mt-2 mb-2 text-gray-600">
                   <span className="text-gray-900">
                     <span className="text-gray-900"> Sold by: </span>{" "}

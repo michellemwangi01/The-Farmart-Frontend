@@ -64,8 +64,8 @@ const ImageSlider = () => {
       }}
       class=" min-w-screen flex"
     >
-      <div className="  flex w-full lg:mx-64 mx-20  justify-center items-center">
-        <div className="w-2/3">
+      <div className="   w-full lg:mx-64 mx-20  justify-center items-center flex flex-wrap">
+        <div className="w-2/3 ">
           <h1
             id="LandingpageHeader"
             className="text-white font-bold text-6xl font-serif"
@@ -76,7 +76,7 @@ const ImageSlider = () => {
           <p className="text-white text-4xl mt-8 font-serif italic">
             Farm Fresh Delights at Your Doorstep - Where Nature Meets
             Convenience! Farmer or local producer, Farmart is your gateway to a
-            thriving community of food enthusiasts."
+            thriving community of fresh food enthusiasts.
           </p>
         </div>
         <div className="w-1/3 flex justify-center items-center">

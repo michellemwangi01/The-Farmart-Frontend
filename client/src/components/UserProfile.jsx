@@ -17,8 +17,7 @@ const UserProfile = () => {
   } = useContext(dataContext);
   const { register, reset, handleSubmit } = useForm();
 
-  const [editMode, setEditMode] = useState(false);
-
+  console.log(currentUser);
   const [formData, setFormData] = useState({
     email: currentUser.email,
     address: currentUser.address,

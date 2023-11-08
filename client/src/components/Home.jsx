@@ -22,10 +22,10 @@ const Home = () => {
         <ImageSlider></ImageSlider>
       </div>
       <div id="shopByCategory">
-        <h1 className="m-6 text-xl text-black font-bold">Shop By Category</h1>
-        <div className="flex flex-wrap  justify-center m-6 ml-18">
+        <h1 className="m-6 text-2xl text-black font-bold">Shop By Category</h1>
+        <div className="flex  flex-wrap  justify-center m-6 ml-18">
           <div
-            className=" live relative rounded-xl  w-1/4 h-60 m-4 "
+            className=" live relative rounded-xl  w-full sm:w-1/2 md:w-1/3 lg:w-1/4 h-60 m-4 "
             data-aos="flip-right"
             // data-aos-once="true"
           >
@@ -52,7 +52,7 @@ const Home = () => {
             </Link>
           </div>
           <div
-            className="dairy relative rounded-xl  w-1/4 h-60 m-4"
+            className="dairy relative rounded-xl w-full sm:w-1/2 md:w-1/3 lg:w-1/4 h-60 m-4"
             data-aos="flip-right"
             // data-aos-once="true"
           >
@@ -79,7 +79,7 @@ const Home = () => {
             </Link>
           </div>
           <div
-            className="meat relative rounded-xl  w-1/4 h-60 m-4"
+            className="meat relative rounded-xlw-full sm:w-1/2 md:w-1/3 lg:w-1/4 h-60 m-4"
             data-aos="flip-right"
             // data-aos-once="true"
           >
@@ -106,7 +106,7 @@ const Home = () => {
             </Link>
           </div>
           <div
-            className="grain relative rounded-xl  w-1/4 h-60 m-4 "
+            className="grain relative rounded-xl  w-full sm:w-1/2 md:w-1/3 lg:w-1/4 h-60 m-4 "
             data-aos="flip-right"
             // data-aos-once="true"
           >
@@ -133,7 +133,7 @@ const Home = () => {
             </Link>
           </div>
           <div
-            className="honey relative rounded-xl  w-1/4 h-60 m-4"
+            className="honey relative rounded-xl  w-full sm:w-1/2 md:w-1/3 lg:w-1/4 h-60 m-4"
             data-aos="flip-right"
             // data-aos-once="true"
           >
@@ -160,7 +160,7 @@ const Home = () => {
             </Link>
           </div>
           <div
-            className="fresh relative rounded-xl  w-1/4 h-60 m-4"
+            className="fresh relative rounded-xl  w-full sm:w-1/2 md:w-1/3 lg:w-1/4 h-60 m-4"
             data-aos="flip-right"
             // data-aos-once="true"
           >

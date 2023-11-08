@@ -28,7 +28,7 @@ const Products = () => {
   const [emptyProductsAlert, setEmptyProductsAlert] = useState(
     "Sorry, There are no products for this category at the moment."
   );
-
+  console.log(currentUser);
   // -------------------------------------------- FECTH SELECTED PRODUCT DETAILS  --------------------------------------------
 
   const togglePopup = (id) => {

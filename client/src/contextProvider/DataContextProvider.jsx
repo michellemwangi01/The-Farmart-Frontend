@@ -16,6 +16,7 @@ const DataContextProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
   const [jwToken, setJWToken] = useState("");
   const [isAddedToCart, setIsAddedToCart] = useState(false);
+  const [payments, setPayments] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
   const [currentUserCartItems, setCurrentUserCartItems] = useState([]);
   const [currentUserOrderHistory, setCurrentUserOrderHistory] = useState([]);
@@ -28,6 +29,15 @@ const DataContextProvider = ({ children }) => {
   const [isCartVisible, setCartVisible] = useState(false);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [isNewOrder, setIsNewOrder] = useState(false);
+
+  //   {
+  //   "username": "MichelleMwangi",
+  //   "password": "12",
+  //   "repeatpassword": "12",
+  //   "email": "mich@mail.com",
+  //   "first_name": "Michelle",
+  //   "last_name": "Mwangi"
+  // }
 
   const [iscancellationApproved, setIsCancellationApproved] = useState("");
   const [
@@ -126,7 +136,7 @@ const DataContextProvider = ({ children }) => {
 
   useEffect(() => {
     axios
-      .get(`${hostedRoutePrefix}/categories/categories`)
+      .get(`${localRoutePrefix}/categories/categories`)
       .then((res) => {
         console.log("CATEGORIES", res.data);
         setCategories(res.data);
@@ -142,7 +152,7 @@ const DataContextProvider = ({ children }) => {
 
   useEffect(() => {
     axios
-      .get(`${hostedRoutePrefix}/products/products`)
+      .get(`${localRoutePrefix}/products/products`)
       .then((res) => {
         setProducts(res.data);
         setOriginalProductList(res.data);
@@ -157,68 +167,84 @@ const DataContextProvider = ({ children }) => {
     setProducts(update);
   };
 
-  // ---------------- FETCHING USER CARTITEMS
+  // // ---------------- FETCHING USER CARTITEMS
 
+  // useEffect(() => {
+  //   console.log(currentUser, headers, jwToken);
+  //   if (currentUser.user_id !== 0) {
+  //     axios
+  //       .get(`${localRoutePrefix}/cartitems/user_cart_items`, { headers })
+  //       .then((res) => {
+  //         setCurrentUserCartItems(res.data);
+  //         console.log("CART ITEMS", res.data);
+  //       })
+  //       .catch((error) => {
+  //         console.error("Error fetching cart items:", error);
+  //       });
+  //   }
+  // }, [currentUser, isAddedToCart, isNewOrder]);
+
+  // ---------------- FETCHING PAYMENTS
   useEffect(() => {
     axios
-      .get(`${localRoutePrefix}/cartitems/user_cart_items`, {
-        headers: {
-          Authorization: `Bearer ${jwToken}`,
-        },
-      })
+      .get(`${localRoutePrefix}/payments/get_payment_confirmation_details`)
       .then((res) => {
-        setCurrentUserCartItems(res.data);
-        console.log("CART ITEMS", res.data);
+        setPayments(res.data);
+        console.log("PAYMENTS:", res.data);
       })
       .catch((error) => {
-        console.error("Error fetching cart items:", error);
+        console.error("Error fetching categories:", error);
       });
-  }, [currentUser, isAddedToCart, isNewOrder]);
-  // cartItemQuantities;
+  }, []);
 
   // ---------------- FETCHING USER ORDER HISTORY
 
   useEffect(() => {
-    axios
-      .get(`${localRoutePrefix}/orders/user_orders`, { headers })
-      .then((res) => {
-        setCurrentUserOrderHistory(res.data);
-        setUnfilteredCurrentUserOrderHistory(res.data);
-        console.log("ORDER HISTORY", res.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching order history:", error);
-      });
+    if (currentUser.user_id !== 0) {
+      axios
+        .get(`${localRoutePrefix}/orders/user_orders`, { headers })
+        .then((res) => {
+          setCurrentUserOrderHistory(res.data);
+          setUnfilteredCurrentUserOrderHistory(res.data);
+          console.log("ORDER HISTORY", res.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching order history:", error);
+        });
+    }
   }, [currentUser, iscancellationApproved, isNewOrder]);
 
   // ---------------- FETCHING  VENDOR PRODUCT
 
   useEffect(() => {
-    axios
-      .get(`${localRoutePrefix}/products/vendor_products`, {
-        headers: {
-          Authorization: `Bearer ${jwToken}`,
-        },
-      })
-      .then((res) => {
-        setCurrentUserOrderHistory(res.data);
-        console.log("VENDOR PRODUCTS", res.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching vendor products:", error);
-      });
+    if (currentUser.user_id !== 0) {
+      axios
+        .get(`${localRoutePrefix}/products/vendor_products`, {
+          headers: {
+            Authorization: `Bearer ${jwToken}`,
+          },
+        })
+        .then((res) => {
+          setCurrentUserOrderHistory(res.data);
+          console.log("VENDOR PRODUCTS", res.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching vendor products:", error);
+        });
+    }
   }, [currentUser]);
 
   // ------------------- HANDLE REMOVE FROM ORDER TEMPLATE
 
   const deleteFromOrder = (id) => {
     const updatedCartItems = currentUserCartItems.filter(
-      (cartItem) => cartItem.id != id
+      (cartItem) => cartItem.id !== id
     );
     setCurrentUserCartItems(updatedCartItems);
     axios
       .delete(`${localRoutePrefix}/cartitems/cart_items/${id}`)
       .then((response) => {
+        console.log(response.data);
         toastSuccessfulRemoveFromOrder(
           "Item successfully removed from cart/order!",
           "success"
@@ -239,11 +265,12 @@ const DataContextProvider = ({ children }) => {
 
   useEffect(() => {
     const totalAmount = currentUserCartItems.reduce(
-      (total, cartItem) => total + cartItem.product.price,
+      (total, cartItem) => total + cartItem.product.price * cartItem.quantity,
       0
     );
     setOrderTotalAmount(totalAmount);
-  }, [currentUserCartItems]);
+    console.log(orderTotalAmount);
+  }, [currentUserCartItems, cartItemQuantities]);
 
   // ---------------------------- COUNTER ANIMATION COMPONENT --------------------
   function Number({ n }) {

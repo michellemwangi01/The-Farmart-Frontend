@@ -24,9 +24,12 @@ const ProductCard = ({ product, togglePopup }) => {
         <div class="article-body">
           <h2>{product.name}</h2>
           <div className="flex">
-            <p className="text-blue-800">Price</p>
+            {/* <p className="text-blue-800">Price</p> */}
             <p className="mx-2 text-blue-800" id="cardDetails">
-              ${product.price.toFixed(2)}
+              ksh{" "}
+              {product.price.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+              })}
             </p>
           </div>
           <p id="cardDetails"></p>

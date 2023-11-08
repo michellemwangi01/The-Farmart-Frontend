@@ -163,34 +163,45 @@ function Checkout() {
 
   // ------------------- ORDER ITEMS SUMMARY TEMPLATE
 
-  const cartItemsList = currentUserCartItems.map((cartItem) => (
-    <div class="flex flex-col rounded-lg bg-gray-100 sm:flex-row">
-      <img
-        class="m-2 h-24 w-28 rounded-md border object-cover object-center"
-        src={`${cartItem.product.image}`}
-        alt=""
-      />
-      <div class="flex w-full flex-col px-4 py-4">
-        <span class="font-semibold">{cartItem.product.name.toUpperCase()}</span>
-        <span class="float-right text-gray-600">
-          {cartItem.product.vendor.business_name}
-        </span>
-        <p>Quantity: {cartItem.quantity} batches</p>
-        <p class="text-lg font-bold">
-          KES{" "}
-          {cartItem.product.price.toLocaleString(undefined, {
-            minimumFractionDigits: 2,
-          })}
-        </p>
-        <p
-          onClick={() => deleteFromOrderHandler(cartItem.id)}
-          className="flex items-center justify-end text-red-600 font-light"
-        >
-          <FaRegTrashAlt className="text-red-400" />
-        </p>
+  const cartItemsList = currentUserCartItems.map((cartItem) => {
+    console.log(cartItem.amount);
+    return (
+      <div class="flex flex-col rounded-lg bg-gray-100 sm:flex-row">
+        <img
+          class="m-2 h-24 w-28 rounded-md border object-cover object-center"
+          src={`${cartItem.product.image}`}
+          alt=""
+        />
+        <div class="flex w-full flex-col px-4 py-4">
+          <span class="font-semibold">
+            {cartItem.product.name.toUpperCase()}
+          </span>
+          <span class="float-right text-gray-600">
+            {cartItem.product.vendor.business_name}
+          </span>
+          <p>Quantity: {cartItem.quantity} batche(s)</p>
+          <p className="text-lg font-bold">
+            {cartItem.amount ? (
+              <>
+                KES{" "}
+                {cartItem.amount.toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                })}
+              </>
+            ) : (
+              <span>0</span>
+            )}
+          </p>
+          <p
+            onClick={() => deleteFromOrderHandler(cartItem.id)}
+            className="flex items-center justify-end text-red-600 font-light"
+          >
+            <FaRegTrashAlt className="text-red-400" />
+          </p>
+        </div>
       </div>
-    </div>
-  ));
+    );
+  });
 
   return (
     <div className="mb-4 pb-4 font-serif">
