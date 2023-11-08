@@ -20,7 +20,7 @@ function Profile() {
       const formData = new FormData();
 
       
-      const response = await axios.post('https://the-farmart-api-flask.onrender.com//uploadimage', formData, {
+      const response = await axios.post('https://the-farmart-api-flask.onrender.com/image/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

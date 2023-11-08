@@ -25,7 +25,7 @@ function VendorLocation() {
             ></iframe>
           </div>
           <div className="details">
-          <div className="text-wrapper-17"><h2> <b>Bomet, Kenya</b> </h2></div>
+          <div className="text-wrapper-17"><h2> <b>Ruai Tharuyu Farm,Beverly hill lane, Nairobi</b> </h2></div>
             <div className="lefti">
                 <div className="fulfillment-days-mon-4">
                 Fulfillment days
@@ -100,7 +100,7 @@ function VendorLocation() {
             ></iframe>
           </div>
           <div className="details">
-          <div className="text-wrapper-17"><h2> <b>Bomet, Kenya</b> </h2></div>
+          <div className="text-wrapper-17"><h2> <b>Mafad Farm,Mafad Fard, Karura</b> </h2></div>
             <div className="lefti">
                 <div className="fulfillment-days-mon-4">
                 Fulfillment days
@@ -177,7 +177,8 @@ function VendorLocation() {
           </div>
          
           <div className="details">
-          <div className="text-wrapper-17"><h2> <b>Bomet, Kenya</b> </h2></div>
+          <div className="text-wrapper-17"><h2> <b>MEE Goat Milk Farm
+Neema Estate, Kiganjo Road, Ruiru</b> </h2></div>
             <div className="lefti">
                 <div className="fulfillment-days-mon-4">
                 Fulfillment days
