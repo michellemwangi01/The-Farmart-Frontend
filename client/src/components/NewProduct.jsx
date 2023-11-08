@@ -129,42 +129,36 @@ const NewProduct = () => {
   });
 
   return (
-    <div class=" w-4/6 h-screen m-auto  flex flex-col items-center justify-center px-5 py-5">
-      <h1 className="font-serif text-green-800 text-4xl mb-4">
+    <div class=" w-2/6 h-auto m-auto mt-6 flex flex-col items-center justify-center px-5 py-5 shadow-sm shadow-green-500 ">
+      <h1 className="font-serif text-gray-700 text-4xl mb-4">
         Add New Product
       </h1>
       <form
-        className="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5 w-2/3 border border-1 border-green-900 p-5 rounded-lg"
+        className="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5 w-full p-5 rounded-lg"
         onSubmit={handleSubmit}
       >
         <div class="sm:col-span-2">
           <label
             htmlFor="image"
-            class="block  text-green-900 mb-2 text-base font-medium text-gray-900 dark:text-white"
+            class="block  text-green-900 text-lg font-normal  dark:text-white"
           >
-            Upload Image
+            Click <span className="text-blue-900 underline ">here</span> to
+            upload and preview an image of the product.
           </label>
           <input
             type="file"
             name="image"
             id="image"
             onChange={handleImageChange}
-            placeholder="Click to upload an Image"
             className="w-full p-2.5 bg-white border h-10 border-gray-300 text-gray-900 rounded-lg shadow-sm focus:outline-none focus:ring-primary-600 focus:border-primary-600"
+            style={{ display: "none" }}
           />
         </div>
         <div class="sm:col-span-2">
-          {" "}
-          <p
-            className="font-bold"
-            class="block  text-green-900 mb-2 text-base font-medium text-gray-900 dark:text-white"
-          >
-            Image Preview
-          </p>
           <img
             src={image}
-            alt="image"
-            className=" border border-1 border-green-800 xl:w-1/3 w-2/3 h-52 rounded-lg object-cover"
+            alt="product image"
+            className=" border border-1 border-green-800 xl:w-2/3 w-2/3 h-30 rounded-lg object-cover"
           />
         </div>
         <div class="sm:col-span-2">
@@ -193,7 +187,7 @@ const NewProduct = () => {
             Description
           </label>
           <textarea
-            rows="5"
+            rows="3"
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-green-700 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
             type="text"
             id="description"
@@ -242,13 +236,13 @@ const NewProduct = () => {
             {categoriesList}
           </select>
         </div>
-        <div>
+        <div className="w-full sm:col-span-2">
           {" "}
           <button
-            className="bg-green-600 justify-self-center hover:bg-green-700"
+            className="bg-green-600  rounded-none justify-self-center w-full m-auto mt-6 hover:bg-green-700"
             type="submit"
           >
-            ADD
+            ADD PRODUCT
           </button>
         </div>
       </form>

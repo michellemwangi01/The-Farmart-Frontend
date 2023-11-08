@@ -15,6 +15,7 @@ const Vendorproducts = () => {
     localRoutePrefix,
     setVendorProducts,
   } = useContext(dataContext);
+
   useEffect(() => {
     const fetchVendorProducts = async () => {
       try {
@@ -29,6 +30,7 @@ const Vendorproducts = () => {
     };
     fetchVendorProducts();
   }, []);
+
   return (
     <div className="flex  justify-between">
       <div className="basis-1/3 p-10">
