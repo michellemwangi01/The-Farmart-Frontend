@@ -41,14 +41,12 @@ const VendorNewOrders = () => {
       })
       .catch((error) => console.error(error));
   }, []);
-  console.log(vendorOrders);
 
   // ------------------------------------------ FILTER NEW ORDERS FOR CURRENT VENDOR -------------------------------------
 
   const newOrders = vendorOrders.filter((vendorOrder) => {
     return vendorOrder.orders.status === "Order Placed";
   });
-  console.log(newOrders);
   // ------------------------------------------ CREATE ORDER HISTORY LIST -------------------------------------
 
   const orderHistoryList = newOrders
@@ -162,7 +160,7 @@ const VendorNewOrders = () => {
         />
       )}
 
-      <h1 className="text-center font-serif text-2xl text-green-900">
+      <h1 className="text-center my-6 font-serif text-2xl text-green-900">
         Orders Pending Approval
       </h1>
       <div class="pb-4 bg-white dark:bg-gray-900">

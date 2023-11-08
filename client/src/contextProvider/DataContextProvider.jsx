@@ -29,15 +29,7 @@ const DataContextProvider = ({ children }) => {
   const [isCartVisible, setCartVisible] = useState(false);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [isNewOrder, setIsNewOrder] = useState(false);
-
-  //   {
-  //   "username": "MichelleMwangi",
-  //   "password": "12",
-  //   "repeatpassword": "12",
-  //   "email": "mich@mail.com",
-  //   "first_name": "Michelle",
-  //   "last_name": "Mwangi"
-  // }
+  const [currentVendorProducts, setCurrentVendorProducts] = useState([]);
 
   const [iscancellationApproved, setIsCancellationApproved] = useState("");
   const [
@@ -225,7 +217,7 @@ const DataContextProvider = ({ children }) => {
           },
         })
         .then((res) => {
-          setCurrentUserOrderHistory(res.data);
+          setCurrentVendorProducts(res.data);
           console.log("VENDOR PRODUCTS", res.data);
         })
         .catch((error) => {
@@ -334,6 +326,7 @@ const DataContextProvider = ({ children }) => {
     setIsPopupVisible,
     isNewOrder,
     setIsNewOrder,
+    currentVendorProducts,
   };
   return <dataContext.Provider value={data}>{children}</dataContext.Provider>;
 };

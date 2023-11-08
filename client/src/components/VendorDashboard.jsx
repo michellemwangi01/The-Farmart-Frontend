@@ -9,7 +9,7 @@ const VendorDashboard = () => {
   return (
     <div>
       <VendorSummaryCards />
-      <nav className="flex justify-center items-center m-12 p-8">
+      <nav className="flex justify-center items-center  p-8 w-full bg-gray-200">
         {" "}
         <NavLink
           to="vendorneworders"

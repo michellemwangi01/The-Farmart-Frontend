@@ -7,29 +7,7 @@ import api from "./AxiosAddJWT";
 import { AiOutlinePlus } from "react-icons/ai";
 
 const Vendorproducts = () => {
-  const {
-    products,
-    productsTitleDisplay,
-    currentUser,
-    currentUserName,
-    localRoutePrefix,
-    setVendorProducts,
-  } = useContext(dataContext);
-
-  useEffect(() => {
-    const fetchVendorProducts = async () => {
-      try {
-        const response = await api.get(
-          `${localRoutePrefix}/products/vendor_products`
-        );
-        setVendorProducts(response.data);
-        console.log(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchVendorProducts();
-  }, []);
+  const { currentVendorProducts } = useContext(dataContext);
 
   return (
     <div className="flex  justify-between">
@@ -46,7 +24,7 @@ const Vendorproducts = () => {
             </Link>
           </h1>
         </div>
-        {products.map((product) => (
+        {currentVendorProducts.map((product) => (
           <ProductcardV key={product.id} product={product} />
         ))}
       </div>

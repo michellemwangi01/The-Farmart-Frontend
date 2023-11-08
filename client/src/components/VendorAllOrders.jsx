@@ -164,8 +164,8 @@ const VendorAllOrders = () => {
         />
       )}
 
-      <h1 className="text-center font-serif text-2xl text-green-900">
-        Your Order History
+      <h1 className="text-center font-serif text-2xl text-green-900 my-6">
+        Order History
       </h1>
       <div class="pb-4 bg-white dark:bg-gray-900">
         <label for="table-search" class="sr-only">

@@ -1,6 +1,30 @@
-import React from "react";
+import React, { useContext, useState, useEffect } from "react";
+
+import { dataContext } from "../contextProvider/DataContextProvider";
 
 const VendorSummaryCards = () => {
+  const { currentVendorProducts, vendorOrders } = useContext(dataContext);
+  const [percentagePaidFor, setPercentagePaidFor] = useState(0);
+
+  // --------------------------- SUMMARY CARD CALCULATIONS --------------------------
+
+  const numberOfOrdersPaidFor = vendorOrders.filter(
+    (order) => order.orders.status === "Payment Received"
+  ).length;
+
+  useEffect(() => {
+    if (vendorOrders.length > 0) {
+      setPercentagePaidFor(
+        () => (numberOfOrdersPaidFor / vendorOrders.length) * 100
+      );
+    }
+  });
+
+  const totalIncome = vendorOrders.reduce(
+    (accumulator, order) => accumulator + order.amount,
+    0
+  );
+
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
       {/* ------------------------------------ */}
@@ -15,7 +39,7 @@ const VendorSummaryCards = () => {
         <div className="flex items-end justify-between mt-4 font-serif">
           <div>
             <h4 className="text-title-md font-bold text-gray-800 dark:text-white">
-              $3.456K
+              {vendorOrders.length}
             </h4>
             <span className=" font-medium text-green-900 text-2xl">
               Total Orders
@@ -23,7 +47,7 @@ const VendorSummaryCards = () => {
           </div>
 
           <span className="flex items-center gap-1 justify-center text-sm bg-gray-200 pl-2 p-1 rounded-md font-medium text-meta-3 pr-4">
-            0.43%
+            0.22%
             <svg
               className="fill-meta-3"
               width="16"
@@ -53,7 +77,7 @@ const VendorSummaryCards = () => {
         <div className="flex items-end justify-between mt-4 font-serif">
           <div>
             <h4 className="text-title-md font-bold text-gray-800 dark:text-white">
-              $3.456K
+              {currentVendorProducts.length}
             </h4>
             <span className=" font-medium text-green-900 text-2xl">
               Total Products
@@ -61,7 +85,7 @@ const VendorSummaryCards = () => {
           </div>
 
           <span className="flex items-center gap-1 justify-center text-sm bg-gray-200 pl-2 p-1 rounded-md font-medium text-meta-3 pr-4">
-            0.43%
+            0.13%
             <svg
               className="fill-meta-3"
               width="16"
@@ -91,7 +115,8 @@ const VendorSummaryCards = () => {
         <div className="flex items-end justify-between mt-4 font-serif">
           <div>
             <h4 className="text-title-md font-bold text-gray-800 dark:text-white">
-              $3.456K
+              {percentagePaidFor.toFixed(2)}% ( {numberOfOrdersPaidFor} out of{" "}
+              {vendorOrders.length})
             </h4>
             <span className=" font-medium text-green-900 text-2xl">
               Total Payments
@@ -99,7 +124,7 @@ const VendorSummaryCards = () => {
           </div>
 
           <span className="flex items-center gap-1 justify-center text-sm bg-gray-200 pl-2 p-1 rounded-md font-medium text-meta-3 pr-4">
-            0.43%
+            1.97%
             <svg
               className="fill-meta-3"
               width="16"
@@ -129,7 +154,10 @@ const VendorSummaryCards = () => {
         <div className="flex items-end justify-between mt-4 font-serif">
           <div>
             <h4 className="text-title-md font-bold text-gray-800 dark:text-white">
-              $3.456K
+              ksh{" "}
+              {totalIncome.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+              })}
             </h4>
             <span className=" font-medium text-green-900 text-2xl">
               Total Income
@@ -137,7 +165,7 @@ const VendorSummaryCards = () => {
           </div>
 
           <span className="flex items-center gap-1 justify-center text-sm bg-gray-200 pl-2 p-1 rounded-md font-medium text-meta-3 pr-4">
-            0.43%
+            10.72%
             <svg
               className="fill-meta-3"
               width="16"
