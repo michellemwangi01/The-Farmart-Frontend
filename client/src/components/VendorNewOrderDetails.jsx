@@ -7,13 +7,14 @@ import { dataContext } from "../contextProvider/DataContextProvider";
 const VendorNewOrderDetails = ({
   selectedOrderDetails,
   setIsOrderDetailsVisible,
+  isOrderApproved,
+  setIsOrderApproved,
 }) => {
   console.log(selectedOrderDetails);
   // -------------------------------------------- STATE VARIABLES  --------------------------------------------
 
   const [viewCarrierDetails, setViewCarrierDetails] = useState(false);
   const [orderApprovalMessage, setOrderApprovalMessage] = useState("");
-  const [isOrderApproved, setIsOrderApproved] = useState("");
   const { localRoutePrefix } = useContext(dataContext);
 
   // -------------------------------------------- VIEW CARRIER DETAILS HANDLER  --------------------------------------------

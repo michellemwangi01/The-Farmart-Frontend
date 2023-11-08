@@ -132,7 +132,9 @@ const VendorApprovedOrderDetails = ({
               </p>
               <p className="text-base font-serif font-medium leading-6 text-gray-800">
                 Payment Confirmation:{" "}
-                {selectedOrderDetails.orders.payment_uid.toUpperCase()}
+                {selectedOrderDetails.orders.payment_uid
+                  ? selectedOrderDetails.orders.payment_uid.toUpperCase()
+                  : "N/A"}
               </p>
             </div>
           </div>

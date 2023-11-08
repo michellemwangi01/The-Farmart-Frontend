@@ -99,11 +99,13 @@ const VendorAllOrders = () => {
           })}
         </td>
         <td class="px-6 py-4 font-serif text-gray-700">
-          {orderItem.payment.mpesa_receipt_code}
+          {orderItem.payment.mpesa_receipt_code
+            ? orderItem.payment.mpesa_receipt_code.toUpperCase()
+            : "N/A"}
         </td>
         <td class="px-6 py-4 font-serif text-gray-700">
           {orderItem.orders.payment_uid
-            ? orderItem.orders.payment_uid?.toUpperCase()
+            ? orderItem.orders.payment_uid.toUpperCase()
             : "N/A"}
         </td>
         <td class="px-6 py-4 font-serif text-gray-700">

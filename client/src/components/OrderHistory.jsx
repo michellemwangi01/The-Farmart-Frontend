@@ -86,7 +86,9 @@ const OrderHistory = () => {
           })}
         </td>
         <td class="px-6 py-4 font-serif text-gray-700">
-          {orderItem.payment.mpesa_receipt_code}
+          {orderItem.payment.mpesa_receipt_code
+            ? orderItem.payment.mpesa_receipt_code.toUpperCase()
+            : "N/A"}
         </td>
         <td class="px-6 py-4 font-serif text-gray-700">
           {orderItem.payment_uid.toUpperCase()}

@@ -159,23 +159,6 @@ const DataContextProvider = ({ children }) => {
     setProducts(update);
   };
 
-  // // ---------------- FETCHING USER CARTITEMS
-
-  // useEffect(() => {
-  //   console.log(currentUser, headers, jwToken);
-  //   if (currentUser.user_id !== 0) {
-  //     axios
-  //       .get(`${localRoutePrefix}/cartitems/user_cart_items`, { headers })
-  //       .then((res) => {
-  //         setCurrentUserCartItems(res.data);
-  //         console.log("CART ITEMS", res.data);
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error fetching cart items:", error);
-  //       });
-  //   }
-  // }, [currentUser, isAddedToCart, isNewOrder]);
-
   // ---------------- FETCHING PAYMENTS
   useEffect(() => {
     axios

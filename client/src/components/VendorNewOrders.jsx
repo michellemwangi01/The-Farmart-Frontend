@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { dataContext } from "../contextProvider/DataContextProvider";
 import axios from "axios";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import VendorNewOrderDetails from "./VendorNewOrderDetails";
 import { useNavigate } from "react-router-dom";
 
@@ -11,11 +12,15 @@ const VendorNewOrders = () => {
   const [unfilteredVendorOrders, setUnfilteredVendorOrders] = useState([]);
   const [selectedOrderDetails, setSelectedOrderDetails] = useState({});
   const [searchValue, setSearchValue] = useState("");
+  const [isOrderApproved, setIsOrderApproved] = useState("");
+
   const { localRoutePrefix, jwToken, vendorOrders, setVendorOrders } =
     useContext(dataContext);
 
   const navigate = useNavigate();
+
   // -------------------------------------------- FECTH SELECTED PRODUCT DETAILS  --------------------------------------------
+
   const ViewProductDetailsHandler = (id) => {
     const selectedOrder = newOrders.filter((selected_order) => {
       return selected_order.id === id;
@@ -41,6 +46,54 @@ const VendorNewOrders = () => {
       })
       .catch((error) => console.error(error));
   }, []);
+
+  // -------------------------------------------- TOAST NOIFICATIONS --------------------------------------------
+
+  const OrderSuccessfullyAccepted = (message, type) => {
+    toast(message, { autoClose: 3000, type });
+  };
+
+  const OrderSuccessfullyRejected = (message, type) => {
+    toast(message, { autoClose: 3000, type });
+  };
+
+  // // -------------------------------------------- ACCEPT ORDER HANDLER  --------------------------------------------
+
+  const approveOrderHandlerHome = (id) => {
+    axios
+      .patch(`${localRoutePrefix}/orders/orders/${id}`, {
+        status: "Order Approved",
+      })
+      .then((res) => {
+        console.log(res.data);
+        setIsOrderApproved(true);
+        OrderSuccessfullyAccepted(
+          `This order, No #${id} has been approved`,
+          "success"
+        );
+        const selectedOrder = vendorOrders.find((order) => order.id === id);
+        console.log(selectedOrder);
+        selectedOrder.orders.status = "Order Approved";
+      });
+  };
+  // // -------------------------------------------- REJECT ORDER HANDLER  --------------------------------------------
+
+  const rejectOrderHandlerHome = (id) => {
+    axios
+      .patch(`${localRoutePrefix}/orders/orders/${id}`, {
+        status: "Order Rejected",
+      })
+      .then((res) => {
+        console.log(res.data);
+        setIsOrderApproved(false);
+        OrderSuccessfullyRejected(
+          `This order, No #${id} has been rejected`,
+          "success"
+        );
+        const selectedOrder = vendorOrders.find((order) => order.id === id);
+        selectedOrder.orders.status = "Order Rejected";
+      });
+  };
 
   // ------------------------------------------ FILTER NEW ORDERS FOR CURRENT VENDOR -------------------------------------
 
@@ -109,12 +162,14 @@ const VendorNewOrders = () => {
               View Order Details
             </p>
             <button
+              onClick={() => approveOrderHandlerHome(orderItem.id)}
               type="button"
               class=" text-base focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
             >
               Approve
             </button>
             <button
+              onClick={() => rejectOrderHandlerHome(orderItem.id)}
               type="button"
               class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-sm text-base px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
             >
@@ -157,6 +212,8 @@ const VendorNewOrders = () => {
           selectedOrderDetails={selectedOrderDetails}
           setIsOrderDetailsVisible={setIsOrderDetailsVisible}
           isOrderDetailsVisible={isOrderDetailsVisible}
+          isOrderApproved={isOrderApproved}
+          setIsOrderApproved={setIsOrderApproved}
         />
       )}
 
