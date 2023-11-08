@@ -1,8 +1,11 @@
 import React, { useContext, useState, useEffect } from "react";
 import { dataContext } from "../contextProvider/DataContextProvider";
 import { useParams } from "react-router-dom";
-import backgroundImage from "../images/image3.jpg";
 import axios from "axios";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const EditProduct = () => {
   const {
@@ -10,52 +13,45 @@ const EditProduct = () => {
     categories,
     localRoutePrefix,
     hostedRoutePrefix,
+    jwToken,
   } = useContext(dataContext);
+
+  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
+
   const { id } = useParams();
   const product = originalProductList.find(
     (product) => product.id === Number(id)
   );
 
-  console.log(product);
-
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [category_id, setCategory_id] = useState("");
-  const [image, setImage] = useState("");
-  const [price, setPrice] = useState("");
-  const [category, setCategory] = useState("");
-
-  useEffect(() => {
-    if (product) {
-      setName(product.name);
-      setDescription(product.description);
-      setCategory_id(product.category_id);
-      setImage(product.image);
-      setPrice(product.price);
-    }
-  }, [product]);
-  const backgroundStyles = {
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
-  };
-  categories.map((category) => {
-    if (category.name === category) {
-      setCategory_id(category.id);
-    }
+  const [formData, setFormData] = useState({
+    name: product.name,
+    description: product.description,
+    category_id: 0,
+    image: product.image,
+    price: product.price,
   });
 
-  const handleImageChnge = (e) => {
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleImageChange = (e) => {
     const file = e.target.files[0];
     console.log(file);
     if (file) {
       // Define the allowed image MIME types
       const allowedImageTypes = ["image/jpeg", "image/png", "image/gif"];
-
       // Check if the uploaded file's MIME type is allowed
       if (allowedImageTypes.includes(file.type)) {
         const imageFile = URL.createObjectURL(file);
-        setImage(imageFile);
+        setFormData((formData.image = imageFile));
       } else {
         // Display an error message or prevent the upload
         alert("Please upload a valid image file (JPEG, PNG, or GIF).");
@@ -64,31 +60,31 @@ const EditProduct = () => {
       }
     }
   };
-  const handlePatchRequest = () => {
-    const url = `${localRoutePrefix}/products/products/${id}`;
 
-    const data = {
-      name: name,
-      description: description,
-      vendor_id: 1,
-      category_id: category_id,
-      image: image,
-      price: price,
-    };
-
+  const handlePatchRequest = (data) => {
+    console.log(product);
+    console.log(data);
+    const url = `${localRoutePrefix}/products/products/${product.id}`;
     axios
       .patch(url, data, {
         headers: {
+          Authorization: `Bearer ${jwToken}`,
           "Content-Type": "application/json",
         },
       })
       .then((response) => {
-        console.log("User profile updated successfully");
+        console.log("Product updated successfully:", response.data);
+        ProductSuccessfullyUpdated(
+          `Product #${product.id} has been updated successfully`,
+          "success"
+        );
+        navigate("/shop");
       })
       .catch((error) => {
-        console.error("Error updating user profile:", error);
+        console.error("Error updating product:", error);
       });
   };
+
   const categoriesList = categories.map((item) => (
     <option
       className="hover:bg-white hover:text-green-600 bg-white"
@@ -99,85 +95,132 @@ const EditProduct = () => {
     </option>
   ));
 
+  // -------------------------------------------- TOAST NOIFICATIONS --------------------------------------------
+
+  const ProductSuccessfullyUpdated = (message, type) => {
+    toast(message, { autoClose: 3000, type });
+  };
+
   return (
-    <div
-      style={{
-        ...backgroundStyles,
-        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url(${backgroundImage})`,
-      }}
-      class=" min-w-screen min-h-screen  flex items-center justify-center px-5 py-5"
-    >
+    <div class=" w-2/6 h-auto m-auto mt-10 flex flex-col items-center justify-center px-5 py-5 shadow-sm shadow-green-500 ">
+      <h1 className="font-serif text-gray-700 text-4xl mb-4">
+        Editing product #{product.id}
+      </h1>
+      {/* <div class=" min-w-screen min-h-screen   flex items-center justify-center px-5 py-5"> */}
       <form
-        style={{
-          ...backgroundStyles,
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(${backgroundImage})`,
-          width: "70%",
-          padding: "3rem",
-          borderRadius: "25px",
-          opacity: 1,
-        }}
-        className="outline outline-gray-100 m-14 ml-48 p-4 rounded-xl w-2/3 text-white"
-        onSubmit={handlePatchRequest}
+        className="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5 w-full p-5 rounded-lg"
+        // className="outline outline-gray-100 m-14 ml-48 p-4 rounded-xl w-2/3 text-white"
+        onSubmit={handleSubmit(handlePatchRequest)}
       >
-        <label htmlFor="name">Name</label>
-        <input
-          className="outline outline-green-200 rounded-lg text-green-600"
-          type="text"
-          id="name"
-          name="name"
-          placeholder={name}
-          onChange={(e) => setName(e.target.value)}
-          value={name}
-        />
-        <label htmlFor="description">Description</label>
-        <input
-          className="outline outline-green-200 rounded-lg text-green-600"
-          type="text"
-          id="description"
-          name="description"
-          placeholder={description}
-          onChange={(e) => setDescription(e.target.value)}
-          value={description}
-        />
-        <label htmlFor="price">Price</label>
-        <input
-          className="outline outline-green-200 rounded-lg text-green-600"
-          type="number"
-          id="price"
-          name="price"
-          placeholder={price}
-          onChange={(e) => setPrice(e.target.value)}
-          value={price}
-        />
-        <label htmlFor="category">Category</label>
-        <select
-          id="category"
-          name="category"
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          className="w-full p-2 border rounded bg-white text-green-600 rounded-lg outline outline-green-200"
-        >
-          <option className="hover:bg-white hover:text-green-600 bg-white">
-            Select category
-          </option>
-          {categoriesList}
-        </select>
-        <label htmlFor="image">Upload Image</label>
-        <input
-          type="file"
-          name="image"
-          id="name"
-          onChange={handleImageChnge}
-          className=""
-        />
-        <p className="font-bold">Image Preview</p>
-        <img src={image} alt="image" className=" w-28 h-24 rounded-lg" />
-        <button
-          className="bg-green-600 justify-self-center hover:bg-green-700"
-          type="submit"
-        >
-          CHANGE
-        </button>
+        <div class="sm:col-span-2">
+          <label
+            htmlFor="image"
+            class="block  text-green-900 text-lg font-normal  dark:text-white"
+          >
+            Click <span className="text-blue-900 underline ">here</span> to
+            upload and preview an image of the product.
+          </label>
+          <input
+            type="file"
+            name="image"
+            id="image"
+            onChange={handleImageChange}
+            className="w-full p-2.5 bg-white border h-10 border-gray-300 text-gray-900 rounded-lg shadow-sm focus:outline-none focus:ring-primary-600 focus:border-primary-600"
+            style={{ display: "none" }}
+          />
+        </div>
+        <div class="sm:col-span-2">
+          <img
+            src={formData.image}
+            alt="product image"
+            className=" border border-1 border-green-800 xl:w-2/3 w-2/3 h-30 rounded-lg object-cover"
+          />
+        </div>
+        <div class="sm:col-span-2">
+          <label
+            htmlFor="name"
+            class="block  text-green-900 mb-2 text-base font-medium text-gray-900 dark:text-white"
+          >
+            Product Name
+          </label>
+          <input
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+            type="text"
+            id="name"
+            {...register("name")}
+            value={formData.name}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div class="sm:col-span-2">
+          {" "}
+          <label
+            htmlFor="description"
+            class="block  text-green-900 mb-2 text-base font-medium text-gray-900 dark:text-white"
+          >
+            Description
+          </label>
+          <input
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+            type="text"
+            id="description"
+            {...register("description")}
+            value={formData.description}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div class="sm:col-span-2">
+          <label
+            htmlFor="price"
+            class="block  text-green-900 mb-2 text-base font-medium text-gray-900 dark:text-white"
+          >
+            Price
+          </label>
+          <input
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+            type="number"
+            id="price"
+            {...register("price")}
+            value={formData.price}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div class="sm:col-span-2">
+          {" "}
+          <label
+            htmlFor="category"
+            class="block  text-green-900 mb-2 text-base font-medium text-gray-900 dark:text-white"
+          >
+            Category
+          </label>
+          <select
+            {...register("category", {
+              required: "Category is required",
+              minLength: {
+                value: 4,
+                message: "Must be Selected",
+              },
+            })}
+            name="category"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+          >
+            {categoriesList.map((category) => (
+              <option className="text-lg" key={category.id}>
+                {category}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="w-full sm:col-span-2">
+          {" "}
+          <button
+            className="bg-green-600  rounded-none justify-self-center w-full m-auto mt-6 hover:bg-green-700"
+            type="submit"
+          >
+            UPDATE PRODUCT
+          </button>
+        </div>
       </form>
     </div>
   );

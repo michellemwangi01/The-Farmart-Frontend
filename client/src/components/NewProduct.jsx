@@ -1,7 +1,9 @@
 import React, { useContext, useState } from "react";
 import { dataContext } from "../contextProvider/DataContextProvider";
 import { useNavigate } from "react-router-dom";
-import backgroundImage from "../images/image3.jpg";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const NewProduct = () => {
   const {
     categories,
@@ -95,10 +97,17 @@ const NewProduct = () => {
       body: JSON.stringify(data),
     })
       .then((resp) => resp.json())
-      .then((data) => updateProduct(data))
+      .then((data) => {
+        updateProduct(data);
+        NewProductSuccessfullyAdded(
+          "You have successfully added a product",
+          "success"
+        );
+      })
       .catch((error) => {
         console.error("Error during POST request:", error);
       });
+
     setFormData({
       name: "",
       description: "",
@@ -127,6 +136,12 @@ const NewProduct = () => {
       formData.category_id = category.id;
     }
   });
+
+  // -------------------------------------------- TOAST NOIFICATIONS --------------------------------------------
+
+  const NewProductSuccessfullyAdded = (message, type) => {
+    toast(message, { autoClose: 3000, type });
+  };
 
   return (
     <div class=" w-2/6 h-auto m-auto mt-6 flex flex-col items-center justify-center px-5 py-5 shadow-sm shadow-green-500 ">

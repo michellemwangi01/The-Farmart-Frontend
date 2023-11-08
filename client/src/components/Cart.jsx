@@ -12,7 +12,7 @@ const Cart = () => {
   const {
     register,
     handleSubmit,
-
+    reset,
     formState: { errors },
   } = useForm();
 
