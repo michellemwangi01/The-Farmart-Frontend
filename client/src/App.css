@@ -1,3 +1,4 @@
+
 /* .App {
   text-align: center;
 }
@@ -39,3 +40,13 @@
 /* @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities'; */
+
+button,
+p,
+a,
+li,
+div,
+input {
+  font: serif;
+}
+

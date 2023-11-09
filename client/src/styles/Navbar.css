@@ -1,0 +1,36 @@
+@import url("https://fonts.googleapis.com/css2?family=Cinzel&family=Cormorant+Garamond:wght@300&family=Dancing+Script:wght@600;700&family=Edu+TAS+Beginner&family=IBM+Plex+Serif:wght@300&family=Kalam:wght@300&family=Satisfy&family=Ysabeau+Infant:ital,wght@1,300&display=swap");
+.active {
+  background-color: #045f2a;
+  color: #ffffff;
+}
+
+#FarmartLogo {
+  font-family: "Edu TAS Beginner", cursive;
+  /* font-size: "2rem"; */
+  color: #045f2a;
+}
+.vendorNav {
+  background-color: #045f2a;
+  font-family: serif;
+  font-size: medium;
+  color: white;
+  padding: 5px 60px;
+  font-size: large;
+  border-radius: 10px;
+  margin: "20px";
+}
+.vendorNav:hover {
+  background-color: #119648;
+  color: white;
+  font-family: serif;
+  font-size: medium;
+
+  padding: 6px 60px;
+  font-size: large;
+}
+.vendorNav.active {
+  background-color: white;
+  color: #045f2a;
+  border: solid 2px #045f2a;
+  border-radius: 10px;
+}

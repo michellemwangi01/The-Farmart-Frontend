@@ -38,10 +38,10 @@ const Signup = () => {
       return;
     }
     const updatedData = { ...data, username: data.first_name + data.last_name };
-    // console.log(updatedData);
+    console.log(updatedData);
     axios
       .post(
-        `${localRoutePrefix}/authorization
+        `${hostedRoutePrefix}/authorization
 /signup`,
         updatedData
       )
@@ -49,9 +49,11 @@ const Signup = () => {
         console.log(`SUCCESSFUL ${res.data}`);
         navigate("/login");
       })
+
       .catch((error) => console.log(error));
     reset();
     setFormValidationMessage("");
+    navigate("/login");
   };
 
   // -------------------------------------------- INTERFACE --------------------------------------------
@@ -93,10 +95,13 @@ const Signup = () => {
                 <h1 class="font-bold text-3xl text-gray-900">SIGN UP</h1>
                 <p>Enter your information to register</p>
               </div>
-              <form onSubmit={handleSubmit(handleSignup)}>
+              <form
+                className="font-serif"
+                onSubmit={handleSubmit(handleSignup)}
+              >
                 <div class="flex flex-wrap -mx-3">
                   <div class="w-1/2 sm:w-1/2 px-3 mb-5">
-                    <label for="" class="text-sm font-semibold px-2">
+                    <label for="" class="text-sm font-serif font-semibold px-2">
                       First name
                     </label>
                     <div class="flex">
@@ -106,7 +111,7 @@ const Signup = () => {
                       <input
                         {...register("first_name")}
                         type="text"
-                        class="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-green-500"
+                        class="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 text-gray-900 border-gray-200 outline-none focus:border-green-500"
                         placeholder="John"
                         required
                       />
@@ -123,7 +128,7 @@ const Signup = () => {
                       <input
                         {...register("last_name")}
                         type="text"
-                        class="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-green-500"
+                        class="w-full -ml-10 pl-10 pr-3 py-2 text-gray-900 rounded-lg border-2 border-gray-200 outline-none focus:border-green-500"
                         placeholder="Smith"
                         required
                       />
@@ -142,14 +147,14 @@ const Signup = () => {
                       <input
                         {...register("email")}
                         type="email"
-                        class="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-green-500"
+                        class="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 text-gray-900 outline-none focus:border-green-500"
                         placeholder="johnsmith@example.com"
                         required
                       />
                     </div>
                   </div>
                 </div>
-                <div class="flex flex-wrap -mx-3">
+                <div class="flex flex-wrap lg-flex-no-wrap -mx-3">
                   <div class="w-full md:w-1/2 px-3 md:mb-12 mb-2 ">
                     <label for="" class="text-sm font-semibold px-1">
                       Password
@@ -161,7 +166,7 @@ const Signup = () => {
                       <input
                         {...register("password")}
                         type="password"
-                        class="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-green-500"
+                        class="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 text-gray-900 border-gray-200 outline-none focus:border-green-500"
                         placeholder="************"
                         required
                       />
@@ -181,7 +186,7 @@ const Signup = () => {
                       <input
                         {...register("repeatpassword")}
                         type="password"
-                        class="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-green-500"
+                        class="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 text-gray-900 outline-none focus:border-green-500"
                         placeholder="************"
                         required
                       />
@@ -195,7 +200,7 @@ const Signup = () => {
                   <div class="w-full px-3 mb-5">
                     <button
                       type="submit"
-                      class="block w-full max-w-xs mx-auto bg-green-500 hover:bg-green-700 focus:bg-green-700 text-white rounded-lg px-3 py-3 font-semibold"
+                      class="block w-full max-w-xs mx-auto bg-green-800 hover:bg-green-700 focus:bg-green-700 text-white rounded-lg px-3 py-3 font-semibold"
                     >
                       SIGN UP NOW
                     </button>

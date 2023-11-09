@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import "../styles/ProductCard.css";
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, togglePopup }) => {
+  // -------------------------------------------- DEFINE STATE  & CONTEXT VARIABLES --------------------------------------------
+
+  // -------------------------------------------- THE INTERFACE --------------------------------------------
+
   return (
     <article data-aos="zoom-in" data-aos-once="true">
       <div class="article-wrapper">
@@ -20,9 +24,12 @@ const ProductCard = ({ product }) => {
         <div class="article-body">
           <h2>{product.name}</h2>
           <div className="flex">
-            <p className="text-blue-800">Price</p>
+            {/* <p className="text-blue-800">Price</p> */}
             <p className="mx-2 text-blue-800" id="cardDetails">
-              ${product.price.toFixed(2)}
+              ksh{" "}
+              {product.price.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+              })}
             </p>
           </div>
           <p id="cardDetails"></p>
@@ -36,8 +43,8 @@ const ProductCard = ({ product }) => {
             </p>
           </div>
 
-          <a href="#" class="read-more">
-            Read more <span class="sr-only">about this is some title</span>
+          <h6 onClick={() => togglePopup(product.id)} class="read-more">
+            View details <span class="sr-only">about this is product</span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               class="icon"
@@ -50,7 +57,7 @@ const ProductCard = ({ product }) => {
                 clip-rule="evenodd"
               />
             </svg>
-          </a>
+          </h6>
         </div>
       </div>
     </article>

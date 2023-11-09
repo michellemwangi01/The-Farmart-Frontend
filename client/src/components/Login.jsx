@@ -2,11 +2,11 @@ import React, { useCallback, useContext, useState } from "react";
 import backgroundImage from "../images/image3.jpg";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import api from "./AxiosAddJWT";
 import { dataContext } from "../contextProvider/DataContextProvider";
 import { Link, NavLink, Navigate, useNavigate } from "react-router-dom";
-import Signup from "./Signup";
 
-const Login = () => {
+const Login = ({ setIsAuthenticated }) => {
   // -------------------------------------------- CUSTOM STYLING --------------------------------------------
 
   const backgroundStyles = {
@@ -18,12 +18,11 @@ const Login = () => {
   // -------------------------------------------- CREATE STATE & CONTEXT VARIABLES --------------------------------------------
   const [errorMessages, setErrorMessages] = useState("");
   const {
+    setIsLoggedIn,
     hostedRoutePrefix,
     localRoutePrefix,
     setCurrentUser,
     currentUser,
-    setCurrentUserName,
-    currentUserName,
     jwToken,
     setJWToken,
   } = useContext(dataContext);
@@ -31,27 +30,38 @@ const Login = () => {
   // -------------------------------------------- USE FORM HOOK  --------------------------------------------
   const { register, reset, handleSubmit } = useForm();
 
+  // -------------------------------------------- HANDLE LOGIN  --------------------------------------------
+
   const handleLogin = (data) => {
     console.log(data);
     axios
-      .post(`${localRoutePrefix}/authorization/login`, data)
+      .post(`${hostedRoutePrefix}/authorization/login`, data)
       .then((res) => {
         console.log(res.data);
-        localStorage.setItem("jwToken", res.data.access_token);
+        localStorage.setItem("access_token", res.data.access_token);
+        localStorage.setItem("refresh_token", res.data.refresh_token);
+        localStorage.setItem(
+          "current_user",
+          JSON.stringify(res.data.current_user)
+        );
         setJWToken(res.data.access_token);
-        setCurrentUser(res.data.user_id);
-        setCurrentUserName(res.data.firstname);
+        setCurrentUser(res.data.current_user);
+        setIsLoggedIn(true);
+        setIsAuthenticated(true);
         navigate("/products");
-        console.log("CURRENT USER ID", res.data.user_id);
-        console.log("CURRENT USER NAME", res.data.firstname);
+        console.log("CURRENT USER ID", res.data.current_user);
       })
       .catch((error) => {
         console.log(error);
-        setErrorMessages(error.response.data.message);
+        setIsLoggedIn(false);
+        // setErrorMessages(error.response.data.message);
       });
     reset();
     setErrorMessages("");
   };
+
+  // -------------------------------------------- LOGIN INTERFACE  --------------------------------------------
+
   return (
     <div
       style={{
@@ -135,7 +145,7 @@ const Login = () => {
                     </p>
                     <button
                       type="submit"
-                      class="block w-full max-w-xs mx-auto bg-green-500 hover:bg-green-700 focus:bg-green-700 text-white rounded-lg px-3 py-3 font-semibold"
+                      class="block w-full max-w-xs mx-auto bg-green-800 hover:bg-green-700 focus:bg-green-700 text-white rounded-lg px-3 py-3 font-semibold"
                     >
                       LOGIN NOW
                     </button>

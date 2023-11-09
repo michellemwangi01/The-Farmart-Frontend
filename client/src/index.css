@@ -11,6 +11,74 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 } */
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+.home {
+  background-image: url("/public/images/farm_image.jpg");
+  background-size: cover; /* This will make the image cover the entire frame */
+  background-position: center;
+  transition: 5s;
+
+  animation-name: animate;
+  animation-direction: alternate-reverse;
+  animation-duration: 30s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-play-state: running;
+  animation-timing-function: ease-in-out;
+}
+@keyframes animate {
+  0% {
+    background-image: url("/public/images/image1.jpg");
+  }
+  25% {
+    background-image: url("/src/images/image2.jpg");
+  }
+  50% {
+    background-image: url("/src/images/image3.jpg");
+  }
+  75% {
+    background-image: url("/src/images/image4.jpg");
+  }
+  100% {
+    background-image: url("/public/images/farm_image.jpg");
+  }
+}
+
+.live {
+  background-image: url("https://images.pexels.com/photos/422218/pexels-photo-422218.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
+  background-size: cover; /* This will make the image cover the entire frame */
+  background-position: center;
+}
+
+.meat {
+  background-image: url("https://images.unsplash.com/photo-1606677661991-446cea8ee182?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8bWVhdHxlbnwwfHwwfHx8MA%3D%3D");
+  background-size: cover; /* This will make the image cover the entire frame */
+  background-position: center;
+}
+
+.grain {
+  background-image: url("https://images.unsplash.com/photo-1621956838481-f8f616950454?auto=format&fit=crop&q=80&w=987&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+  background-size: cover; /* This will make the image cover the entire frame */
+  background-position: center;
+}
+
+.honey {
+  background-image: url("https://images.unsplash.com/photo-1587049352851-8d4e89133924?auto=format&fit=crop&q=80&w=987&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+  background-size: cover; /* This will make the image cover the entire frame */
+  background-position: center;
+}
+
+.fresh {
+  background-image: url("https://images.unsplash.com/photo-1489450278009-822e9be04dff?auto=format&fit=crop&q=80&w=1172&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+  background-size: cover; /* This will make the image cover the entire frame */
+  background-position: center;
+}
+
+.dairy {
+  background-image: url("https://images.pexels.com/photos/1200667/pexels-photo-1200667.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
+  background-size: cover; /* This will make the image cover the entire frame */
+  background-position: center;
+}
