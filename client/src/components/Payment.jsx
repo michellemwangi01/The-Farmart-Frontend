@@ -48,7 +48,7 @@ function Payment({
       onClose();
       navigate("/orderhistory");
       axios
-        .delete(`${localRoutePrefix}/cartitems/clear_cart_items`, { headers })
+        .delete(`${hostedRoutePrefix}/cartitems/clear_cart_items`, { headers })
         .then((res) => {
           setIsNewOrder(!isNewOrder);
           console.log(res);

@@ -31,7 +31,7 @@ const VendorRegistrationForm = ({
     };
 
     console.log(newData);
-    axios.post(`${localRoutePrefix}/vendors/vendors`, newData).then((res) => {
+    axios.post(`${hostedRoutePrefix}/vendors/vendors`, newData).then((res) => {
       vendorRegistrationSuccessful(
         "Your request for vendor registration is received successfully.",
         "success"

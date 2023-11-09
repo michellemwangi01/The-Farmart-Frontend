@@ -138,7 +138,7 @@ const DataContextProvider = ({ children }) => {
 
   useEffect(() => {
     axios
-      .get(`${localRoutePrefix}/categories/categories`)
+      .get(`${hostedRoutePrefix}/categories/categories`)
       .then((res) => {
         console.log("CATEGORIES", res.data);
         setCategories(res.data);
@@ -154,7 +154,7 @@ const DataContextProvider = ({ children }) => {
 
   useEffect(() => {
     axios
-      .get(`${localRoutePrefix}/products/products`)
+      .get(`${hostedRoutePrefix}/products/products`)
       .then((res) => {
         setProducts(res.data);
         setOriginalProductList(res.data);
@@ -172,7 +172,7 @@ const DataContextProvider = ({ children }) => {
   // ---------------- FETCHING PAYMENTS
   useEffect(() => {
     api
-      .get(`${localRoutePrefix}/payments/get_payment_confirmation_details`, {
+      .get(`${hostedRoutePrefix}/payments/get_payment_confirmation_details`, {
         headers,
       })
       .then((res) => {
@@ -189,7 +189,7 @@ const DataContextProvider = ({ children }) => {
   useEffect(() => {
     if (currentUser.user_id !== 0) {
       api
-        .get(`${localRoutePrefix}/orders/user_orders`, { headers })
+        .get(`${hostedRoutePrefix}/orders/user_orders`, { headers })
         .then((res) => {
           setCurrentUserOrderHistory(res.data);
           setUnfilteredCurrentUserOrderHistory(res.data);
@@ -206,7 +206,7 @@ const DataContextProvider = ({ children }) => {
   useEffect(() => {
     if (currentUser.user_id !== 0) {
       api
-        .get(`${localRoutePrefix}/products/vendor_products`, { headers })
+        .get(`${hostedRoutePrefix}/products/vendor_products`, { headers })
         .then((res) => {
           setCurrentVendorProducts(res.data);
           console.log("VENDOR PRODUCTS", res.data);
@@ -225,7 +225,7 @@ const DataContextProvider = ({ children }) => {
     );
     setCurrentUserCartItems(updatedCartItems);
     api
-      .delete(`${localRoutePrefix}/cartitems/cart_items/${id}`)
+      .delete(`${hostedRoutePrefix}/cartitems/cart_items/${id}`)
       .then((response) => {
         console.log(response.data);
         toastSuccessfulRemoveFromOrder(

@@ -15,6 +15,7 @@ const VendorAllOrders = () => {
   const {
     api,
     localRoutePrefix,
+    hostedRoutePrefix,
     jwToken,
     headers,
     vendorOrders,
@@ -37,7 +38,7 @@ const VendorAllOrders = () => {
   // ------------------------------------------ FILTER ORDERS FOR CURRENT VENDOR -------------------------------------
   useEffect(() => {
     api
-      .get(`${localRoutePrefix}/orders/vendor_orders`, { headers })
+      .get(`${hostedRoutePrefix}/orders/vendor_orders`, { headers })
       .then((res) => {
         setVendorOrders(res.data);
         setUnfilteredVendorOrders(res.data);

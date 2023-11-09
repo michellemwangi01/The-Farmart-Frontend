@@ -41,7 +41,7 @@ const Signup = () => {
     console.log(updatedData);
     axios
       .post(
-        `${localRoutePrefix}/authorization
+        `${hostedRoutePrefix}/authorization
 /signup`,
         updatedData
       )

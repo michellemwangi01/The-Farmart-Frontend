@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { dataContext } from "../contextProvider/DataContextProvider";
 import { BsFillTrashFill } from "react-icons/bs";
 import axios from "axios";
-import { FaRegTrashAlt } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 
 const ProductcardV = ({ product }) => {
@@ -25,7 +24,7 @@ const ProductcardV = ({ product }) => {
 
   const deleteProductHandler = () => {
     axios
-      .delete(`${localRoutePrefix}/products/products/${product.id}`)
+      .delete(`${hostedRoutePrefix}/products/products/${product.id}`)
       .then((res) => {
         console.log(res);
         productSuccessfullyDeleted(

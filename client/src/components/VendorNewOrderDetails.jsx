@@ -15,7 +15,7 @@ const VendorNewOrderDetails = ({
 
   const [viewCarrierDetails, setViewCarrierDetails] = useState(false);
   const [orderApprovalMessage, setOrderApprovalMessage] = useState("");
-  const { localRoutePrefix } = useContext(dataContext);
+  const { localRoutePrefix, hostedRoutePrefix } = useContext(dataContext);
 
   // -------------------------------------------- VIEW CARRIER DETAILS HANDLER  --------------------------------------------
 
@@ -78,7 +78,7 @@ const VendorNewOrderDetails = ({
 
   const approveOrderHandler = () => {
     axios
-      .patch(`${localRoutePrefix}/orders/orders/${selectedOrderDetails.id}`, {
+      .patch(`${hostedRoutePrefix}/orders/orders/${selectedOrderDetails.id}`, {
         status: "Order Approved",
       })
       .then((res) => {
@@ -96,7 +96,7 @@ const VendorNewOrderDetails = ({
 
   const rejectOrderHandler = () => {
     axios
-      .patch(`${localRoutePrefix}/orders/orders/${selectedOrderDetails.id}`, {
+      .patch(`${hostedRoutePrefix}/orders/orders/${selectedOrderDetails.id}`, {
         status: "Order Rejected",
       })
       .then((res) => {

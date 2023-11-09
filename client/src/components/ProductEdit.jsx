@@ -12,6 +12,7 @@ const EditProduct = () => {
     originalProductList,
     categories,
     localRoutePrefix,
+
     hostedRoutePrefix,
     jwToken,
     headers,
@@ -65,7 +66,7 @@ const EditProduct = () => {
   const handlePatchRequest = (data) => {
     console.log(product);
     console.log(data);
-    const url = `${localRoutePrefix}/products/products/${product.id}`;
+    const url = `${hostedRoutePrefix}/products/products/${product.id}`;
     axios
       .patch(url, data, { headers })
       .then((response) => {

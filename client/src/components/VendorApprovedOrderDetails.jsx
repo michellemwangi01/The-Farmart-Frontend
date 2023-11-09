@@ -14,7 +14,7 @@ const VendorApprovedOrderDetails = ({
   const [viewCarrierDetails, setViewCarrierDetails] = useState(false);
   const [orderFulfilledMessage, setOrderFulfilledMessage] = useState("");
   const [isOrderFulfilled, setIsOrderFulfilled] = useState(false);
-  const { localRoutePrefix } = useContext(dataContext);
+  const { localRoutePrefix, hostedRoutePrefix } = useContext(dataContext);
 
   // -------------------------------------------- VIEW CARRIER DETAILS HANDLER  --------------------------------------------
 
@@ -77,7 +77,7 @@ const VendorApprovedOrderDetails = ({
 
   const orderFulFillHandler = () => {
     axios
-      .patch(`${localRoutePrefix}/orders/orders/${selectedOrderDetails.id}`, {
+      .patch(`${hostedRoutePrefix}/orders/orders/${selectedOrderDetails.id}`, {
         status: "Delivered & Paid",
       })
       .then((res) => {

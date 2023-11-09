@@ -27,6 +27,7 @@ const Cart = () => {
     setCartVisible,
     currentUser,
     localRoutePrefix,
+    hostedRoutePrefix,
     currentUserCartItems,
     setCurrentUserCartItems,
     deleteFromOrder,
@@ -48,7 +49,7 @@ const Cart = () => {
     console.log(currentUser, headers, localStorage.getItem("access_token"));
     if (currentUser.user_id !== 0) {
       api
-        .get(`${localRoutePrefix}/cartitems/user_cart_items`, { headers })
+        .get(`${hostedRoutePrefix}/cartitems/user_cart_items`, { headers })
         .then((res) => {
           setCurrentUserCartItems(res.data);
           console.log("CART ITEMS", res.data);
@@ -117,7 +118,7 @@ const Cart = () => {
     for (const id in cartItemQuantities) {
       console.log(id);
       axios
-        .patch(`${localRoutePrefix}/cartitems/cart_items/${id}`, {
+        .patch(`${hostedRoutePrefix}/cartitems/cart_items/${id}`, {
           quantity: cartItemQuantities[id],
           amount: cartItemQuantities[id],
         })
@@ -136,7 +137,7 @@ const Cart = () => {
   const clearCartHandler = () => {
     console.log(currentUser.user_id);
     axios
-      .delete(`${localRoutePrefix}/cartitems/clear_cart_items`, { headers })
+      .delete(`${hostedRoutePrefix}/cartitems/clear_cart_items`, { headers })
       .then((res) => {
         setIsNewOrder(!isNewOrder);
         setCurrentUserCartItems([]);
@@ -164,7 +165,9 @@ const Cart = () => {
               <div className="flex justify-between w-full pb-2 space-x-2">
                 <div className="space-y-1">
                   <h3 className="text-lg font-medium font-serif leadi sm:pr-8">
-                    {cartItem.product.name.toUpperCase()}
+                    {cartItem.product.name
+                      ? cartItem.product.name.toUpperCase()
+                      : "N/A"}
                   </h3>
                   <p className="text-sm dark:text-gray-400 font-serif">
                     {cartItem.product.category.name}
@@ -173,15 +176,19 @@ const Cart = () => {
                 <div className="text-right">
                   <p className="text-lg font-semibold">
                     KES{" "}
-                    {`${totalAmountPercartItem.toLocaleString(undefined, {
-                      minimumFractionDigits: 2,
-                    })}`}
+                    {totalAmountPercartItem
+                      ? `${totalAmountPercartItem.toLocaleString(undefined, {
+                          minimumFractionDigits: 2,
+                        })}`
+                      : "N/A"}
                   </p>
                   <p className="text-sm  dark:text-gray-600">
                     KES{" "}
-                    {`${cartItem.product.price.toLocaleString(undefined, {
-                      minimumFractionDigits: 2,
-                    })}`}
+                    {cartItem.product.price
+                      ? `${cartItem.product.price.toLocaleString(undefined, {
+                          minimumFractionDigits: 2,
+                        })}`
+                      : "N/A"}
                   </p>
                 </div>
               </div>

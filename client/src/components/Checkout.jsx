@@ -107,7 +107,7 @@ function Checkout() {
     // -------------------------- Create an order
     console.log(orderData);
     api
-      .post(`${localRoutePrefix}/orders/orders`, orderData, { headers })
+      .post(`${hostedRoutePrefix}/orders/orders`, orderData, { headers })
       .then((res) => {
         console.log("ORDER SUCCESSFULLY PLACED", res.data);
         setIsNewOrder(!isNewOrder);

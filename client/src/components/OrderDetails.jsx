@@ -11,6 +11,7 @@ const OrderDetails = ({ selectedOrderDetails, setIsOrderDetailsVisible }) => {
   const [orderCancellationMessage, setOrdercancellationMessage] = useState("");
   const {
     localRoutePrefix,
+    hostedRoutePrefix,
     iscancellationApproved,
     setIsCancellationApproved,
   } = useContext(dataContext);
@@ -26,9 +27,12 @@ const OrderDetails = ({ selectedOrderDetails, setIsOrderDetailsVisible }) => {
   const cancelOrderHandler = () => {
     if (selectedOrderDetails.status === "Order Placed") {
       axios
-        .patch(`${localRoutePrefix}/orders/orders/${selectedOrderDetails.id}`, {
-          status: "Order Cancelled",
-        })
+        .patch(
+          `${hostedRoutePrefix}/orders/orders/${selectedOrderDetails.id}`,
+          {
+            status: "Order Cancelled",
+          }
+        )
         .then((res) => {
           console.log(res.data);
           setIsCancellationApproved(true);

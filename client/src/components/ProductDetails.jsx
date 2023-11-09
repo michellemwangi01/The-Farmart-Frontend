@@ -28,6 +28,7 @@ const ProductDetails = ({ togglePopup, currentProductDetails }) => {
     isAddedToCart,
     setIsAddedToCart,
     localRoutePrefix,
+    hostedRoutePrefix,
     jwToken,
     setCartVisible,
     headers,
@@ -64,7 +65,7 @@ const ProductDetails = ({ togglePopup, currentProductDetails }) => {
     };
     console.log(addedProduct);
     axios
-      .post(`${localRoutePrefix}/cartitems/cart_items`, addedProduct, {
+      .post(`${hostedRoutePrefix}/cartitems/cart_items`, addedProduct, {
         headers,
       })
       .then((res) => console.log(res.data))

@@ -46,7 +46,7 @@ const Products = () => {
   useEffect(() => {
     if (selectedProductID) {
       axios
-        .get(`${localRoutePrefix}/products/products/${selectedProductID}`)
+        .get(`${hostedRoutePrefix}/products/products/${selectedProductID}`)
         .then((res) => {
           setCurrentProductDetails(res.data);
           setIsPopupVisible(true);

@@ -14,8 +14,14 @@ const VendorNewOrders = () => {
   const [searchValue, setSearchValue] = useState("");
   const [isOrderApproved, setIsOrderApproved] = useState("");
 
-  const { localRoutePrefix, headers, jwToken, vendorOrders, setVendorOrders } =
-    useContext(dataContext);
+  const {
+    localRoutePrefix,
+    hostedRoutePrefix,
+    headers,
+    jwToken,
+    vendorOrders,
+    setVendorOrders,
+  } = useContext(dataContext);
 
   const navigate = useNavigate();
 
@@ -34,7 +40,7 @@ const VendorNewOrders = () => {
   useEffect(() => {
     console.log(jwToken);
     axios
-      .get(`${localRoutePrefix}/orders/vendor_orders`, { headers })
+      .get(`${hostedRoutePrefix}/orders/vendor_orders`, { headers })
       .then((res) => {
         setVendorOrders(res.data);
         setUnfilteredVendorOrders(res.data);
@@ -57,7 +63,7 @@ const VendorNewOrders = () => {
 
   const approveOrderHandlerHome = (id) => {
     axios
-      .patch(`${localRoutePrefix}/orders/orders/${id}`, {
+      .patch(`${hostedRoutePrefix}/orders/orders/${id}`, {
         status: "Order Approved",
       })
       .then((res) => {
@@ -76,7 +82,7 @@ const VendorNewOrders = () => {
 
   const rejectOrderHandlerHome = (id) => {
     axios
-      .patch(`${localRoutePrefix}/orders/orders/${id}`, {
+      .patch(`${hostedRoutePrefix}/orders/orders/${id}`, {
         status: "Order Rejected",
       })
       .then((res) => {

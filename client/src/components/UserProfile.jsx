@@ -39,7 +39,7 @@ const UserProfile = () => {
     console.log(data);
 
     axios
-      .patch(`${localRoutePrefix}/users/users`, data, {
+      .patch(`${hostedRoutePrefix}/users/users`, data, {
         headers,
       })
       .then((res) => {

@@ -91,7 +91,7 @@ const NewProduct = () => {
     };
     console.log(data);
 
-    fetch(`${localRoutePrefix}/products/products`, {
+    fetch(`${hostedRoutePrefix}/products/products`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
