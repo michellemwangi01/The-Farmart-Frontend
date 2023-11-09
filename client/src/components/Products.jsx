@@ -5,12 +5,13 @@ import ProductsSearchFilter from "./ProductsSearchFilter";
 import ProductDetails from "./ProductDetails";
 import axios from "axios";
 import Cart from "./Cart";
+import { useNavigate } from "react-router-dom";
 
 const Products = () => {
   // -------------------------------------------- DEFINE STATE  & CONTEXT VARIABLES --------------------------------------------
   const [selectedProductID, setSelectedProductID] = useState(0);
   const [currentProductDetails, setCurrentProductDetails] = useState({});
-
+  const navigate = useNavigate();
   const {
     products,
     productsTitleDisplay,
@@ -32,8 +33,12 @@ const Products = () => {
   // -------------------------------------------- FECTH SELECTED PRODUCT DETAILS  --------------------------------------------
 
   const togglePopup = (id) => {
-    setSelectedProductID(id);
-    setIsAddedToCart(false);
+    if (Object.keys(currentUser).length === 0) {
+      navigate("/login");
+    } else {
+      setSelectedProductID(id);
+      setIsAddedToCart(false);
+    }
   };
 
   // -------------------------------------------- HANDLE PRODUCT DETAILS DISPLAY --------------------------------------------
