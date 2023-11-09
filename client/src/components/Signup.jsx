@@ -41,7 +41,7 @@ const Signup = () => {
     // console.log(updatedData);
     axios
       .post(
-        `${hostedRoutePrefix}/authorization
+        `${localRoutePrefix}/authorization
 /signup`,
         updatedData
       )
@@ -49,7 +49,7 @@ const Signup = () => {
         console.log(`SUCCESSFUL ${res.data}`);
         navigate("/login");
       })
-      
+
       .catch((error) => console.log(error));
     reset();
     setFormValidationMessage("");

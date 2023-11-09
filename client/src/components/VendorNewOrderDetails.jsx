@@ -7,13 +7,14 @@ import { dataContext } from "../contextProvider/DataContextProvider";
 const VendorNewOrderDetails = ({
   selectedOrderDetails,
   setIsOrderDetailsVisible,
+  isOrderApproved,
+  setIsOrderApproved,
 }) => {
   console.log(selectedOrderDetails);
   // -------------------------------------------- STATE VARIABLES  --------------------------------------------
 
   const [viewCarrierDetails, setViewCarrierDetails] = useState(false);
   const [orderApprovalMessage, setOrderApprovalMessage] = useState("");
-  const [isOrderApproved, setIsOrderApproved] = useState("");
   const { localRoutePrefix } = useContext(dataContext);
 
   // -------------------------------------------- VIEW CARRIER DETAILS HANDLER  --------------------------------------------
@@ -150,8 +151,10 @@ const VendorNewOrderDetails = ({
                 Status: {selectedOrderDetails.orders.status}
               </p>
               <p className="text-base font-serif font-medium leading-6 text-gray-800">
-                Payment Confirmation:{" "}
-                {selectedOrderDetails.orders.payment_uid.toUpperCase()}
+                MPESA Payment Confirmation:{" "}
+                {selectedOrderDetails.payment.mpesa_receipt_code
+                  ? selectedOrderDetails.payment.mpesa_receipt_code.toUpperCase()
+                  : "N/A"}
               </p>
             </div>
           </div>

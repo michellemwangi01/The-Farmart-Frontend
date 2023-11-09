@@ -3,33 +3,38 @@ import VendorSummaryCards from "./VendorSummaryCards";
 import { AiOutlineWarning } from "react-icons/ai";
 import { MdProductionQuantityLimits, MdOutlinePayments } from "react-icons/md";
 import { NavLink, Link, Outlet } from "react-router-dom";
+import "../styles/Navbar.css";
 
 const VendorDashboard = () => {
   return (
     <div>
       <VendorSummaryCards />
-      <nav className="flex justify-center items-center m-12 p-8">
-        <Link
+      <nav className="flex justify-center items-center  p-8 w-full bg-gray-200">
+        {" "}
+        <NavLink
           to="vendorneworders"
-          class="text-white w-60 font-serif bg-green-900 hover:bg-white hover:text-green-900 active:border-1 active:border-solid active:border-green-900 rounded-none text-xl px-5 py-2.5 text-center inline-flex items-center justify-center dark:hover:bg-[#050708]/40 dark:focus:ring-gray-600 mr-4 mb-4"
+          className="vendorNav"
+          style={{ margin: "1rem" }}
         >
           <AiOutlineWarning />
           <span className="ml-2">New Orders</span>
-        </Link>
-        <Link
+        </NavLink>
+        <NavLink
           to="allorders"
-          class="text-white w-60 font-serif bg-green-900 hover:bg-white hover:text-green-900 hover:border-1 hover:border-solid hover:border-green-900 rounded-none text-xl px-5 py-2.5 text-center inline-flex items-center justify-center dark:hover:bg-[#050708]/40 dark:focus:ring-gray-600 mr-4 mb-4"
+          className="vendorNav"
+          style={{ margin: "1rem" }}
         >
           <MdOutlinePayments />
           <span className="ml-2">All Orders</span>
-        </Link>
-        <Link
+        </NavLink>{" "}
+        <NavLink
           to="vendorproducts"
-          class="text-white w-60 font-serif bg-green-900 hover:bg-white hover:text-green-900 hover:border-1 hover:border-solid hover:border-green-900 rounded-none text-xl px-5 py-2.5 text-center inline-flex items-center justify-center dark:hover:bg-[#050708]/40 dark:focus:ring-gray-600 mr-4 mb-4"
+          className="vendorNav"
+          style={{ margin: "1rem" }}
         >
           <MdProductionQuantityLimits />
-          <span className="ml-2">Your Products</span>
-        </Link>{" "}
+          Your Products
+        </NavLink>{" "}
       </nav>
       <main>
         <Outlet />

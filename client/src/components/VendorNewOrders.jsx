@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { dataContext } from "../contextProvider/DataContextProvider";
 import axios from "axios";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import VendorNewOrderDetails from "./VendorNewOrderDetails";
 import { useNavigate } from "react-router-dom";
 
@@ -11,11 +12,15 @@ const VendorNewOrders = () => {
   const [unfilteredVendorOrders, setUnfilteredVendorOrders] = useState([]);
   const [selectedOrderDetails, setSelectedOrderDetails] = useState({});
   const [searchValue, setSearchValue] = useState("");
+  const [isOrderApproved, setIsOrderApproved] = useState("");
+
   const { localRoutePrefix, jwToken, vendorOrders, setVendorOrders } =
     useContext(dataContext);
 
   const navigate = useNavigate();
+
   // -------------------------------------------- FECTH SELECTED PRODUCT DETAILS  --------------------------------------------
+
   const ViewProductDetailsHandler = (id) => {
     const selectedOrder = newOrders.filter((selected_order) => {
       return selected_order.id === id;
@@ -41,14 +46,60 @@ const VendorNewOrders = () => {
       })
       .catch((error) => console.error(error));
   }, []);
-  console.log(vendorOrders);
+
+  // -------------------------------------------- TOAST NOIFICATIONS --------------------------------------------
+
+  const OrderSuccessfullyAccepted = (message, type) => {
+    toast(message, { autoClose: 3000, type });
+  };
+
+  const OrderSuccessfullyRejected = (message, type) => {
+    toast(message, { autoClose: 3000, type });
+  };
+
+  // // -------------------------------------------- ACCEPT ORDER HANDLER  --------------------------------------------
+
+  const approveOrderHandlerHome = (id) => {
+    axios
+      .patch(`${localRoutePrefix}/orders/orders/${id}`, {
+        status: "Order Approved",
+      })
+      .then((res) => {
+        console.log(res.data);
+        setIsOrderApproved(true);
+        OrderSuccessfullyAccepted(
+          `This order, No #${id} has been approved`,
+          "success"
+        );
+        const selectedOrder = vendorOrders.find((order) => order.id === id);
+        console.log(selectedOrder);
+        selectedOrder.orders.status = "Order Approved";
+      });
+  };
+  // // -------------------------------------------- REJECT ORDER HANDLER  --------------------------------------------
+
+  const rejectOrderHandlerHome = (id) => {
+    axios
+      .patch(`${localRoutePrefix}/orders/orders/${id}`, {
+        status: "Order Rejected",
+      })
+      .then((res) => {
+        console.log(res.data);
+        setIsOrderApproved(false);
+        OrderSuccessfullyRejected(
+          `This order, No #${id} has been rejected`,
+          "success"
+        );
+        const selectedOrder = vendorOrders.find((order) => order.id === id);
+        selectedOrder.orders.status = "Order Rejected";
+      });
+  };
 
   // ------------------------------------------ FILTER NEW ORDERS FOR CURRENT VENDOR -------------------------------------
 
   const newOrders = vendorOrders.filter((vendorOrder) => {
     return vendorOrder.orders.status === "Order Placed";
   });
-  console.log(newOrders);
   // ------------------------------------------ CREATE ORDER HISTORY LIST -------------------------------------
 
   const orderHistoryList = newOrders
@@ -103,7 +154,7 @@ const VendorNewOrders = () => {
           {orderItem.orders.date_created}
         </td>
         <td class="px-6 py-4  text-base font-serif">
-          <div className="flex xl:flex-nowrap flex-wrap">
+          <div className="flex xl:flex-nowrap flex-wrap ">
             <p
               onClick={() => ViewProductDetailsHandler(orderItem.id)}
               class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer  text-base text-center m-auto"
@@ -111,12 +162,14 @@ const VendorNewOrders = () => {
               View Order Details
             </p>
             <button
+              onClick={() => approveOrderHandlerHome(orderItem.id)}
               type="button"
               class=" text-base focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
             >
               Approve
             </button>
             <button
+              onClick={() => rejectOrderHandlerHome(orderItem.id)}
               type="button"
               class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-sm text-base px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
             >
@@ -130,18 +183,24 @@ const VendorNewOrders = () => {
   // -------------------------------- FILTER BY SEARCH HANDLER --------------------------------
 
   const handleSearchOrders = (e) => {
-    const searchValueLowerCase = e.target.value.toLowerCase();
+    const searchValue = e.target.value;
 
-    const searchedProducts = unfilteredVendorOrders.filter((order) => {
-      const stringID = order.id.toString();
-      return (
-        // order.status.toLowerCase().includes(searchValueLowerCase) ||
-        // order.payment_uid.toLowerCase().includes(searchValueLowerCase) ||
-        stringID === searchValueLowerCase
-      );
-    });
-    console.log(searchedProducts);
-    setVendorOrders(searchedProducts);
+    if (searchValue === "") {
+      setVendorOrders(unfilteredVendorOrders);
+    } else {
+      const searchedProducts = unfilteredVendorOrders.filter((order) => {
+        return (
+          order.orders.status
+            .toLowerCase()
+            .includes(searchValue.toLowerCase()) ||
+          order.orders.payment_uid
+            .toLowerCase()
+            .includes(searchValue.toLowerCase()) ||
+          order.order_id == parseInt(searchValue, 10)
+        );
+      });
+      setVendorOrders(searchedProducts);
+    }
   };
 
   // ------------------------------------------ CREATE ORDER HISTORY INTERFACE -------------------------------------
@@ -153,10 +212,12 @@ const VendorNewOrders = () => {
           selectedOrderDetails={selectedOrderDetails}
           setIsOrderDetailsVisible={setIsOrderDetailsVisible}
           isOrderDetailsVisible={isOrderDetailsVisible}
+          isOrderApproved={isOrderApproved}
+          setIsOrderApproved={setIsOrderApproved}
         />
       )}
 
-      <h1 className="text-center font-serif text-2xl text-green-900">
+      <h1 className="text-center my-6 font-serif text-2xl text-green-900">
         Orders Pending Approval
       </h1>
       <div class="pb-4 bg-white dark:bg-gray-900">

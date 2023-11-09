@@ -81,14 +81,31 @@ const VendorAllOrders = () => {
               ? "bg-yellow-400"
               : orderItem.orders.status === "Delivered & Paid"
               ? "bg-green-500"
+              : orderItem.orders.status === "Payment Received"
+              ? "bg-green-500"
+              : orderItem.orders.status === "Order Fulfilled"
+              ? "bg-green-500"
+              : orderItem.orders.status === "Delivery In Progress"
+              ? "bg-yellow-500"
               : ""
           }`}
         >
           {orderItem.orders.status ? orderItem.orders.status : "N/A"}
         </td>
         <td class="px-6 py-4 font-serif text-gray-700">
+          Ksh{" "}
+          {orderItem.amount.toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+          })}
+        </td>
+        <td class="px-6 py-4 font-serif text-gray-700">
+          {orderItem.payment.mpesa_receipt_code
+            ? orderItem.payment.mpesa_receipt_code.toUpperCase()
+            : "N/A"}
+        </td>
+        <td class="px-6 py-4 font-serif text-gray-700">
           {orderItem.orders.payment_uid
-            ? orderItem.orders.payment_uid?.toUpperCase()
+            ? orderItem.orders.payment_uid.toUpperCase()
             : "N/A"}
         </td>
         <td class="px-6 py-4 font-serif text-gray-700">
@@ -99,12 +116,7 @@ const VendorAllOrders = () => {
         <td class="px-6 py-4 font-serif text-gray-700">
           {orderItem.quantity} items
         </td>
-        <td class="px-6 py-4 font-serif text-gray-700">
-          Ksh{" "}
-          {orderItem.amount.toLocaleString(undefined, {
-            minimumFractionDigits: 2,
-          })}
-        </td>
+
         <td class="px-6 py-4 font-serif text-gray-700">
           {orderItem.orders.date_created}
         </td>
@@ -154,8 +166,8 @@ const VendorAllOrders = () => {
         />
       )}
 
-      <h1 className="text-center font-serif text-2xl text-green-900">
-        Your Order History
+      <h1 className="text-center font-serif text-2xl text-green-900 my-6">
+        Order History
       </h1>
       <div class="pb-4 bg-white dark:bg-gray-900">
         <label for="table-search" class="sr-only">
@@ -210,7 +222,13 @@ const VendorAllOrders = () => {
               STATUS
             </th>
             <th scope="col" class="px-6 py-3">
-              PAYMENT ID
+              AMOUNT
+            </th>
+            <th scope="col" class="px-6 py-3">
+              MPESA ID
+            </th>
+            <th scope="col" class="px-6 py-3">
+              TRANSACTION ID
             </th>
             <th scope="col" class="px-6 py-3">
               DELIVERY TYPE
@@ -218,10 +236,6 @@ const VendorAllOrders = () => {
             <th scope="col" class="px-6 py-3">
               NO. OF ITEMS
             </th>
-            <th scope="col" class="px-6 py-3">
-              AMOUNT
-            </th>
-
             <th scope="col" class="px-6 py-3">
               ORDER DATE
             </th>

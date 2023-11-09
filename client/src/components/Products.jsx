@@ -4,13 +4,14 @@ import ProductCard from "./ProductCard";
 import ProductsSearchFilter from "./ProductsSearchFilter";
 import ProductDetails from "./ProductDetails";
 import axios from "axios";
+import Cart from "./Cart";
+import { useNavigate } from "react-router-dom";
 
 const Products = () => {
   // -------------------------------------------- DEFINE STATE  & CONTEXT VARIABLES --------------------------------------------
-  const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [selectedProductID, setSelectedProductID] = useState(0);
   const [currentProductDetails, setCurrentProductDetails] = useState({});
-
+  const navigate = useNavigate();
   const {
     products,
     productsTitleDisplay,
@@ -19,17 +20,25 @@ const Products = () => {
     localRoutePrefix,
     hostedRoutePrefix,
     setIsAddedToCart,
+    isCartVisible,
+    setCartVisible,
+    isPopupVisible,
+    setIsPopupVisible,
   } = useContext(dataContext);
 
   const [emptyProductsAlert, setEmptyProductsAlert] = useState(
     "Sorry, There are no products for this category at the moment."
   );
-
+  console.log(currentUser);
   // -------------------------------------------- FECTH SELECTED PRODUCT DETAILS  --------------------------------------------
 
   const togglePopup = (id) => {
-    setSelectedProductID(id);
-    setIsAddedToCart(false);
+    if (Object.keys(currentUser).length === 0) {
+      navigate("/login");
+    } else {
+      setSelectedProductID(id);
+      setIsAddedToCart(false);
+    }
   };
 
   // -------------------------------------------- HANDLE PRODUCT DETAILS DISPLAY --------------------------------------------
@@ -72,7 +81,10 @@ const Products = () => {
   // -------------------------------------------- THE INTERFACE --------------------------------------------
 
   return (
-    <div className="flex flex-wrap sm:flex-no-wrap justify-center align-center min-w-full mt-6 ">
+    <div
+      // onClick={() => setShowUserMenu(false)}
+      className="flex flex-wrap sm:flex-no-wrap justify-center align-center min-w-full mt-6 "
+    >
       {isPopupVisible && (
         <ProductDetails
           currentProductDetails={currentProductDetails}
