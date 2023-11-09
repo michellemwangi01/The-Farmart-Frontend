@@ -70,7 +70,7 @@ const OrderDetails = ({ selectedOrderDetails, setIsOrderDetailsVisible }) => {
         <div className="border-b border-gray-200 md:flex-row flex-col flex justify-between items-start w-full  pb-8 space-y-4 md:space-y-0">
           <div className="w-full flex flex-col justify-start items-start space-y-8">
             <h3 className="text-xl xl:text-xl font-serif font-semibold leading-6 text-gray-800">
-              {product.name.toUpperCase()}
+              {product.name ? product.name.toUpperCase() : "N/A"}
             </h3>
             <div className="flex justify-start items-start text-gray-900 flex-col space-y-2">
               <p className=" font-semibold">Vendor Details</p>
@@ -87,10 +87,12 @@ const OrderDetails = ({ selectedOrderDetails, setIsOrderDetailsVisible }) => {
           </div>
           <div className="flex justify-between space-x-8 items-start w-full">
             <p className="text-base xl:text-lg leading-6">
-              Ksh{" "}
-              {product.price.toLocaleString(undefined, {
-                minimumFractionDigits: 2,
-              })}
+              KES{" "}
+              {product.price
+                ? `${product.price.toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                  })}`
+                : "N/A"}
             </p>
             <p className="text-base xl:text-lg leading-6 text-gray-800">
               Qty. {selectedOrderDetails.quantity}
