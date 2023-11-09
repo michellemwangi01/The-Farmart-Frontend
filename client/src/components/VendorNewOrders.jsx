@@ -14,7 +14,7 @@ const VendorNewOrders = () => {
   const [searchValue, setSearchValue] = useState("");
   const [isOrderApproved, setIsOrderApproved] = useState("");
 
-  const { localRoutePrefix, jwToken, vendorOrders, setVendorOrders } =
+  const { localRoutePrefix, headers, jwToken, vendorOrders, setVendorOrders } =
     useContext(dataContext);
 
   const navigate = useNavigate();
@@ -34,11 +34,7 @@ const VendorNewOrders = () => {
   useEffect(() => {
     console.log(jwToken);
     axios
-      .get(`${localRoutePrefix}/orders/vendor_orders`, {
-        headers: {
-          Authorization: `Bearer ${jwToken}`,
-        },
-      })
+      .get(`${localRoutePrefix}/orders/vendor_orders`, { headers })
       .then((res) => {
         setVendorOrders(res.data);
         setUnfilteredVendorOrders(res.data);

@@ -19,6 +19,7 @@ function Checkout() {
   // ------------------- CALL AND USE DATA CONTEXT
 
   const {
+    api,
     orderTotalAmount,
     setOrderTotalAmount,
     deleteFromOrder,
@@ -105,8 +106,8 @@ function Checkout() {
     setOrderTotalAmount(orderTotalAmount + orderTotalAmount * 0.05);
     // -------------------------- Create an order
     console.log(orderData);
-    axios
-      .post("http://127.0.0.1:5555/orders/orders", orderData, { headers })
+    api
+      .post(`${localRoutePrefix}/orders/orders`, orderData, { headers })
       .then((res) => {
         console.log("ORDER SUCCESSFULLY PLACED", res.data);
         setIsNewOrder(!isNewOrder);
@@ -134,7 +135,7 @@ function Checkout() {
         console.log("PRODUCT ORDERS", product_orders);
         for (const product_order of product_orders) {
           console.log(product_order);
-          axios
+          api
             .post("http://127.0.0.1:5555/orders/product_orders", product_order)
             .then((res) => {
               console.log("PRODUCT_ORDER CREATED", res.data);

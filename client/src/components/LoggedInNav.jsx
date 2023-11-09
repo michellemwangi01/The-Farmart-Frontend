@@ -15,6 +15,7 @@ const LoggedInNav = () => {
     isVendor,
     isCartVisible,
     setCartVisible,
+    setIsLoggedIn,
     currentUserCartItems,
   } = useContext(dataContext);
   const navigate = useNavigate();
@@ -23,8 +24,11 @@ const LoggedInNav = () => {
   // -------------------------------------------- HANDLE LOGOUT --------------------------------------------
 
   const handleLogout = () => {
-    localStorage.removeItem("jwToken");
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
+    localStorage.removeItem("current_user");
     setJWToken("");
+    setIsLoggedIn(false);
     setCurrentUser({});
     navigate("/login");
   };
@@ -32,7 +36,6 @@ const LoggedInNav = () => {
   // -------------------------------------------- HANDLE VIEW CART --------------------------------------------
 
   const viewCartHandler = () => {
-    // navigate("/p");
     setShowUserMenu(false);
     setCartVisible(true);
   };

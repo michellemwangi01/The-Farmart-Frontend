@@ -11,8 +11,15 @@ const VendorAllOrders = () => {
   const [unfilteredVendorOrders, setUnfilteredVendorOrders] = useState([]);
   const [selectedOrderDetails, setSelectedOrderDetails] = useState({});
   const [searchValue, setSearchValue] = useState("");
-  const { localRoutePrefix, jwToken, vendorOrders, setVendorOrders } =
-    useContext(dataContext);
+
+  const {
+    api,
+    localRoutePrefix,
+    jwToken,
+    headers,
+    vendorOrders,
+    setVendorOrders,
+  } = useContext(dataContext);
 
   const navigate = useNavigate();
   // -------------------------------------------- FECTH SELECTED PRODUCT DETAILS  --------------------------------------------
@@ -27,12 +34,8 @@ const VendorAllOrders = () => {
 
   // ------------------------------------------ FILTER ORDERS FOR CURRENT VENDOR -------------------------------------
   useEffect(() => {
-    axios
-      .get(`${localRoutePrefix}/orders/vendor_orders`, {
-        headers: {
-          Authorization: `Bearer ${jwToken}`,
-        },
-      })
+    api
+      .get(`${localRoutePrefix}/orders/vendor_orders`, { headers })
       .then((res) => {
         setVendorOrders(res.data);
         setUnfilteredVendorOrders(res.data);

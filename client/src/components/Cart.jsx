@@ -6,6 +6,7 @@ import { set, useForm } from "react-hook-form";
 import EmptyCart from "../animations/EmptyCart2.json";
 import AddtoCart from "../animations/AddtoCart.json";
 import { AiOutlineCloseSquare } from "react-icons/ai";
+// import api from "./AxiosAddJWT";
 
 import Lottie from "lottie-react";
 const Cart = () => {
@@ -20,6 +21,7 @@ const Cart = () => {
   const [isDisabled, setIsDisabled] = useState(false);
 
   const {
+    api,
     jwToken,
     isCartVisible,
     setCartVisible,
@@ -43,9 +45,9 @@ const Cart = () => {
   // ---------------- FETCHING USER CARTITEMS
 
   useEffect(() => {
-    console.log(currentUser, headers, jwToken);
+    console.log(currentUser, headers, localStorage.getItem("access_token"));
     if (currentUser.user_id !== 0) {
-      axios
+      api
         .get(`${localRoutePrefix}/cartitems/user_cart_items`, { headers })
         .then((res) => {
           setCurrentUserCartItems(res.data);
@@ -292,6 +294,15 @@ const Cart = () => {
           </p>
           <p className="text-sm dark:text-gray-400">
             Not including taxes and shipping costs
+          </p>
+          <p
+            onClick={() => {
+              navigate("/products");
+              setCartVisible(false);
+            }}
+            className="font-serif text-base text-blue-800 underline cursor-pointer"
+          >
+            Click here to continue shopping
           </p>
         </div>
         <div className="flex justify-end space-x-4 mb-16">

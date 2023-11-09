@@ -14,6 +14,7 @@ const EditProduct = () => {
     localRoutePrefix,
     hostedRoutePrefix,
     jwToken,
+    headers,
   } = useContext(dataContext);
 
   const navigate = useNavigate();
@@ -66,12 +67,7 @@ const EditProduct = () => {
     console.log(data);
     const url = `${localRoutePrefix}/products/products/${product.id}`;
     axios
-      .patch(url, data, {
-        headers: {
-          Authorization: `Bearer ${jwToken}`,
-          "Content-Type": "application/json",
-        },
-      })
+      .patch(url, data, { headers })
       .then((response) => {
         console.log("Product updated successfully:", response.data);
         ProductSuccessfullyUpdated(

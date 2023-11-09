@@ -2,7 +2,6 @@ import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import api from "../components/AxiosAddJWT";
 import { useSpring, animated } from "react-spring";
 
 const dataContext = createContext();
@@ -30,8 +29,9 @@ const DataContextProvider = ({ children }) => {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [isNewOrder, setIsNewOrder] = useState(false);
   const [currentVendorProducts, setCurrentVendorProducts] = useState([]);
-
   const [iscancellationApproved, setIsCancellationApproved] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   const [
     unfilteredCurrentUserOrderHistory,
     setUnfilteredCurrentUserOrderHistory,
@@ -88,29 +88,35 @@ const DataContextProvider = ({ children }) => {
     "Nyamira",
     "Nairobi City",
   ];
+
   function capitalizeFirstLetter(sentence) {
     return sentence.charAt(0).toUpperCase() + sentence.slice(1);
   }
-  // ----------------------- REFRESH TOKEN -----------------------------------------
 
-  const refreshAccessToken = async (refreshToken) => {
-    try {
-      const response = await axios.post("/refresh", {
-        refresh_token: refreshToken,
-      });
-      const newAccessToken = response.data.access_token;
-      localStorage.setItem("access_token", newAccessToken);
-      return newAccessToken;
-    } catch (error) {
-      console.error("Token refresh failed", error);
-      return null;
+  // --------------------------- REFRESH TOKEN -----------------------------------------
+
+  // Initialize axios object
+  const api = axios.create();
+
+  useEffect(() => {
+    // Get JSON string from LocalStorage
+    const currentUserString = localStorage.getItem("current_user");
+
+    if (currentUserString) {
+      setIsLoggedIn(true);
+      // Parse the JSON string into a JavaScript object and store it as the current user
+      const currentUserFromLocalStorage = JSON.parse(currentUserString);
+      setCurrentUser(currentUserFromLocalStorage);
+    } else {
+      setIsLoggedIn(false);
     }
-  };
+  }, []);
 
+  console.log(currentUser);
   // -------------------------------------------- SET HEADERS ----------------------------------------
 
   const headers = {
-    Authorization: `Bearer ${jwToken}`,
+    Authorization: `Bearer ${localStorage.getItem("access_token")}`,
   };
 
   // ---------------- CHECK IF USER IS VENDOR
@@ -161,8 +167,10 @@ const DataContextProvider = ({ children }) => {
 
   // ---------------- FETCHING PAYMENTS
   useEffect(() => {
-    axios
-      .get(`${localRoutePrefix}/payments/get_payment_confirmation_details`)
+    api
+      .get(`${localRoutePrefix}/payments/get_payment_confirmation_details`, {
+        headers,
+      })
       .then((res) => {
         setPayments(res.data);
         console.log("PAYMENTS:", res.data);
@@ -176,7 +184,7 @@ const DataContextProvider = ({ children }) => {
 
   useEffect(() => {
     if (currentUser.user_id !== 0) {
-      axios
+      api
         .get(`${localRoutePrefix}/orders/user_orders`, { headers })
         .then((res) => {
           setCurrentUserOrderHistory(res.data);
@@ -193,12 +201,8 @@ const DataContextProvider = ({ children }) => {
 
   useEffect(() => {
     if (currentUser.user_id !== 0) {
-      axios
-        .get(`${localRoutePrefix}/products/vendor_products`, {
-          headers: {
-            Authorization: `Bearer ${jwToken}`,
-          },
-        })
+      api
+        .get(`${localRoutePrefix}/products/vendor_products`, { headers })
         .then((res) => {
           setCurrentVendorProducts(res.data);
           console.log("VENDOR PRODUCTS", res.data);
@@ -216,7 +220,7 @@ const DataContextProvider = ({ children }) => {
       (cartItem) => cartItem.id !== id
     );
     setCurrentUserCartItems(updatedCartItems);
-    axios
+    api
       .delete(`${localRoutePrefix}/cartitems/cart_items/${id}`)
       .then((response) => {
         console.log(response.data);
@@ -266,6 +270,9 @@ const DataContextProvider = ({ children }) => {
   // ---------------- POPULATE THE DATA CONTEXT
 
   const data = {
+    api,
+    setIsLoggedIn,
+    isLoggedIn,
     deleteFromOrder,
     categories,
     setCategories,
@@ -302,7 +309,6 @@ const DataContextProvider = ({ children }) => {
     setIsVendor,
     Number,
     updateProduct,
-    refreshAccessToken,
     isCartVisible,
     setCartVisible,
     isPopupVisible,

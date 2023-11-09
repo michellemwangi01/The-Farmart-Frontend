@@ -19,6 +19,7 @@ const Login = () => {
   // -------------------------------------------- CREATE STATE & CONTEXT VARIABLES --------------------------------------------
   const [errorMessages, setErrorMessages] = useState("");
   const {
+    setIsLoggedIn,
     hostedRoutePrefix,
     localRoutePrefix,
     setCurrentUser,
@@ -40,14 +41,20 @@ const Login = () => {
         console.log(res.data);
         localStorage.setItem("access_token", res.data.access_token);
         localStorage.setItem("refresh_token", res.data.refresh_token);
+        localStorage.setItem(
+          "current_user",
+          JSON.stringify(res.data.current_user)
+        );
         setJWToken(res.data.access_token);
         setCurrentUser(res.data.current_user);
+        setIsLoggedIn(true);
         navigate("/products");
         console.log("CURRENT USER ID", res.data.current_user);
       })
       .catch((error) => {
         console.log(error);
-        setErrorMessages(error.response.data.message);
+        setIsLoggedIn(false);
+        // setErrorMessages(error.response.data.message);
       });
     reset();
     setErrorMessages("");

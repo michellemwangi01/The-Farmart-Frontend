@@ -37,13 +37,14 @@ const UserProfile = () => {
 
   const handleProfileUpdate = (data) => {
     console.log(data);
-    currentUser.profile_pic = data.profile_pic;
-    currentUser.fullname = data.fullname;
+
     axios
       .patch(`${localRoutePrefix}/users/users`, data, {
         headers,
       })
       .then((res) => {
+        currentUser.profile_pic = data.profile_pic;
+        currentUser.fullname = data.fullname;
         ProfileSuccessfullyUpdated(
           "Your profile has been updated successfully!",
           "success"
@@ -110,7 +111,7 @@ const UserProfile = () => {
                 <input
                   type="text"
                   {...register("first_name")}
-                  value={formData.firstname}
+                  value={formData.first_name}
                   onChange={handleInputChange}
                   id="name"
                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
@@ -129,7 +130,7 @@ const UserProfile = () => {
                   {...register("last_name")}
                   id="name"
                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  value={formData.lastname}
+                  value={formData.last_name}
                   onChange={handleInputChange}
                   required=""
                 />
