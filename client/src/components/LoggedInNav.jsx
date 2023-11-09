@@ -13,6 +13,7 @@ const LoggedInNav = () => {
     setCurrentUser,
     setJWToken,
     isVendor,
+    setIsVendor,
     isCartVisible,
     setCartVisible,
     setIsLoggedIn,
@@ -20,7 +21,7 @@ const LoggedInNav = () => {
   } = useContext(dataContext);
   const navigate = useNavigate();
   console.log(currentUser.vendor_id);
-  console.log(isVendor);
+  console.log(`--------------${isVendor}`);
   // -------------------------------------------- HANDLE LOGOUT --------------------------------------------
 
   const handleLogout = () => {
@@ -31,6 +32,7 @@ const LoggedInNav = () => {
     setIsLoggedIn(false);
     setCurrentUser({});
     navigate("/login");
+    setIsVendor(false);
   };
 
   // -------------------------------------------- HANDLE VIEW CART --------------------------------------------

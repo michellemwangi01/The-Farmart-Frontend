@@ -5,9 +5,8 @@ import axios from "axios";
 import api from "./AxiosAddJWT";
 import { dataContext } from "../contextProvider/DataContextProvider";
 import { Link, NavLink, Navigate, useNavigate } from "react-router-dom";
-import Signup from "./Signup";
 
-const Login = () => {
+const Login = ({ setIsAuthenticated }) => {
   // -------------------------------------------- CUSTOM STYLING --------------------------------------------
 
   const backgroundStyles = {
@@ -48,6 +47,7 @@ const Login = () => {
         setJWToken(res.data.access_token);
         setCurrentUser(res.data.current_user);
         setIsLoggedIn(true);
+        setIsAuthenticated(true);
         navigate("/products");
         console.log("CURRENT USER ID", res.data.current_user);
       })

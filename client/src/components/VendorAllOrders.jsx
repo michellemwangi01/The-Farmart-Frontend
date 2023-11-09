@@ -21,6 +21,8 @@ const VendorAllOrders = () => {
     setVendorOrders,
   } = useContext(dataContext);
 
+  console.log(vendorOrders);
+
   const navigate = useNavigate();
   // -------------------------------------------- FECTH SELECTED PRODUCT DETAILS  --------------------------------------------
   const ViewProductDetailsHandler = (id) => {
@@ -135,25 +137,37 @@ const VendorAllOrders = () => {
     ));
 
   // -------------------------------- FILTER BY SEARCH HANDLER --------------------------------
-
+  const noOrdersYetMessage = (
+    <tr>
+      <td colspan="9">
+        <div class="flex flex-col justify-center items-center h-32">
+          <p className="text-center font-serif text-2xl text-gray-800">
+            You have no orders yet.
+          </p>
+        </div>
+      </td>
+    </tr>
+  );
   const handleSearchOrders = (e) => {
     const searchValue = e.target.value;
 
     if (searchValue === "") {
       setVendorOrders(unfilteredVendorOrders);
     } else {
-      const searchedProducts = unfilteredVendorOrders.filter((order) => {
-        return (
-          order.orders.status
-            .toLowerCase()
-            .includes(searchValue.toLowerCase()) ||
-          order.orders.payment_uid
-            .toLowerCase()
-            .includes(searchValue.toLowerCase()) ||
-          order.order_id == parseInt(searchValue, 10)
-        );
-      });
-      setVendorOrders(searchedProducts);
+      if (unfilteredVendorOrders.length > 0) {
+        const searchedProducts = unfilteredVendorOrders.filter((order) => {
+          return (
+            order.orders.status
+              .toLowerCase()
+              .includes(searchValue.toLowerCase()) ||
+            order.orders.payment_uid
+              .toLowerCase()
+              .includes(searchValue.toLowerCase()) ||
+            order.order_id == parseInt(searchValue, 10)
+          );
+        });
+        setVendorOrders(searchedProducts);
+      }
     }
   };
 
@@ -248,15 +262,7 @@ const VendorAllOrders = () => {
           </tr>
         </thead>
         {vendorOrders.length < 1 ? (
-          <tr>
-            <td colspan="9">
-              <div class="flex flex-col justify-center items-center h-32">
-                <p className="text-center font-serif text-2xl text-gray-800">
-                  You have no orders yet.
-                </p>
-              </div>
-            </td>
-          </tr>
+          noOrdersYetMessage
         ) : (
           <tbody>{orderHistoryList}</tbody>
         )}

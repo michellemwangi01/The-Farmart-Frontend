@@ -123,7 +123,7 @@ const DataContextProvider = ({ children }) => {
 
   useEffect(() => {
     console.log(currentUser.vendor_id);
-    if (currentUser.vendor_id === "None") {
+    if (currentUser.vendor_id === null) {
       setIsVendor(false);
     } else {
       setIsVendor(true);
