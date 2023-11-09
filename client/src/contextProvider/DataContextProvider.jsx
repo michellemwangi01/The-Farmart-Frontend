@@ -10,6 +10,7 @@ const DataContextProvider = ({ children }) => {
   // -------------------- CREATE STATE VARIABLES
   const localRoutePrefix = "http://127.0.0.1:5555";
   const hostedRoutePrefix = "https://the-farmart-api-flask.onrender.com";
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [categories, setCategories] = useState([]);
   const [isVendor, setIsVendor] = useState(false);
   const [products, setProducts] = useState([]);
@@ -98,6 +99,8 @@ const DataContextProvider = ({ children }) => {
   // Initialize axios object
   const api = axios.create();
 
+  // --------------------------- CHECK THAT USER IS AUTHORIZED -----------------------------------------
+
   useEffect(() => {
     // Get JSON string from LocalStorage
     const currentUserString = localStorage.getItem("current_user");
@@ -107,12 +110,13 @@ const DataContextProvider = ({ children }) => {
       // Parse the JSON string into a JavaScript object and store it as the current user
       const currentUserFromLocalStorage = JSON.parse(currentUserString);
       setCurrentUser(currentUserFromLocalStorage);
+      // setIsAuthenticated(true);
     } else {
       setIsLoggedIn(false);
     }
   }, []);
-
-  console.log(currentUser);
+  console.log("--------------Is AUTHENTICATED:", isAuthenticated);
+  console.log("--------------Is LOGGED IN:", isLoggedIn);
   // -------------------------------------------- SET HEADERS ----------------------------------------
 
   const headers = {
@@ -272,6 +276,8 @@ const DataContextProvider = ({ children }) => {
   const data = {
     api,
     setIsLoggedIn,
+    isAuthenticated,
+    setIsAuthenticated,
     isLoggedIn,
     deleteFromOrder,
     categories,
@@ -299,6 +305,7 @@ const DataContextProvider = ({ children }) => {
     cartItemQuantities,
     setCartItemQuantities,
     currentUserOrderHistory,
+    currentVendorProducts,
     iscancellationApproved,
     setIsCancellationApproved,
     setCurrentUserOrderHistory,

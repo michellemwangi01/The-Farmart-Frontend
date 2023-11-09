@@ -4,8 +4,7 @@ import LoggedInNav from "./LoggedInNav";
 import LoggedOutNav from "./LoggedOutNav";
 
 const Navbar = () => {
-  const { currentUser, setIsLoggedIn, isLoggedIn } = useContext(dataContext);
-  console.log(`--------> currentUser: ${currentUser}`);
+  const { currentUser, isLoggedIn } = useContext(dataContext);
 
   useEffect(() => {
     const token = localStorage.getItem("access_token");

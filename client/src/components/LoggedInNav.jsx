@@ -20,8 +20,8 @@ const LoggedInNav = () => {
     currentUserCartItems,
   } = useContext(dataContext);
   const navigate = useNavigate();
-  console.log(currentUser.vendor_id);
-  console.log(`--------------${isVendor}`);
+  console.log(`-------------CURRENT USER:`, currentUser);
+  console.log(`--------------IS VENDOR: ${isVendor}`);
   // -------------------------------------------- HANDLE LOGOUT --------------------------------------------
 
   const handleLogout = () => {
