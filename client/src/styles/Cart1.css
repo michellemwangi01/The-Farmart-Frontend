@@ -1,0 +1,27 @@
+.container{
+    font-family: 'Times New Roman', Times, serif;
+    
+    background-color: rgb(235, 233, 233);
+  }
+  .row{
+    display: flex;
+    text-align: center;
+    margin-top: 20px;
+  }
+  h3{
+    color: green;
+  }
+  img{
+    height: 400px;
+    width: 600px;
+    text-align: center;
+    margin-left: 10%;
+    margin-right: 10%;
+  
+  }
+  h5{
+    color: green;
+  }
+  .col-md-3{
+    margin-top: 2%;
+  }
