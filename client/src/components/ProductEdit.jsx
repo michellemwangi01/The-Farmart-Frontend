@@ -10,7 +10,7 @@ const EditProduct =()=>{
     const product = originalProductList.find((product) => product.id === Number(id));
 
     const navigate=useNavigate()
-    console.log(product);
+    
 
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
@@ -59,39 +59,46 @@ const EditProduct =()=>{
           }
         
       }
-    const handlePatchRequest = () => {
+      const handlePatchRequest = () => {
         const url = `${hostedRoutePrefix}/products/products/${id}`;
-       
-        
-        const data = {  
-            name : name,
-            description : description,
-            vendor_id : 1,
-            category_id :category_id,
-            image : image,
-            price : price
+      
+        const data = {
+          name: name,
+          description: description,
+          vendor_id: 1,
+          category_id: category_id,
+          image: image,
+          price: parseInt(price)
         };
-    
+      
         axios
           .patch(url, data, {
             headers: {
               'Content-Type': 'application/json',
-              
             },
           })
           .then((response) => {
-            response.json()
-            console.log('User profile updated successfully');
+            if (response.status === 200) {
+              console.log('Product updated successfully');
+              // Redirect to the shop page upon successful update.
+            } else {
+              console.error('Error updating product:', response.status, response.statusText);
+            }
           })
           .catch((error) => {
-            console.error('Error updating user profile:', error);
+            console.error('Error updating product:', error);
           });
-          navigate("/shop")
+          navigate('/vendorhome/vendorproducts');
       };
-      const categoriesList = categories.map((item) => (
-        <option className="hover:bg-white hover:text-green-600 bg-white" key={item.id} value={item.name}>
-        {item.name}
-      </option>))
+      
+      const categoriesList = categories.map((item) => {
+        return (
+          <option className="hover:bg-white hover:text-green-600 bg-white" key={item.id} value={item.name}>
+            {item.name}
+          </option>
+        );
+      });
+      
 
     return(
         <div
