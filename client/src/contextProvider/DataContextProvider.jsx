@@ -324,6 +324,7 @@ const DataContextProvider = ({ children }) => {
     setIsNewOrder,
     currentVendorProducts,
     capitalizeFirstLetter,
+    setCurrentVendorProducts,
   };
   return <dataContext.Provider value={data}>{children}</dataContext.Provider>;
 };

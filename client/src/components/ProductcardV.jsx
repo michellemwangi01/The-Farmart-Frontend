@@ -1,11 +1,43 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { dataContext } from "../contextProvider/DataContextProvider";
+import { BsFillTrashFill } from "react-icons/bs";
+import axios from "axios";
+import { FaRegTrashAlt } from "react-icons/fa";
+import { ToastContainer, toast } from "react-toastify";
 
 const ProductcardV = ({ product }) => {
-  const { capitalizeFirstLetter } = useContext(dataContext);
+  const {
+    capitalizeFirstLetter,
+    localRoutePrefix,
+    hostedRoutePrefix,
+    currentVendorProducts,
+    setCurrentVendorProducts,
+  } = useContext(dataContext);
   const name = product.name;
   const productName = capitalizeFirstLetter(name);
+
+  // -------------------TOAST NOIFICATIONS
+
+  const productSuccessfullyDeleted = (message, type) => {
+    toast(message, { autoClose: 3000, type });
+  };
+
+  const deleteProductHandler = () => {
+    axios
+      .delete(`${localRoutePrefix}/products/products/${product.id}`)
+      .then((res) => {
+        console.log(res);
+        productSuccessfullyDeleted(
+          `Product #${product.id} was successfully deleted.`,
+          "success"
+        );
+        const remainingProducts = currentVendorProducts.filter(
+          (productItem) => productItem.id !== product.id
+        );
+        setCurrentVendorProducts(remainingProducts);
+      });
+  };
 
   return (
     <div className="w-72 h-72 m-2 text-sm bg-gray-200 rounded-xl pt-4 px-5 font-serif">
@@ -22,13 +54,19 @@ const ProductcardV = ({ product }) => {
             {productName}
           </h1>
         </div>
-
-        <Link
-          className="bg-green-600  text-white rounded-lg py-1 px-2 hover:text-white hover:bg-green-400 m-4"
-          to={`/product/edit/${product.id}`}
-        >
-          EDIT
-        </Link>
+        <div className="flex justify-center items-center">
+          {" "}
+          <Link
+            className="bg-green-600  text-white rounded-lg py-1 px-2 hover:text-white hover:bg-green-400 m-4"
+            to={`/product/edit/${product.id}`}
+          >
+            EDIT
+          </Link>
+          <BsFillTrashFill
+            onClick={deleteProductHandler}
+            className="text-xl text-gray-700"
+          />
+        </div>
       </div>
     </div>
   );

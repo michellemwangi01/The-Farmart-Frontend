@@ -41,7 +41,11 @@ const Vendorshop = () => {
             </h1>
           </div>
           {currentVendorProducts.map((product) => (
-            <ProductcardV key={product.id} product={product} />
+            <ProductcardV
+              key={product.id}
+              product={product}
+              currentVendorProducts={currentVendorProducts}
+            />
           ))}
         </div>
       </div>
