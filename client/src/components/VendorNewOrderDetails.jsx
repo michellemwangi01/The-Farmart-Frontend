@@ -78,14 +78,17 @@ const VendorNewOrderDetails = ({
 
   const approveOrderHandler = () => {
     axios
-      .patch(`${hostedRoutePrefix}/orders/orders/${selectedOrderDetails.id}`, {
-        status: "Order Approved",
-      })
+      .patch(
+        `${hostedRoutePrefix}/orders/orders/${selectedOrderDetails.order_id}`,
+        {
+          status: "Order Approved",
+        }
+      )
       .then((res) => {
         console.log(res.data);
         setIsOrderApproved(true);
         setOrderApprovalMessage(
-          `You have successfully approved this order, No.${selectedOrderDetails.id}.`
+          `You have successfully approved this order, No.${selectedOrderDetails.order_id}.`
         );
         selectedOrderDetails.orders.status = "Order Approved";
       });
@@ -96,14 +99,17 @@ const VendorNewOrderDetails = ({
 
   const rejectOrderHandler = () => {
     axios
-      .patch(`${hostedRoutePrefix}/orders/orders/${selectedOrderDetails.id}`, {
-        status: "Order Rejected",
-      })
+      .patch(
+        `${hostedRoutePrefix}/orders/orders/${selectedOrderDetails.order_id}`,
+        {
+          status: "Order Rejected",
+        }
+      )
       .then((res) => {
         console.log(res.data);
         setIsOrderApproved(false);
         setOrderApprovalMessage(
-          `You have successfully rejected this order, No.${selectedOrderDetails.id}.`
+          `You have successfully rejected this order, No.${selectedOrderDetails.order_id}.`
         );
         selectedOrderDetails.orders.status = "Order Rejected";
       });
