@@ -136,7 +136,7 @@ function Checkout() {
         for (const product_order of product_orders) {
           console.log(product_order);
           api
-            .post("http://127.0.0.1:5555/orders/product_orders", product_order)
+            .post(`${hostedRoutePrefix}/orders/product_orders`, product_order)
             .then((res) => {
               console.log("PRODUCT_ORDER CREATED", res.data);
             })

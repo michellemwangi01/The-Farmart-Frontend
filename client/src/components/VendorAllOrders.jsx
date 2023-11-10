@@ -20,6 +20,7 @@ const VendorAllOrders = () => {
     headers,
     vendorOrders,
     setVendorOrders,
+    currentUserOrderHistory,
   } = useContext(dataContext);
 
   console.log(vendorOrders);
@@ -46,7 +47,7 @@ const VendorAllOrders = () => {
       })
       .catch((error) => console.error(error));
   }, []);
-  console.log(vendorOrders);
+  console.log(currentUserOrderHistory);
 
   // ------------------------------------------ CREATE ORDER HISTORY LIST -------------------------------------
 
