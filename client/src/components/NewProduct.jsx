@@ -84,7 +84,7 @@ const NewProduct = () => {
     const data = {
       name: formData.name,
       description: formData.description,
-      vendor_id: 1,
+      vendor_id: currentUser.user_id,
       category_id: formData.category_id,
       image: image,
       price: parseInt(formData.price),
