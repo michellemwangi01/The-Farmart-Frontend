@@ -84,7 +84,7 @@ const NewProduct = () => {
     const data = {
       name: formData.name,
       description: formData.description,
-      vendor_id: currentUser.user_id,
+      vendor_id: currentUser.vendor_id,
       category_id: formData.category_id,
       image: image,
       price: parseInt(formData.price),
@@ -98,6 +98,7 @@ const NewProduct = () => {
     })
       .then((resp) => resp.json())
       .then((data) => {
+        console.log(data);
         updateProduct(data);
         NewProductSuccessfullyAdded(
           "You have successfully added a product",
